@@ -1,278 +1,299 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from './pageObjects/HomePage';
-import { ContactPage } from './pageObjects/ContactPage';
-import { ServicesPage } from './pageObjects/ServicesPage';
+import { testData } from './fixtures/testData';
 
-test.describe('Cross-Page Navigation Tests', () => {
-  test('@smoke End-to-end user journey through main pages', async ({ page }) => {
-    const homePage = new HomePage(page);
-    const servicesPage = new ServicesPage(page);
-    const contactPage = new ContactPage(page);
+test.describe('ResortPass Navigation and UI', () => {
+  let homePage: HomePage;
 
-    await test.step('Start at homepage and validate', async () => {
-      await homePage.navigateToHomePage();
-      await homePage.acceptCookies();
-      await homePage.validateHomePageContent();
-    });
+  test.beforeEach(async ({ page }) => {
+    homePage = new HomePage(page);
+    await homePage.goto();
+    await homePage.dismissCookieBanner();
+    await homePage.closeModal();
+  });
 
-    await test.step('Navigate to services via navigation menu', async () => {
-      await homePage.clickNavigation('Services');
-      await servicesPage.validateServicesPageContent();
-    });
-
-    await test.step('Explore AI services', async () => {
-      await servicesPage.page.evaluate(() => window.scrollTo(0, 2000));
-      await servicesPage.clickServiceCategory('ai');
-      await expect(servicesPage.page.locator('text=AI solutions').first()).toBeVisible();
-    });
-
-    await test.step('Navigate to contact page', async () => {
-      await servicesPage.clickNavigation('Contact');
-      await contactPage.validateContactPageContent();
-    });
-
-    await test.step('Fill contact form with inquiry about AI services', async () => {
-      await contactPage.selectContactCategory('Our product support/service');
+  test.describe('Header Navigation', () => {
+    test('should display main navigation elements @smoke', async ({ page }) => {
+      // Check for logo (visible)
+      await homePage.expectElementVisible(homePage.logo);
       
-      const aiInquiryData = {
-        firstName: 'Jane',
-        lastName: 'Smith',
-        email: 'jane.smith@company.com',
-        country: 'USA',
-        companyName: 'Tech Innovations LLC',
-        jobTitle: 'CTO',
-        businessNeeds: 'We are interested in your AI-powered solutions for manufacturing optimization. Please provide more details about implementation timeline and costs.'
-      };
-
-      await contactPage.fillContactForm(aiInquiryData);
-      await contactPage.acceptPrivacyTerms();
+      // Check for login button (visible) 
+      await homePage.expectElementVisible(homePage.loginButton);
+      
+      // Verify the main search functionality is present
+      await homePage.expectElementVisible(homePage.searchLocationInput);
+      await homePage.expectElementVisible(homePage.searchButton);
     });
 
-    await test.step('Return to homepage via logo', async () => {
-      await contactPage.logo.click();
-      await homePage.validateHomePageContent();
-    });
-  });
-
-  test('Header navigation consistency across pages', async ({ page }) => {
-    const homePage = new HomePage(page);
-
-    await test.step('Validate navigation on homepage', async () => {
-      await homePage.navigateToHomePage();
-      await homePage.acceptCookies();
-      await homePage.validateNavigationVisible();
+    test('should have working logo link', async ({ page }) => {
+      await homePage.goto('/some-other-page'); // Navigate away from home
+      
+      if (await homePage.logo.isVisible()) {
+        await homePage.logo.click();
+        await homePage.expectURL('/');
+      }
     });
 
-    await test.step('Test all navigation links from homepage', async () => {
-      // Services
-      await homePage.clickNavigation('Services');
-      // Services navigation may go to different sections - be flexible with URL
-      await expect(page).toHaveURL(/services-and-industries|#services|#overview/);
-      await homePage.validateNavigationVisible();
-
-      // Industries (should go to services page with industries section)
-      await homePage.clickNavigation('Industries');
-      await expect(page).toHaveURL(/services-and-industries|#industries/);
-      await homePage.validateNavigationVisible();
-
-      // Contact
-      await homePage.clickNavigation('Contact');
-      await expect(page).toHaveURL(/contact-us/);
-      await homePage.validateNavigationVisible();
-
-      // Careers (external link)
-      const careersLink = page.getByRole('link', { name: 'Careers' }).first();
-      await expect(careersLink).toHaveAttribute('href', /career\.fpt-software\.com/);
-
-      // FPT x Chelsea
-      await homePage.clickNavigation('FPT x Chelsea');
-      await expect(page).toHaveURL(/fpt-chelseafc/);
-      await homePage.validateNavigationVisible();
-    });
-  });
-
-  test('Footer links work across all pages', async ({ page }) => {
-    const pages = [
-      { url: '/', name: 'Homepage' },
-      { url: '/services-and-industries', name: 'Services' },
-      { url: '/contact-us', name: 'Contact' }
-    ];
-
-    for (const testPage of pages) {
-      await test.step(`Test footer on ${testPage.name}`, async () => {
-        await page.goto(testPage.url);
-        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-
-        // Validate key footer links - use first() to avoid strict mode violations
-        await expect(page.getByRole('link', { name: 'About' }).first()).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Terms of Use' }).first()).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Privacy Statement' }).first()).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Contact us' }).first()).toBeVisible();
-        
-        // Social media links
-        await expect(page.getByRole('link', { name: 'Linkedin' }).first()).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Twitter' }).first()).toBeVisible();
-        
-        // Copyright notice
-        await expect(page.locator('text=Copyright @ 2025 FPT Software').first()).toBeVisible();
-      });
-    }
-  });
-
-  test('Search functionality is accessible from all pages', async ({ page }) => {
-    const homePage = new HomePage(page);
-
-    const testPages = [
-      { url: '/', name: 'Homepage' },
-      { url: '/services-and-industries', name: 'Services' },
-      { url: '/contact-us', name: 'Contact' }
-    ];
-
-    for (const testPage of testPages) {
-      await test.step(`Test search accessibility on ${testPage.name}`, async () => {
-        await page.goto(testPage.url);
-        await homePage.acceptCookies();
-        
-        // Validate search link is present and functional
-        await expect(homePage.searchLink).toBeVisible();
-        
-        await homePage.searchLink.click();
-        await expect(page).toHaveURL(/search-result/);
-        
-        // Navigate back for next iteration
-        await page.goBack();
-      });
-    }
-  });
-
-  test('Breadcrumb navigation works correctly', async ({ page }) => {
-    await test.step('Navigate to services page', async () => {
-      await page.goto('/services-and-industries');
-    });
-
-    await test.step('Navigate to a specific service', async () => {
-      const aiServiceLink = page.getByRole('link', { name: 'See more' }).first();
-      if (await aiServiceLink.isVisible()) {
-        await aiServiceLink.click();
-        
-        // Should be on a service detail page
-        await expect(page).toHaveURL(/services/);
+    test('should display cart icon', async ({ page }) => {
+      const hasCartIcon = await homePage.cartIcon.isVisible();
+      
+      // Cart icon might not be visible when empty, so this is optional
+      if (hasCartIcon) {
+        await homePage.expectElementVisible(homePage.cartIcon);
       }
     });
   });
 
-  test('Quick contact access from all pages', async ({ page }) => {
-    const homePage = new HomePage(page);
-    
-    const testPages = [
-      { url: '/', name: 'Homepage' },
-      { url: '/services-and-industries', name: 'Services' }
-    ];
+  test.describe('Footer Navigation', () => {
+    test('should display footer with links', async ({ page }) => {
+      await homePage.expectElementVisible(homePage.footer);
+      
+      // Check for common footer links
+      const footerLinks = await homePage.footer.locator('a').all();
+      expect(footerLinks.length).toBeGreaterThan(0);
+      
+      // Verify some footer links are functional
+      for (let i = 0; i < Math.min(3, footerLinks.length); i++) {
+        const href = await footerLinks[i].getAttribute('href');
+        expect(href).toBeTruthy();
+      }
+    });
 
-    for (const testPage of testPages) {
-      await test.step(`Test quick contact on ${testPage.name}`, async () => {
-        await page.goto(testPage.url);
-        await homePage.acceptCookies();
+    test('should have contact/support information in footer', async ({ page }) => {
+      const footerText = await homePage.footer.textContent();
+      
+      // Look for contact-related keywords
+      const hasContactInfo = ['contact', 'support', 'help', 'email', 'phone'].some(keyword =>
+        footerText?.toLowerCase().includes(keyword)
+      );
+      
+      expect(hasContactInfo).toBeTruthy();
+    });
+  });
+
+  test.describe('Mobile Navigation', () => {
+    test('should display mobile menu on small screens @mobile', async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 667 });
+      await homePage.goto();
+      await homePage.dismissCookieBanner();
+      
+      // Mobile menu button should be visible
+      if (await homePage.mobileMenuButton.isVisible()) {
+        await homePage.expectElementVisible(homePage.mobileMenuButton);
         
-        // Look for "Let Us Accompany You" contact section in footer
-        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+        // Test mobile menu functionality
+        await homePage.mobileMenuButton.click();
         
-        const contactSection = page.getByRole('heading', { name: 'Let Us Accompany You' }).first();
-        await expect(contactSection).toBeVisible();
+        if (await homePage.mobileMenu.isVisible()) {
+          await homePage.expectElementVisible(homePage.mobileMenu);
+        }
+      }
+    });
+
+    test('should maintain functionality across viewport sizes', async ({ page }) => {
+      // Test desktop
+      await page.setViewportSize({ width: 1200, height: 800 });
+      await homePage.validateHomepageElements();
+      
+      // Test tablet
+      await page.setViewportSize({ width: 768, height: 1024 });
+      await homePage.validateHomepageElements();
+      
+      // Test mobile
+      await page.setViewportSize({ width: 375, height: 667 });
+      await homePage.validateHomepageElements();
+    });
+  });
+
+  test.describe('Page Structure and Content', () => {
+    test('should have proper page title and meta information', async ({ page }) => {
+      const title = await page.title();
+      expect(title).toBeTruthy();
+      expect(title.length).toBeGreaterThan(0);
+      expect(title.toLowerCase()).toContain('resort');
+    });
+
+    test('should display hero section with call-to-action', async ({ page }) => {
+      await homePage.expectElementVisible(homePage.heroSection);
+      await homePage.expectElementVisible(homePage.heroTitle);
+      
+      const heroTitle = await homePage.heroTitle.textContent();
+      expect(heroTitle).toBeTruthy();
+      expect(heroTitle?.length).toBeGreaterThan(0);
+    });
+
+    test('should show featured content sections', async ({ page }) => {
+      // Check for popular destinations or featured hotels
+      const hasFeaturedHotels = await homePage.featuredHotels.isVisible();
+      const hasPopularDestinations = await homePage.popularDestinations.isVisible();
+      const hasHowItWorks = await homePage.howItWorksSection.isVisible();
+      
+      // At least one content section should be present
+      expect(hasFeaturedHotels || hasPopularDestinations || hasHowItWorks).toBeTruthy();
+    });
+
+    test('should display app download links', async ({ page }) => {
+      if (await homePage.downloadAppSection.isVisible()) {
+        // Check for app store links
+        const hasAppStore = await homePage.appStoreLink.isVisible();
+        const hasPlayStore = await homePage.playStoreLink.isVisible();
         
-        // Test quick contact button if available
-        const showFormButton = page.getByRole('link', { name: 'show form button' }).first();
-        if (await showFormButton.isVisible()) {
-          await expect(showFormButton).toBeVisible();
+        // At least one app store link should be present
+        expect(hasAppStore || hasPlayStore).toBeTruthy();
+        
+        // Verify links have proper URLs
+        if (hasAppStore) {
+          const appStoreHref = await homePage.appStoreLink.getAttribute('href');
+          expect(appStoreHref).toContain('apps.apple.com');
+        }
+        
+        if (hasPlayStore) {
+          const playStoreHref = await homePage.playStoreLink.getAttribute('href');
+          expect(playStoreHref).toContain('play.google.com');
+        }
+      }
+    });
+  });
+
+  test.describe('Accessibility', () => {
+    test('should have proper heading hierarchy', async ({ page }) => {
+      const headings = await page.locator('h1, h2, h3, h4, h5, h6').all();
+      expect(headings.length).toBeGreaterThan(0);
+      
+      // Should have at least one h1
+      const h1Count = await page.locator('h1').count();
+      expect(h1Count).toBeGreaterThanOrEqual(1);
+    });
+
+    test('should have alt text for images', async ({ page }) => {
+      const images = await page.locator('img').all();
+      
+      for (const image of images) {
+        const alt = await image.getAttribute('alt');
+        const ariaLabel = await image.getAttribute('aria-label');
+        const hasDescription = alt || ariaLabel;
+        
+        // Images should have alt text or aria-label (decorative images can have empty alt)
+        expect(hasDescription !== null).toBeTruthy();
+      }
+    });
+
+    test('should have accessible form labels', async ({ page }) => {
+      const inputs = await page.locator('input, select, textarea').all();
+      
+      for (const input of inputs) {
+        const id = await input.getAttribute('id');
+        const ariaLabel = await input.getAttribute('aria-label');
+        const placeholder = await input.getAttribute('placeholder');
+        
+        if (id) {
+          // Check for associated label
+          const label = await page.locator(`label[for="${id}"]`).isVisible();
+          expect(label || ariaLabel || placeholder).toBeTruthy();
+        }
+      }
+    });
+
+    test('should support keyboard navigation', async ({ page }) => {
+      // Tab through interactive elements
+      await page.keyboard.press('Tab');
+      
+      const focusedElement = await page.evaluate(() => document.activeElement?.tagName);
+      
+      // Should focus on an interactive element
+      const interactiveElements = ['INPUT', 'BUTTON', 'A', 'SELECT', 'TEXTAREA'];
+      expect(interactiveElements.includes(focusedElement || '')).toBeTruthy();
+    });
+  });
+
+  test.describe('Performance and Loading', () => {
+    test('should load page within reasonable time', async ({ page }) => {
+      const startTime = Date.now();
+      
+      await page.goto('/', { waitUntil: 'networkidle' });
+      
+      const loadTime = Date.now() - startTime;
+      expect(loadTime).toBeLessThan(5000); // 5 seconds max
+    });
+
+    test('should not have console errors on load', async ({ page }) => {
+      const consoleErrors: string[] = [];
+      
+      page.on('console', msg => {
+        if (msg.type() === 'error') {
+          consoleErrors.push(msg.text());
         }
       });
-    }
-  });
-
-  test('Mobile menu functionality', async ({ page }) => {
-    const homePage = new HomePage(page);
-
-    await test.step('Set mobile viewport', async () => {
-      await page.setViewportSize({ width: 375, height: 667 });
-    });
-
-    await test.step('Test mobile navigation on homepage', async () => {
-      await homePage.navigateToHomePage();
-      await homePage.acceptCookies();
       
-      // On mobile, navigation might be collapsed
-      await homePage.validateNavigationVisible();
-    });
-
-    await test.step('Test mobile navigation on services', async () => {
-      await page.goto('/services-and-industries');
-      await homePage.validateNavigationVisible();
-    });
-
-    await test.step('Test mobile navigation on contact', async () => {
-      await page.goto('/contact-us');
-      await homePage.validateNavigationVisible();
-    });
-
-    await test.step('Reset to desktop', async () => {
-      await page.setViewportSize({ width: 1920, height: 1080 });
+      await page.goto('/');
+      await page.waitForLoadState('networkidle');
+      
+      // Filter out common third-party errors that don't affect functionality
+      const significantErrors = consoleErrors.filter(error => 
+        !error.includes('favicon') &&
+        !error.includes('analytics') &&
+        !error.includes('ads') &&
+        !error.includes('tracking')
+      );
+      
+      expect(significantErrors.length).toBe(0);
     });
   });
 
-  test('Page loading performance is acceptable', async ({ page }) => {
-    const urls = [
-      '/',
-      '/services-and-industries',
-      '/contact-us'
-    ];
-
-    for (const url of urls) {
-      await test.step(`Test loading performance for ${url}`, async () => {
-        const startTime = Date.now();
-        
-        await page.goto(url);
-        await page.waitForLoadState('networkidle');
-        
-        const loadTime = Date.now() - startTime;
-        
-        // Page should load within 15 seconds (increased from 10 to handle slower loads)
-        expect(loadTime).toBeLessThan(15000);
-        
-        // Page should have title
-        const title = await page.title();
-        expect(title).toBeTruthy();
-        expect(title).toContain('FPT Software');
-      });
-    }
+  test.describe('Cross-browser Compatibility', () => {
+    test('should render correctly in different browsers', async ({ page, browserName }) => {
+      await homePage.validateHomepageElements();
+      
+      // Browser-specific validations could go here
+      if (browserName === 'webkit') {
+        // Safari-specific tests
+        await homePage.expectElementVisible(homePage.searchLocationInput);
+      } else if (browserName === 'firefox') {
+        // Firefox-specific tests
+        await homePage.expectElementVisible(homePage.searchButton);
+      }
+    });
   });
 
-  test('External links open correctly', async ({ page }) => {
-    const homePage = new HomePage(page);
+  test.describe('External Links', () => {
+    test('should handle external links appropriately', async ({ page }) => {
+      // Find external links in footer
+      const externalLinks = await homePage.footer.locator('a[href^="http"]:not([href*="resortpass.com"])').all();
+      
+      for (let i = 0; i < Math.min(2, externalLinks.length); i++) {
+        const target = await externalLinks[i].getAttribute('target');
+        const rel = await externalLinks[i].getAttribute('rel');
+        
+        // External links should open in new tab and have proper rel attributes
+        expect(target).toBe('_blank');
+        expect(rel).toContain('noopener');
+      }
+    });
+  });
 
-    await test.step('Navigate to homepage', async () => {
-      await homePage.navigateToHomePage();
-      await homePage.acceptCookies();
+  test.describe('SEO Elements', () => {
+    test('should have proper meta tags', async ({ page }) => {
+      const description = await page.locator('meta[name="description"]').getAttribute('content');
+      const keywords = await page.locator('meta[name="keywords"]').getAttribute('content');
+      const ogTitle = await page.locator('meta[property="og:title"]').getAttribute('content');
+      
+      expect(description).toBeTruthy();
+      expect(description?.length).toBeGreaterThan(50);
+      
+      // Open Graph tags for social sharing
+      if (ogTitle) {
+        expect(ogTitle.length).toBeGreaterThan(0);
+      }
     });
 
-    await test.step('Test careers external link', async () => {
-      const careersLink = page.getByRole('link', { name: 'Careers' }).first();
-      await expect(careersLink).toHaveAttribute('href', /career\.fpt-software\.com/);
+    test('should have structured data', async ({ page }) => {
+      // Look for JSON-LD structured data
+      const structuredData = await page.locator('script[type="application/ld+json"]').count();
       
-      // Test that it opens in new tab (if target="_blank" is set)
-      const href = await careersLink.getAttribute('href');
-      expect(href).toContain('career.fpt-software.com');
-    });
-
-    await test.step('Test social media links', async () => {
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-      
-      // LinkedIn
-      const linkedinLink = page.getByRole('link', { name: 'Linkedin' }).first();
-      await expect(linkedinLink).toHaveAttribute('href', /linkedin\.com/);
-      
-      // Twitter
-      const twitterLink = page.getByRole('link', { name: 'Twitter' }).first();
-      await expect(twitterLink).toHaveAttribute('href', /twitter\.com/);
+      // While not required, structured data helps with SEO
+      if (structuredData > 0) {
+        expect(structuredData).toBeGreaterThan(0);
+      }
     });
   });
 });

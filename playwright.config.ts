@@ -16,7 +16,7 @@ export default defineConfig({
     ['json', { outputFile: 'test-results/results.json' }],
   ],
   use: {
-    baseURL: 'https://fptsoftware.com',
+    baseURL: 'https://www.resortpass.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -35,18 +35,7 @@ export default defineConfig({
         },
       },
     },
-    {
-      name: 'ci-chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        headless: true,
-        userAgent:
-          'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-        launchOptions: {
-          args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
-        },
-      },
-    },
+
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },

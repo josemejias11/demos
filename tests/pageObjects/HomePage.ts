@@ -1,188 +1,243 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { testData } from '../fixtures/testData';
 
 export class HomePage extends BasePage {
-  readonly heroHeading: Locator;
-  readonly heroSubtext: Locator;
-  readonly aiFirstText: Locator;
-  readonly exploreButton: Locator;
-  readonly quickNavigation: Locator;
-  readonly mainVideoSection: Locator;
-  readonly aiPlatformSection: Locator;
-  readonly industriesSection: Locator;
-  readonly servicesSection: Locator;
-  readonly globalPresenceSection: Locator;
-  readonly clientTestimonials: Locator;
-  readonly newsSection: Locator;
-
   constructor(page: Page) {
     super(page);
-    this.heroHeading = page.locator('heading:has-text("W e a r e a n A I - F i r s t C o m p a n y")').or(page.locator('text=We Are An AI-First Company'));
-    this.heroSubtext = page.locator('text=Providing comprehensive, AI-powered solutions');
-    this.aiFirstText = page.locator('text=AI-First Company');
-    this.exploreButton = page.getByRole('link', { name: /Explore The Possibilities/i });
-    this.quickNavigation = page.locator('[ref="e1160"]'); // Direct reference to quick nav container
-    this.mainVideoSection = page.locator('text=Delivering Breakthrough Speed, Scalability and Quality');
-    this.aiPlatformSection = page.getByRole('heading', { name: /Introducing a FPT AI Platform/i });
-    this.industriesSection = page.getByRole('heading', { name: /A Global AI System Integrator/i });
-    this.servicesSection = page.locator('text=Hyper Automation'); // Services grid
-    this.globalPresenceSection = page.getByRole('heading', { name: /Being There Wherever/i });
-    this.clientTestimonials = page.getByRole('heading', { name: /Beyond A Partner/i });
-    this.newsSection = page.getByRole('heading', { name: /We Go The Extra Mile/i });
   }
 
-  async navigateToHomePage() {
-    await this.navigateToHome();
+  // Search form elements
+  get searchLocationInput() {
+    return this.page.locator('button:has-text("Where to?"), input[placeholder*="location"], combobox[aria-label*="Where"]');
+  }
+
+  get searchButton() {
+    return this.page.getByRole('button', { name: /search/i });
+  }
+
+  get locationSuggestions() {
+    return this.page.locator('[role="listbox"], .autocomplete-results, .suggestions');
+  }
+
+  get datePicker() {
+    return this.page.locator('[data-testid="date-picker"], .date-picker, input[type="date"]');
+  }
+
+  get checkInDate() {
+    return this.page.locator('[data-testid="checkin-date"], #checkin, [name="checkin"]');
+  }
+
+  get checkOutDate() {
+    return this.page.locator('[data-testid="checkout-date"], #checkout, [name="checkout"]');
+  }
+
+  // Guest selection
+  get guestSelector() {
+    return this.page.locator('[data-testid="guest-selector"], .guest-selector');
+  }
+
+  get adultsCounter() {
+    return this.page.locator('[data-testid="adults-counter"], [data-guest-type="adults"]');
+  }
+
+  get childrenCounter() {
+    return this.page.locator('[data-testid="children-counter"], [data-guest-type="children"]');
+  }
+
+  get infantsCounter() {
+    return this.page.locator('[data-testid="infants-counter"], [data-guest-type="infants"]');
+  }
+
+  // Hero section
+  get heroSection() {
+    return this.page.locator('[data-testid="hero"], .hero, .hero-section');
+  }
+
+  get heroTitle() {
+    return this.page.locator('h1, [data-testid="hero-title"]');
+  }
+
+  get heroSubtitle() {
+    return this.page.locator('[data-testid="hero-subtitle"], .hero-subtitle');
+  }
+
+  // Featured content
+  get featuredHotels() {
+    return this.page.locator('[data-testid="featured-hotels"], .featured-hotels');
+  }
+
+  get popularDestinations() {
+    return this.page.locator('[data-testid="popular-destinations"], .popular-destinations');
+  }
+
+  get howItWorksSection() {
+    return this.page.locator('[data-testid="how-it-works"], .how-it-works');
+  }
+
+  // Navigation elements specific to homepage
+  get downloadAppSection() {
+    return this.page.locator('[data-testid="download-app"], .download-app');
+  }
+
+  get appStoreLink() {
+    return this.page.locator('[data-testid="app-store"], a[href*="apps.apple.com"]');
+  }
+
+  get playStoreLink() {
+    return this.page.locator('[data-testid="play-store"], a[href*="play.google.com"]');
+  }
+
+  // Actions
+  async searchForLocation(location: string) {
+    await this.searchLocationInput.fill(location);
+    
+    // Wait for and select from autocomplete suggestions
+    await this.locationSuggestions.waitFor({ state: 'visible' });
+    
+    // Click on the first suggestion that matches our location
+    const suggestion = this.locationSuggestions.locator(`text="${location}"`).first();
+    if (await suggestion.isVisible()) {
+      await suggestion.click();
+    } else {
+      // If no exact match, click the first suggestion
+      await this.locationSuggestions.locator('li, [role="option"]').first().click();
+    }
+  }
+
+  async selectDates(checkIn: string, checkOut?: string) {
+    // Click date picker to open calendar
+    await this.datePicker.click();
+    
+    // If specific date inputs exist, fill them
+    if (await this.checkInDate.isVisible()) {
+      await this.checkInDate.fill(checkIn);
+      if (checkOut) {
+        await this.checkOutDate.fill(checkOut);
+      }
+    } else {
+      // Navigate calendar to select dates
+      // This would need to be customized based on the actual calendar implementation
+      await this.selectDateFromCalendar(checkIn);
+      if (checkOut) {
+        await this.selectDateFromCalendar(checkOut);
+      }
+    }
+  }
+
+  private async selectDateFromCalendar(date: string) {
+    // Parse date and find corresponding calendar cell
+    const dateObj = new Date(date);
+    const daySelector = `[data-date="${date}"], [aria-label*="${dateObj.getDate()}"]`;
+    
+    const dayElement = this.page.locator(daySelector);
+    if (await dayElement.isVisible()) {
+      await dayElement.click();
+    }
+  }
+
+  async setGuestCount(adults: number, children: number = 0, infants: number = 0) {
+    // Open guest selector if it's a dropdown
+    if (await this.guestSelector.isVisible()) {
+      await this.guestSelector.click();
+    }
+
+    // Set adult count
+    await this.setCounterValue(this.adultsCounter, adults);
+    
+    // Set children count if needed
+    if (children > 0) {
+      await this.setCounterValue(this.childrenCounter, children);
+    }
+    
+    // Set infants count if needed
+    if (infants > 0) {
+      await this.setCounterValue(this.infantsCounter, infants);
+    }
+
+    // Close guest selector if it was opened
+    if (await this.guestSelector.isVisible()) {
+      await this.page.keyboard.press('Escape');
+    }
+  }
+
+  private async setCounterValue(counterElement: Locator, targetCount: number) {
+    const plusButton = counterElement.locator('[data-testid="increment"], .increment, button[aria-label*="increase"]');
+    const minusButton = counterElement.locator('[data-testid="decrement"], .decrement, button[aria-label*="decrease"]');
+    const currentValueElement = counterElement.locator('[data-testid="count"], .count, input[type="number"]');
+    
+    // Get current value
+    let currentValue = 0;
+    if (await currentValueElement.isVisible()) {
+      const value = await currentValueElement.inputValue();
+      currentValue = parseInt(value) || 0;
+    }
+
+    // Adjust to target count
+    const difference = targetCount - currentValue;
+    
+    if (difference > 0) {
+      // Increase count
+      for (let i = 0; i < difference; i++) {
+        await plusButton.click();
+        await this.page.waitForTimeout(100); // Small delay for UI updates
+      }
+    } else if (difference < 0) {
+      // Decrease count
+      for (let i = 0; i < Math.abs(difference); i++) {
+        await minusButton.click();
+        await this.page.waitForTimeout(100);
+      }
+    }
+  }
+
+  async performSearch(locationName: string, guestConfig?: { adults: number; children?: number; infants?: number }) {
+    // Fill location
+    await this.searchForLocation(locationName);
+    
+    // Set guest count if provided
+    if (guestConfig) {
+      await this.setGuestCount(guestConfig.adults, guestConfig.children, guestConfig.infants);
+    }
+    
+    // Click search button
+    await this.searchButton.click();
+    
+    // Wait for navigation to search results
+    await this.page.waitForURL(/.*\/search.*|.*\/results.*/);
     await this.waitForPageLoad();
   }
 
-  async validateHomePageContent(): Promise<void> {
-    await this.page.waitForLoadState('domcontentloaded');
-    
-    // Wait for and validate the hero section
-    const aiFirstVisible = await this.aiFirstText.isVisible({ timeout: 10000 }).catch(() => false);
-    const heroVisible = await this.heroHeading.isVisible({ timeout: 10000 }).catch(() => false);
-    
-    if (!aiFirstVisible && !heroVisible) {
-      throw new Error('Could not find AI-First heading text in any expected format');
-    }
-
-    // Validate main content areas with flexible checks
-    const contentChecks = [
-      { locator: this.mainVideoSection, name: 'Video section' },
-      { locator: this.servicesSection, name: 'Services section' },
-      { locator: this.industriesSection, name: 'Industries section' }
-    ];
-
-    for (const check of contentChecks) {
-      const isVisible = await check.locator.isVisible({ timeout: 5000 }).catch(() => false);
-      if (!isVisible) {
-        console.warn(`${check.name} not immediately visible, continuing...`);
-      }
-    }
+  async quickSearchMiami() {
+    const miamiData = testData.locations.miami;
+    await this.performSearch(miamiData.searchTerm, testData.guests.couple);
   }
 
-  async validateMainSections() {
-    // Scroll through main sections and validate they're loaded
-    await this.page.evaluate(() => window.scrollTo(0, 500));
-    await expect(this.mainVideoSection).toBeVisible();
-    
-    await this.page.evaluate(() => window.scrollTo(0, 1500));
-    await expect(this.aiPlatformSection).toBeVisible();
-    
-    await this.page.evaluate(() => window.scrollTo(0, 2500));
-    await expect(this.industriesSection).toBeVisible();
-    
-    await this.page.evaluate(() => window.scrollTo(0, 3500));
-    await expect(this.globalPresenceSection).toBeVisible();
+  async quickSearchOrlando() {
+    const orlandoData = testData.locations.orlando;
+    await this.performSearch(orlandoData.searchTerm, testData.guests.family);
   }
 
-  async clickExploreButton() {
-    // Handle potential click interception issues with more robust approach
-    try {
-      // Check if page context is still available
-      if (this.page.isClosed()) {
-        console.log('Page context is closed, skipping explore button interaction');
-        return;
-      }
-      
-      const viewport = this.page.viewportSize();
-      const isMobile = viewport && viewport.width < 768;
-      
-      // Wait for the button to be available
-      await this.exploreButton.waitFor({ state: 'visible', timeout: 10000 });
-      
-      // Try direct click first with force option for mobile
-      await this.exploreButton.click({ force: !!isMobile, timeout: 10000 });
-    } catch (error) {
-      console.log('Explore button click failed, trying alternative approach:', error.message);
-      
-      try {
-        // Check if page is still available before trying fallback
-        if (!this.page.isClosed()) {
-          // Try scrolling to avoid interception and force click
-          await this.page.evaluate(() => window.scrollTo(0, 800));
-          await this.page.waitForTimeout(1000);
-          await this.exploreButton.click({ force: true, timeout: 5000 });
-        } else {
-          console.log('Page context unavailable for explore button fallback, skipping');
-        }
-      } catch (fallbackError) {
-        console.log(`Explore button fallback also failed:`, fallbackError.message);
-        // Don't throw error, just log and continue
-      }
+  // Validation methods
+  async validateHomepageElements() {
+    await this.expectElementVisible(this.searchLocationInput);
+    await this.expectElementVisible(this.searchButton);
+    await this.expectElementVisible(this.heroSection);
+  }
+
+  async validateSearchFormFunctionality() {
+    // Test location autocomplete
+    await this.searchLocationInput.fill('Mia');
+    await this.expectElementVisible(this.locationSuggestions);
+    
+    // Test date picker
+    await this.datePicker.click();
+    // Additional calendar validation would go here
+    
+    // Test guest selector
+    if (await this.guestSelector.isVisible()) {
+      await this.guestSelector.click();
+      await this.expectElementVisible(this.adultsCounter);
     }
-  }
-
-  async navigateToServicesByScroll() {
-    await this.page.evaluate(() => window.scrollTo(0, 2000));
-    await this.servicesSection.waitFor();
-  }
-
-  async clickQuickNavItem(itemName: string) {
-    try {
-      // Check if page context is still available
-      if (this.page.isClosed()) {
-        console.log('Page context is closed, skipping quick nav interaction');
-        return;
-      }
-      
-      const navItem = this.quickNavigation.getByRole('link', { name: itemName });
-      await navItem.scrollIntoViewIfNeeded();
-      await navItem.click({ timeout: 10000 });
-    } catch (error) {
-      console.log(`Quick nav item "${itemName}" click failed:`, error.message);
-      
-      try {
-        // Check if page is still available before trying fallback
-        if (!this.page.isClosed() && await this.quickNavigation.count() > 0) {
-          // Try with force click as fallback
-          await this.quickNavigation.getByRole('link', { name: itemName }).click({ force: true, timeout: 5000 });
-        } else {
-          console.log('Page context unavailable for fallback click, skipping');
-        }
-      } catch (fallbackError) {
-        console.log(`Quick nav fallback also failed:`, fallbackError.message);
-        // Don't throw error, just log and continue
-      }
-    }
-  }
-
-  async validateNewsSection() {
-    await this.page.evaluate(() => window.scrollTo(0, 4000));
-    await expect(this.newsSection).toBeVisible();
-    
-    // Validate news items are present with fallback approaches
-    const newsSelectors = [
-      this.page.locator('[ref*="e10"]').filter({ hasText: '2025' }).first(),
-      this.page.locator('[ref*="e10"]').filter({ hasText: '2024' }).first(),
-      this.page.locator('text*=News').first(),
-      this.page.locator('[class*="news"]').first(),
-      this.page.locator('text*=Update').first()
-    ];
-    
-    let newsFound = false;
-    for (const selector of newsSelectors) {
-      if (await selector.isVisible({ timeout: 3000 }).catch(() => false)) {
-        newsFound = true;
-        break;
-      }
-    }
-    
-    if (!newsFound) {
-      console.warn('News section content not found, continuing test...');
-    }
-  }
-
-  async validateResponsiveElements() {
-    // Check if page adapts to different screen sizes
-    await this.page.setViewportSize({ width: 768, height: 1024 });
-    await expect(this.navigation).toBeVisible();
-    
-    await this.page.setViewportSize({ width: 375, height: 667 });
-    await expect(this.navigation).toBeVisible();
-    
-    // Reset to desktop
-    await this.page.setViewportSize({ width: 1920, height: 1080 });
   }
 }
