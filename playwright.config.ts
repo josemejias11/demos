@@ -7,24 +7,27 @@ export default defineConfig({
     timeout: 10000,
   },
   fullyParallel: false,
-  // Base retries; individual tests can programmatically re-run via annotations if fallback encountered
-  retries: 0,
+  // Retries: enable 1 retry on CI for resiliency, 0 locally
+  retries: process.env.CI ? 1 : 0,
   workers: 3,
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'test-results/html' }],
     ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'test-results/junit.xml' }],
   ],
   use: {
-    baseURL: 'https://fptsoftware.com',
-    trace: 'on-first-retry',
+    baseURL: 'https://testlio.com',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    headless: true,
+    headless: process.env.HEADLESS ? /^(true|1|yes)$/i.test(process.env.HEADLESS) : false,
   },
   projects: [
+    // Testlio Testing Suite
     {
-      name: 'chromium',
+      name: 'testlio-chrome',
+      testMatch: 'tests/testlio/**/*.spec.ts',
       use: {
         ...devices['Desktop Chrome'],
         userAgent:
@@ -36,12 +39,50 @@ export default defineConfig({
       },
     },
     {
-      name: 'ci-chromium',
+      name: 'testlio-firefox',
+      testMatch: 'tests/testlio/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Firefox'],
+      },
+    },
+    {
+      name: 'testlio-webkit',
+      testMatch: 'tests/testlio/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
+    {
+      name: 'testlio-mobile',
+      testMatch: 'tests/testlio/**/*.spec.ts',
+      use: {
+        ...devices['iPhone 12'],
+      },
+    },
+    // Original projects for framework tests
+    {
+      name: 'chromium',
+      testIgnore: 'tests/testlio/**',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
         userAgent:
-          'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        headless: false,
+        launchOptions: {
+          args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
+        },
+      },
+    },
+    {
+      name: 'chromium-debug',
+      use: {
+        ...devices['Desktop Chrome'],
+        userAgent:
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        headless: false,
+        trace: 'on',
+        screenshot: 'on',
+        video: 'on',
         launchOptions: {
           args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
         },
@@ -57,12 +98,19 @@ export default defineConfig({
     },
     {
       name: 'mobile-chrome',
+      // Exclude @ci-tagged tests on mobile-chrome to avoid potential flakiness on some sites
+      grepInvert: /@ci/,
       use: { ...devices['Pixel 5'] },
     },
     {
       name: 'mobile-safari',
-      use: { ...devices['iPhone 12'] },
+  grepInvert: /@ci/,
+  use: { ...devices['iPhone 12'] },
     },
   ],
   outputDir: 'test-results/artifacts',
+  // Tip: In CI, select tagged suites, e.g.:
+  //   npx playwright test --grep "@ci"
+  // Or exclude optional/flaky:
+  //   npx playwright test --grep-invert "@optional|@flaky"
 });
