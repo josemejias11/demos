@@ -1,0 +1,939 @@
+{
+  "config": {
+    "configFile": "/Users/josemejias/VSCodeProject/demos/playwright.config.ts",
+    "rootDir": "/Users/josemejias/VSCodeProject/demos/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "test-results/html"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/josemejias/VSCodeProject/demos/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/josemejias/VSCodeProject/demos/tests",
+        "testIgnore": [
+          "**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/josemejias/VSCodeProject/demos/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/josemejias/VSCodeProject/demos/tests",
+        "testIgnore": [
+          "**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/josemejias/VSCodeProject/demos/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/josemejias/VSCodeProject/demos/tests",
+        "testIgnore": [
+          "**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/josemejias/VSCodeProject/demos/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "/Users/josemejias/VSCodeProject/demos/tests",
+        "testIgnore": [
+          "**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/josemejias/VSCodeProject/demos/test-results/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "/Users/josemejias/VSCodeProject/demos/tests",
+        "testIgnore": [
+          "**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "3way",
+    "version": "1.55.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "experian/specs/quick-nav-test.spec.ts",
+      "file": "experian/specs/quick-nav-test.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Quick navigation validation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9287,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Testing navigation buttons:\n"
+                    },
+                    {
+                      "text": "Credit button visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "Protection button visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "Money button visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "Credit Cards button visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "Loans button visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "Insurance button visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "All navigation buttons validated successfully! ✅\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-09-11T21:20:15.144Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f7988d0c4e9cf15e390-0c28a08ee3ec18ed9dc4",
+          "file": "experian/specs/quick-nav-test.spec.ts",
+          "line": 4,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "experian/specs/seo.spec.ts",
+      "file": "experian/specs/seo.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Experian SEO and Accessibility @seo @accessibility",
+          "file": "experian/specs/seo.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-039: Essential meta tags and SEO elements",
+              "ok": true,
+              "tags": [
+                "seo",
+                "accessibility"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4388,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:20:24.702Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dfd2c986e1c2b1ded395-5f164f3626ac27712633",
+              "file": "experian/specs/seo.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "TC-040: Structured data and schema markup",
+              "ok": true,
+              "tags": [
+                "seo",
+                "accessibility"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3892,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "No structured data (JSON-LD or microdata) found on this page\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:20:29.101Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dfd2c986e1c2b1ded395-ff53a7b5364e5c893540",
+              "file": "experian/specs/seo.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "TC-041: Accessibility compliance and ARIA",
+              "ok": true,
+              "tags": [
+                "seo",
+                "accessibility"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4852,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:20:33.005Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dfd2c986e1c2b1ded395-a5352f2b492f22e1c565",
+              "file": "experian/specs/seo.spec.ts",
+              "line": 63,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Experian Performance and Technical SEO @seo @performance",
+          "file": "experian/specs/seo.spec.ts",
+          "line": 112,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-042: Page load performance metrics",
+              "ok": true,
+              "tags": [
+                "seo",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3973,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "performanceMetrics {\n  domContentLoaded: \u001b[33m5.899999998509884\u001b[39m,\n  loadComplete: \u001b[33m24.199999999254942\u001b[39m,\n  firstContentfulPaint: \u001b[33m1628\u001b[39m\n}\n"
+                        },
+                        {
+                          "text": "PERF CHECK (informational): firstContentfulPaint= \u001b[33m1628\u001b[39m\n"
+                        },
+                        {
+                          "text": "Captured console messages: [\n  \u001b[32m\"[console:error] Access to XMLHttpRequest at 'https://usa.experian.com/api/clickstream/sessionStart' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.\"\u001b[39m,\n  \u001b[32m'[console:error] Failed to load resource: net::ERR_FAILED'\u001b[39m,\n  \u001b[32m\"[console:error] Access to XMLHttpRequest at 'https://usa.experian.com/api/clickstream/sessionStart' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.\"\u001b[39m,\n  \u001b[32m'[console:error] Failed to load resource: net::ERR_FAILED'\u001b[39m,\n  \u001b[32m'[console:error] Attestation check for Attribution Reporting on https://measurement-api.criteo.com failed.'\u001b[39m,\n  \u001b[32m\"[console:error] Access to XMLHttpRequest at 'https://usa.experian.com/api/clickstream/sessionStart' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.\"\u001b[39m,\n  \u001b[32m'[console:error] Failed to load resource: net::ERR_FAILED'\u001b[39m,\n  \u001b[32m\"[console:error] Access to fetch at 'https://usa.experian.com/api/clickstream/uilog' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.\"\u001b[39m,\n  \u001b[32m'[console:error] Failed to load resource: net::ERR_FAILED'\u001b[39m,\n  \u001b[32m'[console:error] Failed to load resource: net::ERR_CONNECTION_CLOSED'\u001b[39m,\n  \u001b[32m'[console:error] Failed to load resource: net::ERR_CONNECTION_CLOSED'\u001b[39m,\n  \u001b[32m'[console:error] Failed to load resource: net::ERR_NAME_NOT_RESOLVED'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "Captured network snippets: [\n  \u001b[32m'REQ GET https://www.experian.com/'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/els-a-Rebele-Macd-What-I-worne-Did-Lampions-I-fe'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/els-a-Rebele-Macd-What-I-worne-Did-Lampions-I-fe'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/analytics/at.js'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/fonts/roboto-400.woff2'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/fonts/roboto-500.woff2'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/fonts/roboto-700.woff2'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/fonts/atlas-icon.woff2?6s1s0l'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/logos/logo-experian.svg'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/icons/icon-piggy-bank.svg'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/icons/icon-credit-score.svg'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/icons/icon-no-ding-bell.svg'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/icons/icon-car.svg'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/shared/icons/icon-experian-smart-money.svg'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/analytics/opAppend.js'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/analytics/analytics-framework.js?x=234'\u001b[39m,\n  \u001b[32m'REQ GET https://tms.experian.com/experianus/expcom/Bootstrap.js'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/exp/webpack-runtime-be3e719ff000ad875f53.js'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/exp/framework-6ce28f6bb3b69f92360c.js'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/exp/app-7a124f00188c88b08081.js'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=751573045'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/fonts/roboto-400.woff2'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/fonts/roboto-500.woff2'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/fonts/atlas-icon.woff2?6s1s0l'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/analytics/at.js'\u001b[39m,\n  \u001b[32m'REQ GET https://dpm.demdex.net/id?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/fonts/roboto-700.woff2'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/logos/logo-experian.svg'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/exp/static/44c9cf228d0911ddc82c871a9e87f597/8381e/graphic-eligible-subscriptions-combo.webp'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/exp/static/dc2a21f3b9f825b72e5fcef22e931a3a/bc7a1/graphic-celebrate-cancelations.webp'\u001b[39m,\n  \u001b[32m'REQ GET https://www.experian.com/static/exp/static/2c7358d4b0cd8d830fb3135233ecbea4/d2e78/graphic-bff-sam-sitting-with-phone.webp'\u001b[39m,\n  \u001b[32m'RES 200 https://tms.experian.com/experianus/expcom/Bootstrap.js'\u001b[39m,\n  \u001b[32m'RES 302 https://dpm.demdex.net/id?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'\u001b[39m,\n  \u001b[32m'REQ GET https://dpm.demdex.net/id/rd?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/icons/icon-no-ding-bell.svg'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/icons/icon-credit-score.svg'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/icons/icon-piggy-bank.svg'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/icons/icon-car.svg'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/shared/icons/icon-experian-smart-money.svg'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/analytics/opAppend.js'\u001b[39m,\n  \u001b[32m'RES 200 https://dpm.demdex.net/id/rd?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'\u001b[39m,\n  \u001b[32m'REQ GET https://ecs.demdex.net/dest5.html?d_nsid=0'\u001b[39m,\n  \u001b[32m'REQ GET https://smetrics1.experian.com/id?d_visid_ver=5.5.0&d_fieldgroup=A&mcorgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&mid=77706559057793842294099721055142928633&ts=1757625639711'\u001b[39m,\n  \u001b[32m'REQ GET https://cm.everesttech.net/cm/dd?d_uuid=77463328417161079714085688835257718175'\u001b[39m,\n  \u001b[32m'REQ POST https://consumerinfo.tt.omtrdc.net/rest/v1/delivery?client=consumerinfo&sessionId=04d9c8ae591e45d3b0dffa40cb23027e&version=2.3.3'\u001b[39m,\n  \u001b[32m'REQ POST https://consumerinfo.tt.omtrdc.net/rest/v1/delivery?client=consumerinfo&sessionId=04d9c8ae591e45d3b0dffa40cb23027e&version=2.3.3'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/exp/static/44c9cf228d0911ddc82c871a9e87f597/8381e/graphic-eligible-subscriptions-combo.webp'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/exp/framework-6ce28f6bb3b69f92360c.js'\u001b[39m,\n  \u001b[32m'RES 200 https://www.experian.com/static/analytics/analytics-framework.js?x=234'\u001b[39m\n]\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:20:37.864Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dfd2c986e1c2b1ded395-7490ca35f63b25118d75",
+              "file": "experian/specs/seo.spec.ts",
+              "line": 119,
+              "column": 7
+            },
+            {
+              "title": "TC-043: Resource optimization and caching",
+              "ok": true,
+              "tags": [
+                "seo",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5913,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:20:41.843Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dfd2c986e1c2b1ded395-910258a0d71b1e20912d",
+              "file": "experian/specs/seo.spec.ts",
+              "line": 163,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "experian/specs/site-validation.spec.ts",
+      "file": "experian/specs/site-validation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Experian Live Site Validation",
+          "file": "experian/specs/site-validation.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-004: Primary CTA validation against real site",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10654,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "CTA Text: \"Let’s get started\"\n"
+                        },
+                        {
+                          "text": "Current URL after CTA click: https://usa.experian.com/registration/getStarted?br=exp&offer=at_frsas119&authType=102&refUrl=%2Fmfe%2Fcredit%2Fcredithub%2Fexperian&dAuth=true&op=FRSP-HMP-PRI-119-TA1-HMPFCRS-A9-EXP-VMAC-UNK-XXXXXX-XXXXXX-XXXXX&_gl=1*dbvex6*_gcl_au*MTc5NzI0OTEwMS4xNzU3NjI1NjUx*_ga*MzA1NjMyNDAyLjE3NTc2MjU2NTE.*_ga_22YNWJN8Z2*czE3NTc2MjU2NTEkbzEkZzEkdDE3NTc2MjU2NTEkajYwJGwwJGgw*_ga_7EN8BHB8L8*czE3NTc2MjU2NTEkbzEkZzEkdDE3NTc2MjU2NTEkajYwJGwwJGgw\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Wait for page to load completely",
+                          "duration": 3032
+                        },
+                        {
+                          "title": "Verify Primary CTA is visible and clickable",
+                          "duration": 17
+                        },
+                        {
+                          "title": "Test CTA interaction",
+                          "duration": 3333
+                        }
+                      ],
+                      "startTime": "2025-09-11T21:20:47.771Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c4928d47aa8be5f3c17a-58133ea6234d3803535c",
+              "file": "experian/specs/site-validation.spec.ts",
+              "line": 5,
+              "column": 7
+            },
+            {
+              "title": "Navigation structure validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5467,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Validate main navigation buttons",
+                          "duration": 24
+                        },
+                        {
+                          "title": "Test Credit dropdown functionality",
+                          "duration": 1110
+                        }
+                      ],
+                      "startTime": "2025-09-11T21:20:58.434Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c4928d47aa8be5f3c17a-dc74b9069a5b938c6290",
+              "file": "experian/specs/site-validation.spec.ts",
+              "line": 45,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "experian/specs/smoke.spec.ts",
+      "file": "experian/specs/smoke.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Experian Smoke Tests @smoke",
+          "file": "experian/specs/smoke.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-001: Home page loads successfully",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3973,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:03.913Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-668c91470de910e496e6",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "TC-002: Navigation menu is functional",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4668,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:07.896Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-2f85d0bc5925224de9c5",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 26,
+              "column": 7
+            },
+            {
+              "title": "TC-003: Footer links are accessible",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4028,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:12.571Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-2d9b601a4d0f7716b12e",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "TC-004: Primary CTA \"Get Started\" is clickable",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4893,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:16.605Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-6a67b685dc8eb1c6f350",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 50,
+              "column": 7
+            },
+            {
+              "title": "TC-005: Search functionality basic test",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4147,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Search functionality not found on homepage\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:21.503Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-8de301425a1b1afb98df",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 64,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Experian Navigation Tests @smoke",
+          "file": "experian/specs/smoke.spec.ts",
+          "line": 87,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-007: Sign up link navigation",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4403,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Sign up button not found on homepage\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:25.661Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-ffccb4bf9e0edcee490a",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 98,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Experian Finance Features Visibility @smoke @finance",
+          "file": "experian/specs/smoke.spec.ts",
+          "line": 125,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-008: Credit score section is visible",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "finance"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4146,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:30.073Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-ca4d2bfe05bd4f24a114",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 133,
+              "column": 7
+            },
+            {
+              "title": "TC-009: Security features are highlighted",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "finance"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4088,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:34.224Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-a067e4b1bc5093d7eb72",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 147,
+              "column": 7
+            },
+            {
+              "title": "TC-010: Products section is accessible",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "finance"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3860,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Products section not found on homepage\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T21:21:38.318Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5aed1be8824ea2cf79-1c0f79eb1cf92cb8de19",
+              "file": "experian/specs/smoke.spec.ts",
+              "line": 160,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-11T21:20:14.725Z",
+    "duration": 87468.8,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

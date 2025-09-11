@@ -1,0 +1,151 @@
+<testsuites id="" name="" tests="17" failures="0" skipped="0" errors="0" time="87.4688">
+<testsuite name="experian/specs/quick-nav-test.spec.ts" timestamp="2025-09-11T21:20:14.943Z" hostname="chromium" tests="1" failures="0" skipped="0" time="9.287" errors="0">
+<testcase name="Quick navigation validation" classname="experian/specs/quick-nav-test.spec.ts" time="9.287">
+<system-out>
+<![CDATA[Testing navigation buttons:
+Credit button visible: [33mtrue[39m
+Protection button visible: [33mtrue[39m
+Money button visible: [33mtrue[39m
+Credit Cards button visible: [33mtrue[39m
+Loans button visible: [33mtrue[39m
+Insurance button visible: [33mtrue[39m
+All navigation buttons validated successfully! ✅
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="experian/specs/seo.spec.ts" timestamp="2025-09-11T21:20:14.943Z" hostname="chromium" tests="5" failures="0" skipped="0" time="23.018" errors="0">
+<testcase name="Experian SEO and Accessibility @seo @accessibility › TC-039: Essential meta tags and SEO elements" classname="experian/specs/seo.spec.ts" time="4.388">
+</testcase>
+<testcase name="Experian SEO and Accessibility @seo @accessibility › TC-040: Structured data and schema markup" classname="experian/specs/seo.spec.ts" time="3.892">
+<system-out>
+<![CDATA[No structured data (JSON-LD or microdata) found on this page
+]]>
+</system-out>
+</testcase>
+<testcase name="Experian SEO and Accessibility @seo @accessibility › TC-041: Accessibility compliance and ARIA" classname="experian/specs/seo.spec.ts" time="4.852">
+</testcase>
+<testcase name="Experian Performance and Technical SEO @seo @performance › TC-042: Page load performance metrics" classname="experian/specs/seo.spec.ts" time="3.973">
+<system-out>
+<![CDATA[performanceMetrics {
+  domContentLoaded: [33m5.899999998509884[39m,
+  loadComplete: [33m24.199999999254942[39m,
+  firstContentfulPaint: [33m1628[39m
+}
+PERF CHECK (informational): firstContentfulPaint= [33m1628[39m
+Captured console messages: [
+  [32m"[console:error] Access to XMLHttpRequest at 'https://usa.experian.com/api/clickstream/sessionStart' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource."[39m,
+  [32m'[console:error] Failed to load resource: net::ERR_FAILED'[39m,
+  [32m"[console:error] Access to XMLHttpRequest at 'https://usa.experian.com/api/clickstream/sessionStart' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource."[39m,
+  [32m'[console:error] Failed to load resource: net::ERR_FAILED'[39m,
+  [32m'[console:error] Attestation check for Attribution Reporting on https://measurement-api.criteo.com failed.'[39m,
+  [32m"[console:error] Access to XMLHttpRequest at 'https://usa.experian.com/api/clickstream/sessionStart' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource."[39m,
+  [32m'[console:error] Failed to load resource: net::ERR_FAILED'[39m,
+  [32m"[console:error] Access to fetch at 'https://usa.experian.com/api/clickstream/uilog' from origin 'https://www.experian.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource."[39m,
+  [32m'[console:error] Failed to load resource: net::ERR_FAILED'[39m,
+  [32m'[console:error] Failed to load resource: net::ERR_CONNECTION_CLOSED'[39m,
+  [32m'[console:error] Failed to load resource: net::ERR_CONNECTION_CLOSED'[39m,
+  [32m'[console:error] Failed to load resource: net::ERR_NAME_NOT_RESOLVED'[39m
+]
+Captured network snippets: [
+  [32m'REQ GET https://www.experian.com/'[39m,
+  [32m'RES 200 https://www.experian.com/'[39m,
+  [32m'REQ GET https://www.experian.com/els-a-Rebele-Macd-What-I-worne-Did-Lampions-I-fe'[39m,
+  [32m'RES 200 https://www.experian.com/els-a-Rebele-Macd-What-I-worne-Did-Lampions-I-fe'[39m,
+  [32m'REQ GET https://www.experian.com/static/analytics/at.js'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/fonts/roboto-400.woff2'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/fonts/roboto-500.woff2'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/fonts/roboto-700.woff2'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/fonts/atlas-icon.woff2?6s1s0l'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/logos/logo-experian.svg'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/icons/icon-piggy-bank.svg'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/icons/icon-credit-score.svg'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/icons/icon-no-ding-bell.svg'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/icons/icon-car.svg'[39m,
+  [32m'REQ GET https://www.experian.com/static/shared/icons/icon-experian-smart-money.svg'[39m,
+  [32m'REQ GET https://www.experian.com/static/analytics/opAppend.js'[39m,
+  [32m'REQ GET https://www.experian.com/static/analytics/analytics-framework.js?x=234'[39m,
+  [32m'REQ GET https://tms.experian.com/experianus/expcom/Bootstrap.js'[39m,
+  [32m'REQ GET https://www.experian.com/static/exp/webpack-runtime-be3e719ff000ad875f53.js'[39m,
+  [32m'REQ GET https://www.experian.com/static/exp/framework-6ce28f6bb3b69f92360c.js'[39m,
+  [32m'REQ GET https://www.experian.com/static/exp/app-7a124f00188c88b08081.js'[39m,
+  [32m'REQ GET https://www.experian.com/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=751573045'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/fonts/roboto-400.woff2'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/fonts/roboto-500.woff2'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/fonts/atlas-icon.woff2?6s1s0l'[39m,
+  [32m'RES 200 https://www.experian.com/static/analytics/at.js'[39m,
+  [32m'REQ GET https://dpm.demdex.net/id?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/fonts/roboto-700.woff2'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/logos/logo-experian.svg'[39m,
+  [32m'REQ GET https://www.experian.com/static/exp/static/44c9cf228d0911ddc82c871a9e87f597/8381e/graphic-eligible-subscriptions-combo.webp'[39m,
+  [32m'REQ GET https://www.experian.com/static/exp/static/dc2a21f3b9f825b72e5fcef22e931a3a/bc7a1/graphic-celebrate-cancelations.webp'[39m,
+  [32m'REQ GET https://www.experian.com/static/exp/static/2c7358d4b0cd8d830fb3135233ecbea4/d2e78/graphic-bff-sam-sitting-with-phone.webp'[39m,
+  [32m'RES 200 https://tms.experian.com/experianus/expcom/Bootstrap.js'[39m,
+  [32m'RES 302 https://dpm.demdex.net/id?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'[39m,
+  [32m'REQ GET https://dpm.demdex.net/id/rd?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/icons/icon-no-ding-bell.svg'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/icons/icon-credit-score.svg'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/icons/icon-piggy-bank.svg'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/icons/icon-car.svg'[39m,
+  [32m'RES 200 https://www.experian.com/static/shared/icons/icon-experian-smart-money.svg'[39m,
+  [32m'RES 200 https://www.experian.com/static/analytics/opAppend.js'[39m,
+  [32m'RES 200 https://dpm.demdex.net/id/rd?d_visid_ver=5.5.0&d_fieldgroup=MC&d_rtbd=json&d_ver=2&d_verify=1&d_orgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&d_nsid=0&ts=1757625639374'[39m,
+  [32m'REQ GET https://ecs.demdex.net/dest5.html?d_nsid=0'[39m,
+  [32m'REQ GET https://smetrics1.experian.com/id?d_visid_ver=5.5.0&d_fieldgroup=A&mcorgid=A9103BC75245B0CD0A490D4D%40AdobeOrg&mid=77706559057793842294099721055142928633&ts=1757625639711'[39m,
+  [32m'REQ GET https://cm.everesttech.net/cm/dd?d_uuid=77463328417161079714085688835257718175'[39m,
+  [32m'REQ POST https://consumerinfo.tt.omtrdc.net/rest/v1/delivery?client=consumerinfo&sessionId=04d9c8ae591e45d3b0dffa40cb23027e&version=2.3.3'[39m,
+  [32m'REQ POST https://consumerinfo.tt.omtrdc.net/rest/v1/delivery?client=consumerinfo&sessionId=04d9c8ae591e45d3b0dffa40cb23027e&version=2.3.3'[39m,
+  [32m'RES 200 https://www.experian.com/static/exp/static/44c9cf228d0911ddc82c871a9e87f597/8381e/graphic-eligible-subscriptions-combo.webp'[39m,
+  [32m'RES 200 https://www.experian.com/static/exp/framework-6ce28f6bb3b69f92360c.js'[39m,
+  [32m'RES 200 https://www.experian.com/static/analytics/analytics-framework.js?x=234'[39m
+]
+]]>
+</system-out>
+</testcase>
+<testcase name="Experian Performance and Technical SEO @seo @performance › TC-043: Resource optimization and caching" classname="experian/specs/seo.spec.ts" time="5.913">
+</testcase>
+</testsuite>
+<testsuite name="experian/specs/site-validation.spec.ts" timestamp="2025-09-11T21:20:14.943Z" hostname="chromium" tests="2" failures="0" skipped="0" time="16.121" errors="0">
+<testcase name="Experian Live Site Validation › TC-004: Primary CTA validation against real site" classname="experian/specs/site-validation.spec.ts" time="10.654">
+<system-out>
+<![CDATA[CTA Text: "Let’s get started"
+Current URL after CTA click: https://usa.experian.com/registration/getStarted?br=exp&offer=at_frsas119&authType=102&refUrl=%2Fmfe%2Fcredit%2Fcredithub%2Fexperian&dAuth=true&op=FRSP-HMP-PRI-119-TA1-HMPFCRS-A9-EXP-VMAC-UNK-XXXXXX-XXXXXX-XXXXX&_gl=1*dbvex6*_gcl_au*MTc5NzI0OTEwMS4xNzU3NjI1NjUx*_ga*MzA1NjMyNDAyLjE3NTc2MjU2NTE.*_ga_22YNWJN8Z2*czE3NTc2MjU2NTEkbzEkZzEkdDE3NTc2MjU2NTEkajYwJGwwJGgw*_ga_7EN8BHB8L8*czE3NTc2MjU2NTEkbzEkZzEkdDE3NTc2MjU2NTEkajYwJGwwJGgw
+]]>
+</system-out>
+</testcase>
+<testcase name="Experian Live Site Validation › Navigation structure validation" classname="experian/specs/site-validation.spec.ts" time="5.467">
+</testcase>
+</testsuite>
+<testsuite name="experian/specs/smoke.spec.ts" timestamp="2025-09-11T21:20:14.943Z" hostname="chromium" tests="9" failures="0" skipped="0" time="38.206" errors="0">
+<testcase name="Experian Smoke Tests @smoke › TC-001: Home page loads successfully" classname="experian/specs/smoke.spec.ts" time="3.973">
+</testcase>
+<testcase name="Experian Smoke Tests @smoke › TC-002: Navigation menu is functional" classname="experian/specs/smoke.spec.ts" time="4.668">
+</testcase>
+<testcase name="Experian Smoke Tests @smoke › TC-003: Footer links are accessible" classname="experian/specs/smoke.spec.ts" time="4.028">
+</testcase>
+<testcase name="Experian Smoke Tests @smoke › TC-004: Primary CTA &quot;Get Started&quot; is clickable" classname="experian/specs/smoke.spec.ts" time="4.893">
+</testcase>
+<testcase name="Experian Smoke Tests @smoke › TC-005: Search functionality basic test" classname="experian/specs/smoke.spec.ts" time="4.147">
+<system-out>
+<![CDATA[Search functionality not found on homepage
+]]>
+</system-out>
+</testcase>
+<testcase name="Experian Navigation Tests @smoke › TC-007: Sign up link navigation" classname="experian/specs/smoke.spec.ts" time="4.403">
+<system-out>
+<![CDATA[Sign up button not found on homepage
+]]>
+</system-out>
+</testcase>
+<testcase name="Experian Finance Features Visibility @smoke @finance › TC-008: Credit score section is visible" classname="experian/specs/smoke.spec.ts" time="4.146">
+</testcase>
+<testcase name="Experian Finance Features Visibility @smoke @finance › TC-009: Security features are highlighted" classname="experian/specs/smoke.spec.ts" time="4.088">
+</testcase>
+<testcase name="Experian Finance Features Visibility @smoke @finance › TC-010: Products section is accessible" classname="experian/specs/smoke.spec.ts" time="3.86">
+<system-out>
+<![CDATA[Products section not found on homepage
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
