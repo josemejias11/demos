@@ -9,15 +9,15 @@ export class HomePage extends BasePage {
 
   // Search form elements
   get searchLocationInput() {
-    return this.page.locator('button:has-text("Where to?"), input[placeholder*="location"], combobox[aria-label*="Where"]');
+    return this.page.getByRole('button', { name: 'Where to?' });
   }
 
   get searchButton() {
-    return this.page.getByRole('button', { name: /search/i });
+    return this.page.locator('#search-bar').getByRole('button', { name: /search/i });
   }
 
   get locationSuggestions() {
-    return this.page.locator('[role="listbox"], .autocomplete-results, .suggestions');
+    return this.page.locator('button:has-text("Miami"), button:has-text("Orlando"), button:has-text("Phoenix")');
   }
 
   get datePicker() {
@@ -90,18 +90,19 @@ export class HomePage extends BasePage {
 
   // Actions
   async searchForLocation(location: string) {
-    await this.searchLocationInput.fill(location);
+    // Click the "Where to?" button to open location dropdown
+    await this.searchLocationInput.click();
     
-    // Wait for and select from autocomplete suggestions
-    await this.locationSuggestions.waitFor({ state: 'visible' });
+    // Wait for location suggestions to appear
+    await this.page.waitForTimeout(1000);
     
-    // Click on the first suggestion that matches our location
-    const suggestion = this.locationSuggestions.locator(`text="${location}"`).first();
-    if (await suggestion.isVisible()) {
-      await suggestion.click();
+    // Look for a button that contains the location name
+    const locationButton = this.page.locator(`button:has-text("${location}")`).first();
+    if (await locationButton.isVisible()) {
+      await locationButton.click();
     } else {
-      // If no exact match, click the first suggestion
-      await this.locationSuggestions.locator('li, [role="option"]').first().click();
+      // If no exact match, click the first suggestion (Miami, Orlando, etc.)
+      await this.locationSuggestions.first().click();
     }
   }
 
@@ -162,9 +163,15 @@ export class HomePage extends BasePage {
   }
 
   private async setCounterValue(counterElement: Locator, targetCount: number) {
-    const plusButton = counterElement.locator('[data-testid="increment"], .increment, button[aria-label*="increase"]');
-    const minusButton = counterElement.locator('[data-testid="decrement"], .decrement, button[aria-label*="decrease"]');
-    const currentValueElement = counterElement.locator('[data-testid="count"], .count, input[type="number"]');
+    // Ensure the counter is visible and ready for interaction
+    await this.waitForElement(counterElement);
+    
+    const plusButton = counterElement.locator('[data-testid="increment"], .increment, button[aria-label*="increase"]').first();
+    const minusButton = counterElement.locator('[data-testid="decrement"], .decrement, button[aria-label*="decrease"]').first();
+    const currentValueElement = counterElement.locator('[data-testid="count"], .count, input[type="number"]').first();
+    
+    // Wait for buttons to be actionable
+    await this.waitForElement(plusButton);
     
     // Get current value
     let currentValue = 0;
@@ -226,8 +233,9 @@ export class HomePage extends BasePage {
   }
 
   async validateSearchFormFunctionality() {
-    // Test location autocomplete
-    await this.searchLocationInput.fill('Mia');
+    // Test location autocomplete - click to open dropdown instead of fill
+    await this.searchLocationInput.click();
+    await this.page.waitForTimeout(1000); // Wait for suggestions to load
     await this.expectElementVisible(this.locationSuggestions);
     
     // Test date picker

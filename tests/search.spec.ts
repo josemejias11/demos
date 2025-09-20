@@ -23,7 +23,8 @@ test.describe('ResortPass Search Functionality', () => {
     });
 
     test('should show location autocomplete suggestions', async ({ page }) => {
-      await homePage.searchLocationInput.fill('Mia');
+      await homePage.searchLocationInput.click();
+      await page.waitForTimeout(1000); // Wait for suggestions to appear
       await homePage.expectElementVisible(homePage.locationSuggestions);
       
       // Verify suggestions contain Miami

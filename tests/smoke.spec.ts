@@ -4,68 +4,49 @@ test.describe('ResortPass Smoke Tests', () => {
   test('should load homepage successfully @smoke', async ({ page }) => {
     await page.goto('/');
     
-    // Wait for page to load
-    await page.waitForLoadState('networkidle');
+    // Wait for page to load - use domcontentloaded instead of networkidle for faster, more reliable tests
+    await page.waitForLoadState('domcontentloaded');
     
     // Check basic page elements
     await expect(page).toHaveTitle(/ResortPass/);
     
-    // Check for search button
-    const searchButton = page.getByRole('button', { name: /search/i });
+    // Check for search button (use .first() to avoid strict mode violation)
+    const searchButton = page.getByRole('button', { name: /search/i }).first();
     await expect(searchButton).toBeVisible({ timeout: 10000 });
     
-    // Check for logo
-    const logo = page.locator('img[alt*="ResortPass"]').first();
+    // Check for logo - updated selector based on investigation
+    const logo = page.getByRole('link', { name: 'Resortpass logo' });
     await expect(logo).toBeVisible({ timeout: 10000 });
   });
 
   test('should display search form elements @smoke', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     
-    // Dismiss cookie banner if present
-    const cookieBanner = page.locator('[aria-label*="cookie"], .cookie-banner');
-    if (await cookieBanner.isVisible()) {
-      const acceptButton = cookieBanner.getByRole('button', { name: 'Accept All Cookies' });
-      if (await acceptButton.isVisible()) {
-        await acceptButton.click();
-        await cookieBanner.waitFor({ state: 'hidden' });
-      }
-    }
+    // Check for location search element - use role-based selector
+    const locationSearch = page.getByRole('button', { name: 'Where to?' });
+    await expect(locationSearch).toBeVisible({ timeout: 10000 });
     
-    // Check for location search element (button or input)
-    const locationSearch = page.locator('button:has-text("Where to?"), input[placeholder*="location"], combobox');
-    await expect(locationSearch.first()).toBeVisible({ timeout: 10000 });
-    
-    // Check for search button
-    const searchButton = page.getByRole('button', { name: /search/i });
+    // Check for search button (use .first() to avoid strict mode violation)
+    const searchButton = page.getByRole('button', { name: /search/i }).first();
     await expect(searchButton).toBeVisible({ timeout: 10000 });
   });
 
   test('should click on location search element @smoke', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    
-    // Dismiss cookie banner
-    const cookieBanner = page.locator('[aria-label*="cookie"], .cookie-banner');
-    if (await cookieBanner.isVisible()) {
-      const acceptButton = cookieBanner.getByRole('button', { name: 'Accept All Cookies' });
-      if (await acceptButton.isVisible()) {
-        await acceptButton.click();
-        await cookieBanner.waitFor({ state: 'hidden' });
-      }
-    }
+    await page.waitForLoadState('domcontentloaded');
     
     // Click on location search
-    const locationButton = page.locator('button:has-text("Where to?")');
+    const locationButton = page.getByRole('button', { name: 'Where to?' });
     if (await locationButton.isVisible()) {
       await locationButton.click();
       
       // Check if a modal or dropdown appears
       await page.waitForTimeout(1000);
       
-      // Take a screenshot to see what happens
-      await page.screenshot({ path: 'test-results/location-click.png' });
+      // Look for location suggestions
+      const locationSuggestions = page.locator('button:has-text("Miami"), button:has-text("Orlando"), button:has-text("Phoenix")');
+      await expect(locationSuggestions.first()).toBeVisible({ timeout: 5000 });
     }
   });
 });
