@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  testIgnore: '**/*.test.ts',
   timeout: 60 * 1000,
   expect: {
     timeout: 10000,
@@ -15,54 +16,20 @@ export default defineConfig({
     ['html', { open: 'never', outputFolder: 'test-results/html' }],
     ['json', { outputFile: 'test-results/results.json' }],
     ['junit', { outputFile: 'test-results/junit.xml' }],
+    ['allure-playwright'],
   ],
   use: {
-    baseURL: 'https://testlio.com',
+    baseURL: process.env.BASE_URL || 'https://www.infinite.com',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     headless: process.env.HEADLESS ? /^(true|1|yes)$/i.test(process.env.HEADLESS) : false,
   },
   projects: [
-    // Testlio Testing Suite
-    {
-      name: 'testlio-chrome',
-      testMatch: 'tests/testlio/**/*.spec.ts',
-      use: {
-        ...devices['Desktop Chrome'],
-        userAgent:
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-        headless: false,
-        launchOptions: {
-          args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
-        },
-      },
-    },
-    {
-      name: 'testlio-firefox',
-      testMatch: 'tests/testlio/**/*.spec.ts',
-      use: {
-        ...devices['Desktop Firefox'],
-      },
-    },
-    {
-      name: 'testlio-webkit',
-      testMatch: 'tests/testlio/**/*.spec.ts',
-      use: {
-        ...devices['Desktop Safari'],
-      },
-    },
-    {
-      name: 'testlio-mobile',
-      testMatch: 'tests/testlio/**/*.spec.ts',
-      use: {
-        ...devices['iPhone 12'],
-      },
-    },
+  // ...existing code...
     // Original projects for framework tests
     {
       name: 'chromium',
-      testIgnore: 'tests/testlio/**',
       use: {
         ...devices['Desktop Chrome'],
         userAgent:
