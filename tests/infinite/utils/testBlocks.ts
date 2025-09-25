@@ -1,6 +1,17 @@
 import { Page, expect } from '@playwright/test';
-import { Container } from '../../../automation/core/container';
 import { infiniteSelectors } from '../infinite.config';
+
+// Simple Container replacement
+class Container {
+  private static instance: Container;
+  
+  static getInstance(): Container {
+    if (!Container.instance) {
+      Container.instance = new Container();
+    }
+    return Container.instance;
+  }
+}
 
 /**
  * Global cookie consent handler that works across all pages and new windows

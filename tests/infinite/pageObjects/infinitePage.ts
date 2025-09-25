@@ -1,7 +1,13 @@
 import { expect } from '@playwright/test';
 import { BasePage } from './basePage';
-import { LocatorIntent } from '../../../automation/locators/resolver/intentTypes';
 import { infiniteSelectors, performanceThresholds, siteConfig } from '../infinite.config';
+
+interface LocatorIntent {
+  target: string;
+  strategy?: string;
+  synonyms?: string[];
+  roleHint?: string;
+}
 
 export class InfinitePage extends BasePage {
   

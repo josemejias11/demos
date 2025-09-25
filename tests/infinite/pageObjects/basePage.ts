@@ -1,7 +1,37 @@
 import { Page } from '@playwright/test';
-import { Container } from '../../../automation/core/container';
-import { LocatorIntent } from '../../../automation/locators/resolver/intentTypes';
 import { siteConfig } from '../infinite.config';
+
+// Simple replacements for missing automation framework
+class Container {
+  private static instance: Container;
+  private services = new Map();
+  
+  static getInstance(): Container {
+    if (!Container.instance) {
+      Container.instance = new Container();  
+    }
+    return Container.instance;
+  }
+  
+  get(serviceName: string): any {
+    if (!this.services.has(serviceName)) {
+      // Mock services
+      this.services.set(serviceName, {
+        locate: () => null,
+        collect: () => {},
+        log: () => {}
+      });
+    }
+    return this.services.get(serviceName);
+  }
+}
+
+interface LocatorIntent {
+  target: string;
+  strategy?: string;
+  synonyms?: string[];
+  roleHint?: string;
+}
 
 export class BasePage {
   readonly page: Page;

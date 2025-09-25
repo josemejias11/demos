@@ -1,13 +1,12 @@
-import { SiteConfig } from '../../automation/core/siteAdapter';
-
-export const siteConfig: SiteConfig = {
+// Simplified config without external dependencies
+export const siteConfig = {
   siteName: 'Infinite Computer Solutions',
   baseURL: 'https://www.infinite.com',
   siteType: 'generic',
   headless: process.env.HEADLESS !== 'false',
   flows: [
     'Navigation Verification',
-    'Solutions Dropdown Testing',
+    'Solutions Dropdown Testing', 
     'Content Carousel Validation',
     'Contact Form Submission',
     'Global Offices Verification'

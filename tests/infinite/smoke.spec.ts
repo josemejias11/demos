@@ -1,6 +1,17 @@
 import { test } from '@playwright/test';
-import { Container } from '../../automation/core/container';
 import { InfiniteTestBlocks } from './utils/testBlocks';
+
+// Simple Container replacement  
+class Container {
+  private static instance: Container;
+  
+  static getInstance(): Container {
+    if (!Container.instance) {
+      Container.instance = new Container();
+    }
+    return Container.instance;
+  }
+}
 
 test.describe('Infinite.com Visual Smoke Tests @live', () => {
   let container: Container;
