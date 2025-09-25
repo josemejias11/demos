@@ -21,7 +21,8 @@ class Container {
       this.services.set(serviceName, {
         locate: () => null,
         collect: () => {},
-        log: () => {}
+        log: () => {},
+        recordEvent: () => {} // Added to fix telemetry.recordEvent error
       });
     }
     return this.services.get(serviceName);
