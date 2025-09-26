@@ -15,8 +15,7 @@ export default defineConfig({
     ['list'],
     ['html', { open: 'never', outputFolder: 'test-results/html' }],
     ['json', { outputFile: 'test-results/results.json' }],
-    ['junit', { outputFile: 'test-results/junit.xml' }],
-    ['allure-playwright'],
+    ['junit', { outputFile: 'test-results/junit.xml' }]
   ],
   use: {
     baseURL: process.env.BASE_URL || 'https://svitla.com',
