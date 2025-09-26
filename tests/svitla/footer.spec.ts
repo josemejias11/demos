@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { Container } from '../../automation/core/container';
+import { Container } from './utils/container';
 import { SvitlaTestBlocks } from './utils/testBlocks';
 
 test.describe('Svitla.com Footer Tests @live', () => {

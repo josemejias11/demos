@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { Container } from '../../automation/core/container';
+import { Container } from './utils/container';
 import { SvitlaTestBlocks } from './utils/testBlocks';
 import { siteConfig, performanceThresholds } from './svitla.config';
 
