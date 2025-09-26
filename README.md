@@ -56,6 +56,3 @@ The intent is to demonstrate reliable, runnable examples rather than exhaustive 
 - Resilience: rely on Playwright's auto-wait and targeted explicit waits; cookie overlays and basic modal fallbacks are handled.
 - Mocks: lightweight DI/telemetry stubs are used so the demo runs without the full automation framework.
 - Scope: conservative, deterministic checks suited for local demos and CI smoke runs.
-
-
-If you'd like this converted into a full test plan (test cases, acceptance criteria, CI steps), I can generate that next.
