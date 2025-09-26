@@ -16,9 +16,10 @@ export default defineConfig({
     ['html', { open: 'never', outputFolder: 'test-results/html' }],
     ['json', { outputFile: 'test-results/results.json' }],
     ['junit', { outputFile: 'test-results/junit.xml' }],
+    ['allure-playwright'],
   ],
   use: {
-    baseURL: process.env.BASE_URL || 'https://www.infinite.com',
+    baseURL: process.env.BASE_URL || 'https://svitla.com',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
