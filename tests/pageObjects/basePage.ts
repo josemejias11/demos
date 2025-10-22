@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { siteConfig } from '../site.config';
+import { siteConfig } from '../../site.config';
 
 export class BasePage {
   readonly page: Page;
@@ -13,12 +13,12 @@ export class BasePage {
       timeout: siteConfig.timeouts.navigation
     });
 
-    
+
     // Handle cookie consent if present
     await this.handleCookieConsent();
   }
 
-  
+
   async handleCookieConsent() {
     const cookieSelectors = [
       'button:has-text("Accept")',
@@ -40,7 +40,7 @@ export class BasePage {
 
   async waitForPageLoad() {
     await this.page.waitForLoadState('domcontentloaded');
-    
+
     await this.page.waitForLoadState('networkidle');
   }
 }

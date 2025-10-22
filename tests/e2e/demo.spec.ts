@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { JbsDevPage } from '../pageObjects/JbsDevPage';
 import { setupPageGuards } from '../setup/global.setup';
-import { siteConfig } from '../site.config';
+import { siteConfig } from '../../site.config';
 
 test.describe('jbs.dev Demo Suite', () => {
   test.beforeEach(async ({ page }, testInfo) => {

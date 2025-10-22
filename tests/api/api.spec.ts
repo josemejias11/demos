@@ -1,7 +1,7 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
-import { siteConfig } from '../site.config';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import { siteConfig } from '../../site.config';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 
 /**
  * API Test Suite for jbs.dev
@@ -25,9 +25,9 @@ interface TelemetryEvent {
 }
 
 const emitApiTelemetry = (event: TelemetryEvent) => {
-  const telemetryPath = path.join(process.cwd(), 'discovery-results', 'automation-telemetry.jsonl');
+  const telemetryPath = join(process.cwd(), 'discovery-results', 'automation-telemetry.jsonl');
   try {
-    fs.appendFileSync(telemetryPath, JSON.stringify(event) + '\n');
+    writeFileSync(telemetryPath, JSON.stringify(event) + '\n', { flag: 'a' });
   } catch (error) {
     console.error('Failed to write API telemetry:', error);
   }
