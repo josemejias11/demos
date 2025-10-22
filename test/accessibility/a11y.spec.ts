@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { setupPageGuards } from '../setup/global.setup';
+import { setupPageGuards } from '../../setup/global.setup';
 
 /**
  * Accessibility tests for jbs.dev

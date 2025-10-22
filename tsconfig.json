@@ -19,8 +19,9 @@
     ]
   },
   "include": [
-    "tests/**/*",
-    "*.ts"
+    "test/**/*",
+    "*.ts",
+    "setup"
   ],
   "exclude": [
     "node_modules"
