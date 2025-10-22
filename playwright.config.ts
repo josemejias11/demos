@@ -1,82 +1,43 @@
-import { defineConfig, devices } from '@playwright/test';
+// Site-specific Playwright configuration for jbs.dev
+// To use this config, run: npx playwright test --config=tests/jbs-dev/playwright.config.ts
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
-  testIgnore: '**/*.test.ts',
-  timeout: 60 * 1000,
+  // Run E2E and API tests for this site
+  testDir: './',
+  testMatch: ['**/*.spec.ts'],
+  timeout: 8000,
   expect: {
-    timeout: 10000,
+    timeout: 3000,
   },
   fullyParallel: false,
-  // Retries: enable 1 retry on CI for resiliency, 0 locally
-  retries: process.env.CI ? 1 : 0,
-  workers: 3,
+  retries: 1,
+  workers: 2,
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'test-results/html' }],
     ['json', { outputFile: 'test-results/results.json' }],
-    ['junit', { outputFile: 'test-results/junit.xml' }],
   ],
   use: {
-    baseURL: process.env.BASE_URL || 'https://www.infinite.com',
-    trace: 'retain-on-failure',
+    baseURL: 'https://www.jbs.dev',
+    trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    headless: process.env.HEADLESS ? /^(true|1|yes)$/i.test(process.env.HEADLESS) : false,
+    headless: true,
+    actionTimeout: 4000,
+    navigationTimeout: 8000,
   },
+  // Global setup initializes telemetry file and shared hooks
+  globalSetup: './setup/global.setup.ts',
   projects: [
-  // ...existing code...
-    // Original projects for framework tests
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-        userAgent:
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-        headless: false,
-        launchOptions: {
-          args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
-        },
+        channel: 'chrome',
+        // generic-specific optimizations
+        
       },
-    },
-    {
-      name: 'chromium-debug',
-      use: {
-        ...devices['Desktop Chrome'],
-        userAgent:
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-        headless: false,
-        trace: 'on',
-        screenshot: 'on',
-        video: 'on',
-        launchOptions: {
-          args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
-        },
-      },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'mobile-chrome',
-      // Exclude @ci-tagged tests on mobile-chrome to avoid potential flakiness on some sites
-      grepInvert: /@ci/,
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'mobile-safari',
-  grepInvert: /@ci/,
-  use: { ...devices['iPhone 12'] },
     },
   ],
   outputDir: 'test-results/artifacts',
-  // Tip: In CI, select tagged suites, e.g.:
-  //   npx playwright test --grep "@ci"
-  // Or exclude optional/flaky:
-  //   npx playwright test --grep-invert "@optional|@flaky"
 });
