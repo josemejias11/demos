@@ -12,8 +12,6 @@ export class BasePage {
     await this.page.goto(path, {
       timeout: siteConfig.timeouts.navigation
     });
-
-
     // Handle cookie consent if present
     await this.handleCookieConsent();
   }

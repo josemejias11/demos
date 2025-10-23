@@ -69,16 +69,17 @@ test.describe('jobsity.com Main Menu Navigation', () => {
       if (link.path.startsWith('#')) {
         const href = await locator.first().getAttribute('href');
         expect(href === link.path || href === `/${link.path}`).toBeTruthy();
-      } else {
+      } else if (link.path.startsWith('http')) {
         // For external links, check href (normalize trailing slash)
-        if (link.path.startsWith('http')) {
-          const href = await locator.first().getAttribute('href');
-          const normalize = (s: string) => s.replace(/\/$/, '');
-          expect(normalize(href || '')).toBe(normalize(link.path));
-        } else {
-          await locator.first().click();
-          await expect(page).toHaveURL(new RegExp(link.path.replace(/\//g, '\\/')));
-        }
+        const href = await locator.first().getAttribute('href');
+        const normalize = (s: string) => s.replace(/\/$/, '');
+        expect(normalize(href || '')).toBe(normalize(link.path));
+      } else {
+        // For internal SPA links, click and check URL (do not wait for navigation)
+        const prevUrl = page.url();
+        await locator.first().click();
+        // Wait for the URL to change or the path to appear in the URL
+        await expect(page).toHaveURL(new RegExp(link.path.replace(/\//g, '\\/')));
       }
     });
   }

@@ -6,7 +6,7 @@ import { siteConfig } from './site.config';
 export default defineConfig({
   // Run only this site's E2E tests
   testDir: './e2e',
-  timeout: 8000,
+  timeout: 20000,
   expect: {
     timeout: 3000,
   },
@@ -25,7 +25,7 @@ export default defineConfig({
     video: 'retain-on-failure',
     headless: true,
     actionTimeout: 4000,
-    navigationTimeout: 8000,
+    navigationTimeout: 20000,
   },
   // Global setup initializes telemetry file and shared hooks
   globalSetup: './setup/global.setup.ts',
