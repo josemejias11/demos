@@ -35,7 +35,20 @@ export default defineConfig({
       use: {
         channel: 'chrome',
         // generic-specific optimizations
-        
+      },
+    },
+    {
+      name: 'firefox',
+      use: {
+        browserName: 'firefox',
+        // Firefox-specific optimizations
+      },
+    },
+    {
+      name: 'webkit',
+      use: {
+        browserName: 'webkit',
+        // WebKit/Safari-specific optimizations
       },
     },
   ],

@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "test:jbs-dev": "playwright test --config=tests/jbs-dev/playwright.config.ts",
-    "automation:run:jbs-dev": "tsx automation/core/bootstrapDI.ts --site=jbs-dev",
-    "automation:kb:view:jbs-dev": "grep \"https://www.jbs.dev\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for jbs.dev'",
-    "dev:jbs-dev": "playwright test --config=tests/jbs-dev/playwright.config.ts --headed --debug"
+    "test:jobsity-com": "playwright test --config=tests/jobsity-com/playwright.config.ts",
+    "automation:run:jobsity-com": "tsx automation/core/bootstrapDI.ts --site=jobsity-com",
+    "automation:kb:view:jobsity-com": "grep \"https://www.jobsity.com\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for jobsity.com'",
+    "dev:jobsity-com": "playwright test --config=tests/jobsity-com/playwright.config.ts --headed --debug"
   },
   "dependencies": {
     "@playwright/test": "^1.56.1"
