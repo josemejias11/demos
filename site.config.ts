@@ -1,10 +1,10 @@
-// Site-specific configuration for jbs.dev
+// Site-specific configuration for jobsity.com
 import type { SiteConfig } from '../../src/core/siteAdapter';
 import '../../src/core/siteAdapter';
 
 export const siteConfig: SiteConfig = {
-  "baseURL": "https://www.jbs.dev",
-  "siteName": "jbs.dev",
+  "baseURL": "https://www.jobsity.com",
+  "siteName": "jobsity.com",
   "siteType": "generic",
   "headless": true,
   "timeouts": {
@@ -16,19 +16,7 @@ export const siteConfig: SiteConfig = {
     "navigationMenu": "nav, .navigation, .main-nav, .navbar",
     "searchBox": "[name=\"search\"], .search-input, #search",
     "mainContent": "main, .main-content, .content, #content",
-    "footer": "footer, .footer, .site-footer",
-    "hero": "header, .hero, .site-hero, #hero",
-    "primaryCTA": "a:has-text('Let\'s Collaborate'), a:has-text('Get in Touch'), a[href*='/our-team/contact-us']",
-    "expertiseLinks": "a[href*='/expertise'], a[href*='/expertise/']",
-    "caseStudies": "a[href*='/resources/resource-center/case-studies']",
-    "contactLink": "a[href*='/our-team/contact-us'], a:has-text('Contact')"
-  },
-  // @ts-ignore - generated convenience fields for test templates
-  "paths": {
-    "contactPage": "/our-team/contact-us",
-    "caseStudies": "/resources/resource-center/case-studies",
-    "robots": "/robots.txt",
-    "sitemap": "/sitemap.xml"
+    "footer": "footer, .footer, .site-footer"
   },
   "flows": [
     "basic-navigation",

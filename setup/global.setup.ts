@@ -1,7 +1,6 @@
-import { FullConfig } from '@playwright/test';
+import { chromium, FullConfig } from '@playwright/test';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import type { Page, ConsoleMessage, Response, Request } from '@playwright/test';
 
 /**
  * Global setup with observability guards
@@ -18,7 +17,7 @@ interface TelemetryEvent {
   details?: unknown;
 }
 
-async function globalSetup(_config: FullConfig) {
+async function globalSetup(config: FullConfig) {
   const telemetryPath = path.join(process.cwd(), 'discovery-results', 'automation-telemetry.jsonl');
   const telemetryDir = path.dirname(telemetryPath);
 
@@ -38,7 +37,7 @@ async function globalSetup(_config: FullConfig) {
  * Setup page guards for observability
  * Call this in test.beforeEach() to monitor console and network
  */
-export async function setupPageGuards(page: Page, testName: string) {
+export async function setupPageGuards(page: any, testName: string) {
   const telemetryPath = path.join(process.cwd(), 'discovery-results', 'automation-telemetry.jsonl');
 
   const emitTelemetry = (event: TelemetryEvent) => {
@@ -50,11 +49,11 @@ export async function setupPageGuards(page: Page, testName: string) {
   };
 
   // Monitor console errors
-  page.on('console', (msg: ConsoleMessage) => {
+  page.on('console', (msg: any) => {
     if (msg.type() === 'error') {
       emitTelemetry({
         timestamp: new Date().toISOString(),
-        siteName: 'jbs.dev',
+        siteName: 'jobsity.com',
         eventType: 'console_error',
         url: page.url(),
         message: msg.text(),
@@ -64,11 +63,11 @@ export async function setupPageGuards(page: Page, testName: string) {
   });
 
   // Monitor HTTP 5xx responses
-  page.on('response', (response: Response) => {
+  page.on('response', (response: any) => {
     if (response.status() >= 500) {
       emitTelemetry({
         timestamp: new Date().toISOString(),
-        siteName: 'jbs.dev',
+        siteName: 'jobsity.com',
         eventType: 'http_error',
         url: page.url(),
         message: `HTTP ${response.status()} on ${response.url()}`,
@@ -82,10 +81,10 @@ export async function setupPageGuards(page: Page, testName: string) {
   });
 
   // Monitor network failures
-  page.on('requestfailed', (request: Request) => {
+  page.on('requestfailed', (request: any) => {
     emitTelemetry({
       timestamp: new Date().toISOString(),
-      siteName: 'jbs.dev',
+      siteName: 'jobsity.com',
       eventType: 'network_failure',
       url: page.url(),
       message: `Failed to load: ${request.url()}`,
