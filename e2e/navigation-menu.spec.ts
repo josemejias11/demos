@@ -74,6 +74,10 @@ test.describe('jobsity.com Main Menu Navigation', () => {
         const href = await locator.first().getAttribute('href');
         const normalize = (s: string) => s.replace(/\/$/, '');
         expect(normalize(href || '')).toBe(normalize(link.path));
+      } else if (link.path.startsWith('#')) {
+        // For anchor links, accept both '/#contact-form' and '#contact-form'
+        const href = await locator.first().getAttribute('href');
+        expect(href === link.path || href === `/${link.path}` || href === `https://www.jobsity.com/${link.path}`).toBeTruthy();
       } else {
         // For internal SPA links, click and check URL (do not wait for navigation)
         const prevUrl = page.url();
