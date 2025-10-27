@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "test:planatechnologies-com": "playwright test --config=tests/planatechnologies-com/playwright.config.ts",
-    "automation:run:planatechnologies-com": "tsx automation/core/bootstrapDI.ts --site=planatechnologies-com",
-    "automation:kb:view:planatechnologies-com": "grep \"https://planatechnologies.com\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for planatechnologies.com'",
-    "dev:planatechnologies-com": "playwright test --config=tests/planatechnologies-com/playwright.config.ts --headed --debug"
-  }
-}

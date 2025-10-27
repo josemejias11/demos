@@ -1,6 +1,5 @@
 // Site-specific configuration for planatechnologies.com
-import type { SiteConfig } from '../../src/core/siteAdapter';
-import '../../src/core/siteAdapter';
+import type { SiteConfig } from './src/core/siteAdapter';
 
 export const siteConfig: SiteConfig = {
   "baseURL": "https://planatechnologies.com",

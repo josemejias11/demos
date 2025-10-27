@@ -5,7 +5,7 @@ import { siteConfig } from './site.config';
 
 export default defineConfig({
   // Run only this site's E2E tests
-  testDir: './e2e',
+  testDir: './tests/planatechnologies-com/e2e',
   timeout: 8000,
   expect: {
     timeout: 3000,
@@ -28,7 +28,7 @@ export default defineConfig({
     navigationTimeout: 8000,
   },
   // Global setup initializes telemetry file and shared hooks
-  globalSetup: './setup/global.setup.ts',
+  globalSetup: './tests/planatechnologies-com/setup/global.setup.ts',
   projects: [
     {
       name: 'chromium',
