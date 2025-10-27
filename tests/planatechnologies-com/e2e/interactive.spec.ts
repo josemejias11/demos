@@ -21,17 +21,20 @@ test.describe('Plan A Technologies - Interactive Elements Tests', () => {
     // If no specific CTA buttons found, look for any prominent links/buttons in header or hero
     if (buttonCount === 0) {
       const headerButtons = page.locator('header a, nav a').filter({ hasText: /contact/i });
-      const heroButtons = page.locator('section').first().locator('a, button');
+      // Look for any links in the hero section, but we'll check visibility
+      const allHeroLinks = page.locator('section').first().locator('a[href]:visible');
 
       const headerCount = await headerButtons.count();
-      const heroCount = await heroButtons.count();
+      const heroLinkCount = await allHeroLinks.count();
 
-      expect(headerCount + heroCount).toBeGreaterThan(0);
+      // We expect to find at least some clickable elements
+      expect(headerCount + heroLinkCount).toBeGreaterThan(0);
 
       if (headerCount > 0) {
         await expect(headerButtons.first()).toBeVisible();
-      } else if (heroCount > 0) {
-        await expect(heroButtons.first()).toBeVisible();
+      } else if (heroLinkCount > 0) {
+        // Just verify at least one link is present
+        await expect(allHeroLinks.first()).toBeVisible();
       }
     } else {
       expect(buttonCount).toBeGreaterThan(0);

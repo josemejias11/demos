@@ -8,6 +8,9 @@ test.describe('Plan A Technologies - SEO Tests', () => {
   });
 
   test('Test 20: Meta tags and SEO elements', async ({ page }) => {
+    // Increase timeout for this test as it performs many SEO checks
+    test.setTimeout(30000);
+
     const planatechnologiesComPage = new PlanatechnologiesComPage(page);
 
     await planatechnologiesComPage.navigate();

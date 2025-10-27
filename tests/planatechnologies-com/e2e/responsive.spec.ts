@@ -4,17 +4,25 @@ import { setupPageGuards } from '../setup/global.setup';
 
 test.describe('Plan A Technologies - Responsive Tests', () => {
   test('Test 16: Mobile viewport rendering', async ({ browser }) => {
-    // Create mobile context
+    // Increase timeout for mobile test as it may take longer to load
+    test.setTimeout(30000);
+
+    // Create mobile context - Firefox doesn't support isMobile, so we need to extract only compatible properties
+    const iPhoneDevice = devices['iPhone 12'];
     const context = await browser.newContext({
-      ...devices['iPhone 12'],
-      viewport: { width: 375, height: 667 }
+      userAgent: iPhoneDevice.userAgent,
+      viewport: { width: 375, height: 667 },
+      deviceScaleFactor: iPhoneDevice.deviceScaleFactor,
+      hasTouch: iPhoneDevice.hasTouch
+      // Note: isMobile is not supported in Firefox
     });
 
     const page = await context.newPage();
     await setupPageGuards(page, 'Mobile viewport test');
 
-    const planatechnologiesComPage = new PlanatechnologiesComPage(page);
-    await planatechnologiesComPage.navigate();
+    // Navigate with extended timeout for mobile viewport
+    await page.goto('https://planatechnologies.com/', { timeout: 20000 });
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify page loads on mobile
     await expect(page).toHaveURL(/planatechnologies\.com/);
@@ -36,17 +44,22 @@ test.describe('Plan A Technologies - Responsive Tests', () => {
   });
 
   test('Test 17: Tablet viewport rendering', async ({ browser }) => {
-    // Create tablet context
+    // Create tablet context - Firefox doesn't support isMobile, so we need to extract only compatible properties
+    const iPadDevice = devices['iPad (gen 7)'];
     const context = await browser.newContext({
-      ...devices['iPad'],
-      viewport: { width: 768, height: 1024 }
+      userAgent: iPadDevice.userAgent,
+      viewport: { width: 768, height: 1024 },
+      deviceScaleFactor: iPadDevice.deviceScaleFactor,
+      hasTouch: iPadDevice.hasTouch
+      // Note: isMobile is not supported in Firefox
     });
 
     const page = await context.newPage();
     await setupPageGuards(page, 'Tablet viewport test');
 
-    const planatechnologiesComPage = new PlanatechnologiesComPage(page);
-    await planatechnologiesComPage.navigate();
+    // Navigate with extended timeout for tablet viewport
+    await page.goto('https://planatechnologies.com/', { timeout: 20000 });
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify page loads on tablet
     await expect(page).toHaveURL(/planatechnologies\.com/);
