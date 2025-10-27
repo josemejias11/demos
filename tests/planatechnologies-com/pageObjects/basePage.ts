@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { siteConfig } from '../site.config';
+import { siteConfig } from '../../../site.config';
 
 export class BasePage {
   readonly page: Page;

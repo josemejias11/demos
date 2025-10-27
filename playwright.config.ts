@@ -1,7 +1,5 @@
 // Site-specific Playwright configuration for planatechnologies.com
-// To use this config, run: npx playwright test --config=tests/planatechnologies-com/playwright.config.ts
-import { defineConfig } from '@playwright/test';
-import { siteConfig } from './site.config';
+import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   // Run only this site's E2E tests
@@ -33,9 +31,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        channel: 'chrome',
-        // generic-specific optimizations
-        
+        ...devices['Desktop Chrome'],
       },
     },
   ],

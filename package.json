@@ -2,7 +2,6 @@
   "name": "planatechnologies-tests",
   "version": "1.0.0",
   "description": "Playwright test suite for planatechnologies.com",
-  "type": "module",
   "scripts": {
     "test": "playwright test",
     "test:planatechnologies-com": "playwright test --config=playwright.config.ts",
@@ -22,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.56.1",
     "@types/node": "^22.8.7",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
