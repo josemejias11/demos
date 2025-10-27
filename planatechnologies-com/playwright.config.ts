@@ -1,11 +1,11 @@
-// Site-specific Playwright configuration for jbs.dev
-// To use this config, run: npx playwright test --config=tests/jbs-dev/playwright.config.ts
+// Site-specific Playwright configuration for planatechnologies.com
+// To use this config, run: npx playwright test --config=tests/planatechnologies-com/playwright.config.ts
 import { defineConfig } from '@playwright/test';
+import { siteConfig } from './site.config';
 
 export default defineConfig({
-  // Run E2E and API tests for this site
-  testDir: './',
-  testMatch: ['**/*.spec.ts'],
+  // Run only this site's E2E tests
+  testDir: './e2e',
   timeout: 8000,
   expect: {
     timeout: 3000,
@@ -19,7 +19,7 @@ export default defineConfig({
     ['json', { outputFile: 'test-results/results.json' }],
   ],
   use: {
-    baseURL: 'https://www.jbs.dev',
+    baseURL: 'https://planatechnologies.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -35,23 +35,7 @@ export default defineConfig({
       use: {
         channel: 'chrome',
         // generic-specific optimizations
-
-      },
-    },
-    {
-      name: 'firefox',
-      use: {
-        browserName: 'firefox',
-        // Firefox-specific optimizations
-
-      },
-    },
-    {
-      name: 'webkit',
-      use: {
-        browserName: 'webkit',
-        // WebKit/Safari-specific optimizations
-
+        
       },
     },
   ],

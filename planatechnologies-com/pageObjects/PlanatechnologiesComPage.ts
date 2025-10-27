@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './basePage';
 
-export class JbsDevPage extends BasePage {
+export class PlanatechnologiesComPage extends BasePage {
   readonly navigationMenu: Locator;
   readonly searchBox: Locator;
   readonly mainContent: Locator;
