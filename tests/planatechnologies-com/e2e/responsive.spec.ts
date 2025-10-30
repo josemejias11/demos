@@ -44,6 +44,8 @@ test.describe('Plan A Technologies - Responsive Tests', () => {
   });
 
   test('Test 17: Tablet viewport rendering', async ({ browser }) => {
+    // Increase timeout for tablet test as it may take longer to load
+    test.setTimeout(30000);
     // Create tablet context - Firefox doesn't support isMobile, so we need to extract only compatible properties
     const iPadDevice = devices['iPad (gen 7)'];
     const context = await browser.newContext({

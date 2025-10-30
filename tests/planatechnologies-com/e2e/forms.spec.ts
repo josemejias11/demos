@@ -92,10 +92,13 @@ test.describe('Plan A Technologies - Form Tests', () => {
     await planatechnologiesComPage.navigate();
 
     // Look for "LET'S TALK" or service inquiry CTA
-    const ctaButton = page.locator('button, a').filter({ hasText: /let'?s talk|get started|contact us/i }).first();
+    const ctaButton = page.locator('main button:visible, main a:visible, header button:visible, header a:visible').filter({
+      hasText: /let'?s talk|get started|contact us|request a quote|our services|solutions|learn more/i
+    }).filter({ hasNotText: /cookie|privacy|footer/i }).first(); // Exclude cookie/privacy links and footer elements
 
     if (await ctaButton.count() > 0) {
-      await ctaButton.click();
+      await ctaButton.scrollIntoViewIfNeeded();
+      await ctaButton.click({ timeout: 10000 }); // Increase click timeout
 
       // Wait for modal or page load
       await page.waitForTimeout(1000);

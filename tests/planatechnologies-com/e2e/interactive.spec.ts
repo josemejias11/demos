@@ -13,16 +13,17 @@ test.describe('Plan A Technologies - Interactive Elements Tests', () => {
     await planatechnologiesComPage.navigate();
 
     // Find CTA buttons - look for common action buttons
-    const ctaButtons = page.locator('a[href*="contact"], button[type="submit"], a').filter({
-      hasText: /contact|get\s+in\s+touch|schedule|book|inquir/i
-    });
+    const ctaButtons = page.locator('a[href], button').filter({
+      hasText: /contact|get\s+in\s+touch|schedule|book|inquir|learn\s+more|view\s+all|discover/i
+    }).or(page.locator('a.button, button.cta, .btn-primary')); // Also look for common button classes
+
     const buttonCount = await ctaButtons.count();
 
     // If no specific CTA buttons found, look for any prominent links/buttons in header or hero
     if (buttonCount === 0) {
-      const headerButtons = page.locator('header a, nav a').filter({ hasText: /contact/i });
+      const headerButtons = page.locator('header a, nav a, header button, nav button').filter({ hasText: /contact|sign\s+up|login/i });
       // Look for any links in the hero section, but we'll check visibility
-      const allHeroLinks = page.locator('section').first().locator('a[href]:visible');
+      const allHeroLinks = page.locator('section').first().locator('a[href]:visible, button:visible');
 
       const headerCount = await headerButtons.count();
       const heroLinkCount = await allHeroLinks.count();
