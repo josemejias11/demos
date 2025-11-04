@@ -44,8 +44,8 @@ Automated testing suite for **https://www.jbs.dev**
 # Run automation for this site
 npm run automation:run:jbs-dev
 
-# Run tests
-npm run test:jbs-dev
+# Run all tests
+npx playwright test
 
 # View site-specific knowledge base
 npm run automation:kb:view:jbs-dev
@@ -230,30 +230,40 @@ npm run automation:kb:view:jbs-dev
 
 ### Running the Tests
 
+### Run all tests
+
+```bash
+npx playwright test
+```
+
 ### Run API tests only
 
 ```bash
-cd tests/jbs-dev
-npx playwright test api/api.spec.ts --config=playwright.config.ts
+npx playwright test tests/api/api.spec.ts
 ```
 
-### Run all jbs-dev tests (E2E + API)
+### Run E2E tests only
 
 ```bash
-cd tests/jbs-dev
-npx playwright test --config=playwright.config.ts
+npx playwright test tests/e2e/
+```
+
+### Run accessibility tests only
+
+```bash
+npx playwright test tests/accessibility/
 ```
 
 ### Run with specific reporter
 
 ```bash
-npx playwright test api/api.spec.ts --reporter=html
+npx playwright test --reporter=html
 ```
 
 ### View test results
 
 ```bash
-npx playwright show-report test-results/html
+npx playwright show-report
 ```
 
 ---
