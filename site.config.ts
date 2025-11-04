@@ -1,8 +1,8 @@
 // Site-specific configuration for jbs.dev
-import type { SiteConfig } from '../../src/core/siteAdapter';
-import '../../src/core/siteAdapter';
+// import type { SiteConfig } from '../../src/core/siteAdapter';
+// import '../../src/core/siteAdapter';
 
-export const siteConfig: SiteConfig = {
+export const siteConfig = {
   "baseURL": "https://www.jbs.dev",
   "siteName": "jbs.dev",
   "siteType": "generic",
