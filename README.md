@@ -49,6 +49,14 @@ npx playwright test
 
 # View site-specific knowledge base
 npm run automation:kb:view:jbs-dev
+
+# Run on specific browsers
+npx playwright test --project=firefox
+npx playwright test --project=chromium
+npx playwright test --project=webkit
+
+# Run in headed mode (see browser)
+npx playwright test --headed
 ```
 
 ---
