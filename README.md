@@ -6,7 +6,7 @@ Automated testing suite for [msd.com](https://www.msd.com) built with **Playwrig
 
 ```bash
 npm install
-npx playwright install chromium
+npx playwright install --with-deps
 
 # Run all tests (headless)
 npm test
@@ -26,6 +26,11 @@ npx playwright test e2e/a11y.spec.ts
 # Run a single test by name
 npx playwright test -g "Search functionality works"
 
+# Run on a specific browser
+npx playwright test --project=firefox
+npx playwright test --project=webkit
+npx playwright test --project=chrome-mobile
+
 # View HTML report after a run
 npx playwright show-report test-results/html
 ```
@@ -39,7 +44,16 @@ npx playwright show-report test-results/html
 | API | `e2e/api.spec.ts` | 9 | HTTP methods, redirects, security headers, robots.txt, sitemap, response time |
 | Accessibility | `e2e/a11y.spec.ts` | 7 | WCAG compliance: lang attr, landmarks, alt text, heading hierarchy, keyboard nav |
 
-**38 tests total**
+**38 tests × 4 browsers = 152 test runs**
+
+## Browser Matrix
+
+| Project | Browser | Viewport |
+|---------|---------|----------|
+| chromium | Chrome (desktop) | 1280×720 |
+| firefox | Firefox (desktop) | 1280×720 |
+| webkit | Safari (desktop) | 1280×720 |
+| chrome-mobile | Chrome (Pixel 7) | 412×915 |
 
 ## Project Structure
 
@@ -58,6 +72,7 @@ npx playwright show-report test-results/html
 
 ## Key Design Decisions
 
+- **Cross-browser testing** — All tests run on Chrome, Firefox, Safari, and Chrome Mobile to catch browser-specific issues.
 - **Page Object Model** — Locators and page actions are encapsulated in `pageObjects/`, keeping tests focused on behavior rather than selectors.
 - **Cookie consent handling** — Automatically dismissed in `BasePage.navigate()` so tests aren't blocked by consent banners.
 - **API tests use Playwright's `request` context** — No additional HTTP libraries needed; same framework for UI and API testing.

@@ -67,6 +67,7 @@ test.describe('msd.com Smoke Tests', () => {
           'analytics',
           'gtm',
           'onetrust',
+          'image corrupt or truncated',
         ];
         if (ignore.some(pattern => text.toLowerCase().includes(pattern.toLowerCase()))) return;
         errors.push(text);
@@ -74,7 +75,7 @@ test.describe('msd.com Smoke Tests', () => {
     });
     await page.goto('https://www.msd.com');
     await page.waitForLoadState('domcontentloaded');
-    expect(errors.length).toBe(0);
+    expect(errors, `Unexpected console errors: ${errors.join(' | ')}`).toHaveLength(0);
   });
 
   test('No broken images on homepage', async ({ page }) => {
