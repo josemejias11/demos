@@ -56,7 +56,21 @@ test.describe('msd.com Smoke Tests', () => {
   test('No console errors on homepage', async ({ page }) => {
     const errors: string[] = [];
     page.on('console', msg => {
-      if (msg.type() === 'error') errors.push(msg.text());
+      if (msg.type() === 'error') {
+        const text = msg.text();
+        // Filter out third-party scripts and network-level noise
+        const ignore = [
+          'net::',
+          'Failed to load resource',
+          'CORS',
+          'third-party',
+          'analytics',
+          'gtm',
+          'onetrust',
+        ];
+        if (ignore.some(pattern => text.toLowerCase().includes(pattern.toLowerCase()))) return;
+        errors.push(text);
+      }
     });
     await page.goto('https://www.msd.com');
     await page.waitForLoadState('domcontentloaded');

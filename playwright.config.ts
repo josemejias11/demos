@@ -1,6 +1,6 @@
 // Site-specific Playwright configuration for msd.com
 // To use this config, run: npx playwright test --config=tests/msd-com/playwright.config.ts
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 import { siteConfig } from './site.config';
 
 export default defineConfig({
@@ -32,8 +32,24 @@ export default defineConfig({
       name: 'chromium',
       use: {
         channel: 'chrome',
-        // generic-specific optimizations
-        
+      },
+    },
+    {
+      name: 'firefox',
+      use: {
+        browserName: 'firefox',
+      },
+    },
+    {
+      name: 'webkit',
+      use: {
+        browserName: 'webkit',
+      },
+    },
+    {
+      name: 'chrome-mobile',
+      use: {
+        ...devices['Pixel 7'],
       },
     },
   ],
