@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "test:moodys-com": "playwright test --config=tests/moodys-com/playwright.config.ts",
+    "automation:run:moodys-com": "tsx src/core/bootstrapDI.ts --site=moodys-com",
+    "automation:kb:view:moodys-com": "grep \"https://www.moodys.com/\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for moodys.com'",
+    "dev:moodys-com": "playwright test --config=tests/moodys-com/playwright.config.ts --headed --debug"
+  }
+}
