@@ -11,7 +11,7 @@ Automated testing suite for **https://www.moodys.com/**
 - **Smoke Tests (`e2e/smoke.spec.ts`)**: Fast, lightweight checks to ensure core pages load and basic components render.
 - **Accessibility Tests (`accessibility/a11y.spec.ts`)**: Automated scans for ADA/WCAG compliance issues using Axe.
 - **Framework Showcase (`e2e/framework-showcase.spec.ts`)**: Demonstrates the AI locator intent system automatically resolving semantic regions and updating the Knowledge Base.
-- **Interactive Showcase (`e2e/interactive-showcase.spec.ts`)**: A highly visual, demonstrative suite that actively hovers, highlights, and clicks through top-level menus and nested links, utilizing "New Tab" interactions to preserve page state.
+- **Interactive Showcase (`e2e/interactive-showcase.spec.ts`)**: A highly visual, demonstrative suite that actively hovers, highlights, and clicks through menus and nested links, utilizing "New Tab" interactions to preserve page state. It also features **parameterized tests** that dynamically generate individual, dedicated test cases in the report for each top-level menu item.
 
 ## Quick Start
 
