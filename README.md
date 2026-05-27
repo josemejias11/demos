@@ -19,8 +19,11 @@ Automated testing suite for **https://www.moodys.com/**
 # Run all tests (Smoke, A11Y, Showcases)
 npm run test:moodys-com
 
-# Run the interactive showcase specifically in headed mode to watch the automation
-npx playwright test e2e/interactive-showcase.spec.ts --headed
+# Run all tests in Headed mode (visible browser)
+npm run test:moodys-com:headed
+
+# Run only the interactive showcase in Headed mode
+npm run test:moodys-com:showcase
 ```
 
 ## Site-Specific Selectors
