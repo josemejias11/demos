@@ -18,7 +18,9 @@ export class BasePage {
   }
 
   async handleCookieConsent() {
-    const cookieSelectors = [
+    const combinedSelector = [
+      '#accept-recommended-btn-handler',
+      '#onetrust-accept-btn-handler',
       'button:has-text("Allow All")',
       'button:has-text("Accept All")',
       'button:has-text("Accept")',
@@ -26,15 +28,12 @@ export class BasePage {
       'button:has-text("Agree")',
       '[data-testid="cookie-accept"]',
       '.cookie-accept'
-    ];
+    ].join(', ');
 
-    for (const selector of cookieSelectors) {
-      try {
-        await this.page.locator(selector).first().click({ timeout: 2000 });
-        break;
-      } catch {
-        // Continue to next selector
-      }
+    try {
+      await this.page.locator(combinedSelector).first().click({ timeout: 4000 });
+    } catch {
+      // No cookie banner appeared within 4s, proceed with test
     }
   }
 
