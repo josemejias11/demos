@@ -4,3 +4,4 @@ discovery-results/
 test-results/
 playwright-report/
 blob-report/
+playwright-tmp/

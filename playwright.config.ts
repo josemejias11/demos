@@ -15,7 +15,7 @@ export default defineConfig({
   workers: 1,
   reporter: [
     ['list'],
-    ['html', { open: 'never', outputFolder: 'test-results/html' }],
+    ['html', { open: 'always', outputFolder: 'test-results/html' }],
     ['json', { outputFile: 'test-results/results.json' }],
   ],
   use: {
@@ -26,6 +26,9 @@ export default defineConfig({
     headless: true,
     actionTimeout: 5000,
     navigationTimeout: 15000,
+    launchOptions: {
+      args: ['--no-sandbox']
+    }
   },
   // Global setup initializes telemetry file and shared hooks
   globalSetup: './setup/global.setup.ts',
@@ -33,7 +36,6 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        channel: 'chrome',
       },
     },
   ],

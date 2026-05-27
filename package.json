@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test:moodys-com": "playwright test --config=playwright.config.ts",
+    "test:moodys-com": "playwright test --config=playwright.config.ts; open test-results/html/index.html",
     "dev:moodys-com": "playwright test --config=playwright.config.ts --headed --debug",
     "automation:run:moodys-com": "tsx src/core/bootstrapDI.ts",
     "automation:kb:view:moodys-com": "grep \"https://www.moodys.com/\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for moodys.com'"
