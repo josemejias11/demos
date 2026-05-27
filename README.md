@@ -7,22 +7,20 @@ Automated testing suite for **https://www.moodys.com/**
 - **Confidence**: 0.0%
 - **Secondary Types**: None
 
-## Recommended Test Flows
-- basic-navigation
-- form-interaction
-- content-verification
+## Test Suites
+- **Smoke Tests (`e2e/smoke.spec.ts`)**: Fast, lightweight checks to ensure core pages load and basic components render.
+- **Accessibility Tests (`accessibility/a11y.spec.ts`)**: Automated scans for ADA/WCAG compliance issues using Axe.
+- **Framework Showcase (`e2e/framework-showcase.spec.ts`)**: Demonstrates the AI locator intent system automatically resolving semantic regions and updating the Knowledge Base.
+- **Interactive Showcase (`e2e/interactive-showcase.spec.ts`)**: A highly visual, demonstrative suite that actively hovers, highlights, and clicks through top-level menus and nested links, utilizing "New Tab" interactions to preserve page state.
 
 ## Quick Start
 
 ```bash
-# Run automation for this site
-npm run automation:run:moodys-com
-
-# Run tests
+# Run all tests (Smoke, A11Y, Showcases)
 npm run test:moodys-com
 
-# View site-specific knowledge base
-npm run automation:kb:view:moodys-com
+# Run the interactive showcase specifically in headed mode to watch the automation
+npx playwright test e2e/interactive-showcase.spec.ts --headed
 ```
 
 ## Site-Specific Selectors
@@ -32,7 +30,7 @@ npm run automation:kb:view:moodys-com
 - **footer**: `footer, .footer, .site-footer`
 
 ## Special Handling
-- **Cookie Consent**: Yes
+- **Cookie Consent**: Bypassed globally using an instant CSS injection (`display: none !important`) to eliminate the OneTrust banner without waiting for slow fade-out animations.
 - **Anti-Bot Detection**: No
 - **Dynamic Content**: Yes
 - **Single Page App**: No
