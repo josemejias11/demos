@@ -18,22 +18,26 @@ export class BasePage {
   }
 
   async handleCookieConsent() {
-    const combinedSelector = [
-      '#accept-recommended-btn-handler',
-      '#onetrust-accept-btn-handler',
-      'button:has-text("Allow All")',
-      'button:has-text("Accept All")',
-      'button:has-text("Accept")',
-      'button:has-text("Allow")',
-      'button:has-text("Agree")',
-      '[data-testid="cookie-accept"]',
-      '.cookie-accept'
-    ].join(', ');
-
     try {
-      await this.page.locator(combinedSelector).first().click({ timeout: 4000 });
+      // The most bulletproof way to bypass a heavy takeover cookie banner in Playwright
+      // is to simply inject a CSS rule that hides it permanently. This works even if the
+      // banner script takes several seconds to load and mount the elements.
+      await this.page.addStyleTag({
+        content: `
+          #onetrust-consent-sdk, 
+          .onetrust-pc-dark-filter,
+          .ot-fade-in { 
+            display: none !important; 
+            opacity: 0 !important; 
+            pointer-events: none !important; 
+            z-index: -1 !important;
+          }
+        `
+      });
+      
+      // We don't need to wait for anything because the CSS applies instantly.
     } catch {
-      // No cookie banner appeared within 4s, proceed with test
+      // Ignore if evaluation fails
     }
   }
 

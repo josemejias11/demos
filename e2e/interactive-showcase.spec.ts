@@ -21,19 +21,15 @@ test.describe('moodys.com Interactive Showcase', () => {
     const header = page.locator('header').first();
     await expect(header).toBeVisible();
 
-    // Find items that likely trigger dropdown menus (often buttons or links with aria-expanded or within a nav)
-    // We will look for elements that have a text label and are part of the main navigation.
-    const navItems = page.locator('header [role="menuitem"], header nav > ul > li > a, header nav button');
+    // Use specific text matching for known Moodys.com top-level menu items.
+    // Moodys uses distinct text labels for its main dropdowns.
+    const menuLabels = ['Solutions', 'Insights', 'About Moody\'s'];
     
-    const count = await navItems.count();
-    
-    // For a showcase, we might just want to interact with the first 3 to keep the test duration reasonable
-    const limit = Math.min(count, 3);
-
-    for (let i = 0; i < limit; i++) {
-      const item = navItems.nth(i);
+    for (const label of menuLabels) {
+      // Find the menu trigger by text (could be a div, span, button, or link)
+      const item = page.locator(`text="${label}"`).first();
       
-      // Ensure the item is visible and interactable
+      // Ensure the item is visible before trying to interact
       if (await item.isVisible()) {
         // --- VISUAL SHOWCASE EFFECT: Hover to open ---
         await item.hover();
@@ -41,30 +37,40 @@ test.describe('moodys.com Interactive Showcase', () => {
         // Add a deliberate wait so the viewer can see the menu open
         await page.waitForTimeout(1500); 
 
-        // Now find a link inside the newly opened menu.
-        // We look for links that are visible and NOT the menu trigger itself.
-        const linksInMenu = page.locator('header a:visible');
+        // Now find a link that is visible and likely in the dropdown.
+        // We look for any visible link that is NOT one of our top-level triggers.
+        const linksInMenu = page.locator('a[href]:visible').filter({ hasNotText: label });
         
         const linkCount = await linksInMenu.count();
-        if (linkCount > 0) {
-          // Let's pick a link that is different from the trigger item
-          // Just picking the last visible link or the second one is usually safe for a dropdown
-          const linkToClick = linksInMenu.nth(Math.min(1, linkCount - 1));
+        if (linkCount > 10) {
+          // Dropdowns usually have many links. We pick one further down the list 
+          // (e.g. index 10) to ensure it's inside the expanded mega-menu and not a standard header link.
+          const linkToClick = linksInMenu.nth(10);
           
           // --- VISUAL SHOWCASE EFFECT: Highlight ---
-          // Draw a border around it to show intent
-          await linkToClick.evaluate(node => node.style.border = '3px solid red');
-          await page.waitForTimeout(1000); // Wait so the highlight is seen
+          // Draw a thick red border around it to show intent
+          await linkToClick.evaluate(node => {
+            // @ts-ignore
+            node.style.border = '4px solid red';
+            // @ts-ignore
+            node.style.backgroundColor = 'yellow';
+          });
+          await page.waitForTimeout(1500); // Wait so the highlight is clearly seen
           
-          // Click the link
-          await linkToClick.click();
+          // Click the link to open in a new tab (Middle click)
+          const [newPage] = await Promise.all([
+            page.context().waitForEvent('page'),
+            linkToClick.click({ button: 'middle' })
+          ]);
           
-          // Wait for the new page to load
-          await page.waitForLoadState('domcontentloaded');
-          await page.waitForTimeout(1000); // Show the loaded page briefly
+          // Bring new tab to front and wait for it to load
+          await newPage.bringToFront();
+          await newPage.waitForLoadState('domcontentloaded');
+          await newPage.waitForTimeout(1500); // Show the loaded page briefly
           
-          // Go back to the homepage for the next iteration
-          await moodysComPage.navigate();
+          // Close the new tab and return to the main page
+          await newPage.close();
+          await page.bringToFront();
           await page.waitForTimeout(1000); // Settle back on the homepage
         }
       }
