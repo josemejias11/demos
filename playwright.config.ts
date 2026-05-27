@@ -5,7 +5,7 @@ import { siteConfig } from './site.config';
 
 export default defineConfig({
   testDir: '.',
-  testMatch: ['e2e/**/*.spec.ts', 'accessibility/**/*.spec.ts'],
+  testMatch: ['e2e/**/*.spec.ts', 'accessibility/**/*.spec.ts', 'api/**/*.spec.ts'],
   timeout: 30000,
   expect: {
     timeout: 5000,
