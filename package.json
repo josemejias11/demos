@@ -6,6 +6,7 @@
     "test:moodys-com": "playwright test --config=playwright.config.ts; open test-results/html/index.html",
     "test:moodys-com:headed": "playwright test --config=playwright.config.ts --headed",
     "test:moodys-com:showcase": "playwright test e2e/interactive-showcase.spec.ts --headed",
+    "test:moodys-com:api": "playwright test api/api.spec.ts",
     "dev:moodys-com": "playwright test --config=playwright.config.ts --headed --debug",
     "automation:run:moodys-com": "tsx src/core/bootstrapDI.ts",
     "automation:kb:view:moodys-com": "grep \"https://www.moodys.com/\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for moodys.com'"

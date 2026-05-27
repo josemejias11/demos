@@ -25,6 +25,9 @@ npm run test:moodys-com:headed
 
 # Run only the interactive showcase in Headed mode
 npm run test:moodys-com:showcase
+
+# Run only the high-speed API tests
+npm run test:moodys-com:api
 ```
 
 ## Site-Specific Selectors
