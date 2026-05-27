@@ -77,39 +77,38 @@ test.describe('moodys.com Interactive Showcase', () => {
     }
   });
 
-  test('Click through all top-level main menu items', async ({ page }) => {
-    // 1. Navigate to the homepage
-    const moodysComPage = new MoodysComPage(page);
-    await moodysComPage.navigate();
+  // ------------------------------------------------------------------
+  // Parameterized tests: Create a separate test case for each main menu
+  // ------------------------------------------------------------------
+  const mainMenus = ['Solutions', 'Insights', 'About Moody\'s', 'Who We Serve'];
+  
+  for (const label of mainMenus) {
+    test(`Click main menu item: ${label}`, async ({ page }) => {
+      const moodysComPage = new MoodysComPage(page);
+      await moodysComPage.navigate();
 
-    // 2. Iterate over all main top-level menu texts
-    const mainMenus = ['Solutions', 'Insights', 'About Moody\'s', 'Who We Serve'];
-    
-    for (const label of mainMenus) {
       const item = page.locator(`text="${label}"`).first();
       
-      if (await item.isVisible()) {
-        // --- VISUAL SHOWCASE EFFECT: Highlight ---
-        // Highlight the main menu item
-        await item.evaluate(node => {
-          // @ts-ignore
-          node.style.border = '4px solid green';
-          // @ts-ignore
-          node.style.backgroundColor = 'lightblue';
-        });
-        await page.waitForTimeout(1500); // Wait so highlight is seen
-        
-        // Click the main menu item directly
-        // Some menus are links, some are dropdown triggers. We click to interact.
-        await item.click();
-        
-        // Wait for page to settle or navigate
-        await page.waitForTimeout(2000);
-        
-        // Navigate back to the homepage to reset state for the next top-level item
-        await moodysComPage.navigate();
-        await page.waitForTimeout(1000);
-      }
-    }
-  });
+      // We expect the menu item to be visible
+      await expect(item).toBeVisible();
+
+      // --- VISUAL SHOWCASE EFFECT: Highlight ---
+      await item.evaluate(node => {
+        // @ts-ignore
+        node.style.border = '4px solid green';
+        // @ts-ignore
+        node.style.backgroundColor = 'lightblue';
+      });
+      await page.waitForTimeout(1500); 
+      
+      // Click the main menu item
+      await item.click();
+      
+      // Wait for page to settle or navigate
+      await page.waitForTimeout(2000);
+      
+      // Note: Since each is its own test case, Playwright will automatically
+      // launch a fresh page context and navigate for the next test!
+    });
+  }
 });
