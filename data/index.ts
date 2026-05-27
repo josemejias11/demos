@@ -34,4 +34,4 @@ export {
   // Scenario utilities
   createCheckoutScenario,
   createGuestCheckoutScenario,
-} from '../../../src/utils/testData/builders';
+} from '@utils/testData/builders';

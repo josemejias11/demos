@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
 import { BasePage } from './basePage';
-import { container } from '../../../src/core/container';
-import { runWithContext } from '../../../src/core/runTypes';
-import type { LocatorIntent } from '../../../src/locators/resolver/intentTypes';
+import { container } from '@core/container';
+import { runWithContext } from '@core/runTypes';
+import type { LocatorIntent } from '@locators/resolver/intentTypes';
 
 const MOODYS_CONTEXT = {
   sessionId: 'moodys-smoke',

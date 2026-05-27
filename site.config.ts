@@ -1,6 +1,6 @@
 // Site-specific configuration for moodys.com
-import type { SiteConfig } from '../../src/core/siteAdapter';
-import '../../src/core/siteAdapter';
+import type { SiteConfig } from '@core/siteAdapter';
+import '@core/siteAdapter';
 
 export const siteConfig: SiteConfig = {
   "baseURL": "https://www.moodys.com/",

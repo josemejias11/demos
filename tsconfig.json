@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2021", "DOM"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
+    "types": ["node", "@playwright/test"],
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@utils/*": ["src/utils/*"],
+      "@locators/*": ["src/locators/*"],
+      "@agents/*": ["src/agents/*"],
+      "@types/*": ["src/types/*"],
+      "@config/*": ["src/config/*"],
+      "@planning/*": ["src/planning/*"],
+      "@knowledge/*": ["src/knowledge/*"],
+      "@monitoring/*": ["src/monitoring/*"],
+      "@telemetry/*": ["src/telemetry/*"],
+      "@classification/*": ["src/classification/*"],
+      "@validation/*": ["src/validation/*"],
+      "@domain/*": ["src/domain/*"],
+      "@ai/*": ["src/ai/*"],
+      "@visual/*": ["src/visual/*"],
+      "@tools/*": ["src/tools/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "pageObjects/**/*.ts", "setup/**/*.ts", "data/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

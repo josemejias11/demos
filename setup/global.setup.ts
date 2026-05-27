@@ -21,7 +21,7 @@ interface TelemetryEvent {
 }
 
 async function globalSetup(_config: FullConfig) {
-  const telemetryPath = path.resolve(__dirname, '..', '..', '..', 'discovery-results', 'automation-telemetry.jsonl');
+  const telemetryPath = path.resolve(__dirname, '..', 'discovery-results', 'automation-telemetry.jsonl');
   const telemetryDir = path.dirname(telemetryPath);
 
   if (!fs.existsSync(telemetryDir)) {
@@ -41,7 +41,7 @@ async function globalSetup(_config: FullConfig) {
  * Call this in test.beforeEach() to monitor console and network
  */
 export async function setupPageGuards(page: Page, testName: string) {
-  const telemetryPath = path.resolve(__dirname, '..', '..', '..', 'discovery-results', 'automation-telemetry.jsonl');
+  const telemetryPath = path.resolve(__dirname, '..', 'discovery-results', 'automation-telemetry.jsonl');
 
   const emitTelemetry = (event: TelemetryEvent) => {
     try {
