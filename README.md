@@ -1,18 +1,21 @@
 # moodys.com Automation
 
-Automated testing suite for **https://www.moodys.com/**
+This repository serves as a **dual-purpose portfolio piece and testing suite**. It contains both standard, highly optimized Playwright E2E tests and an advanced, custom-built AI Automation Framework.
 
-## Site Classification
-- **Type**: generic
-- **Confidence**: 0.0%
-- **Secondary Types**: None
+## 🏗️ Repository Architecture
 
-## Test Suites
+### 1. Standard Testing Capabilities
+These suites utilize native Playwright capabilities to provide fast, reliable, and highly visual test coverage:
 - **Smoke Tests (`e2e/smoke.spec.ts`)**: Fast, lightweight checks to ensure core pages load and basic components render.
 - **API Tests (`api/api.spec.ts`)**: High-speed HTTP request verifications for status codes, headers, and essential assets (e.g., robots.txt).
 - **Accessibility Tests (`accessibility/a11y.spec.ts`)**: Automated scans for ADA/WCAG compliance issues using Axe.
-- **Framework Showcase (`e2e/framework-showcase.spec.ts`)**: Demonstrates the AI locator intent system automatically resolving semantic regions and updating the Knowledge Base.
 - **Interactive Showcase (`e2e/interactive-showcase.spec.ts`)**: A highly visual, demonstrative suite that actively hovers, highlights, and clicks through menus and nested links, utilizing "New Tab" interactions to preserve page state. It also features **parameterized tests** that dynamically generate individual, dedicated test cases in the report for each top-level menu item.
+
+### 2. Advanced AI Automation Framework (The `src/` directory)
+Under the hood, this repository houses an experimental **Universal Automation AI Agent Framework**. Rather than relying solely on hardcoded locators, this framework features:
+- **Dependency Injection Container**: Manages services like the Knowledge Base and Telemetry hooks.
+- **LocatorIntent Resolution**: Resolves semantic regions (like "main content area") dynamically using AI-assisted heuristics.
+- **Framework Showcase (`e2e/framework-showcase.spec.ts`)**: Demonstrates this AI system in action, automatically resolving elements and logging successful patterns to a local Knowledge Base.
 
 ## Quick Start
 
