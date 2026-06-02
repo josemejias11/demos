@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Automation Observability Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Background Glow Accents -->
+  <div class="glow-bg-1"></div>
+  <div class="glow-bg-2"></div>
+
+  <div class="app-container">
+    <!-- Header Bar -->
+    <header class="app-header">
+      <div class="header-logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text">
+          <h1>Universal Automation</h1>
+          <span class="subtext">Observability & AI Diagnostics Suite</span>
+        </div>
+      </div>
+      
+      <div class="header-status">
+        <div class="status-indicator">
+          <span class="pulse-dot"></span>
+          <span class="status-text">System Active</span>
+        </div>
+        <div class="site-badge">
+          <span class="badge-label">Target:</span>
+          <span class="badge-value">moodys.com</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="dashboard-grid">
+      <!-- Left Column: Controls & Console -->
+      <section class="left-column">
+        
+        <!-- Test Execution Control Hub -->
+        <div class="card exec-hub-card">
+          <div class="card-header">
+            <svg class="card-icon text-indigo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2>Test Execution Hub</h2>
+          </div>
+          
+          <div class="exec-controls">
+            <div class="form-group">
+              <label for="suite-select">Select Target Test Suite</label>
+              <div class="custom-select-wrapper">
+                <select id="suite-select">
+                  <option value="all">All Specs (Complete Test Suite)</option>
+                  <option value="smoke">Smoke Suite (e2e/smoke.spec.ts)</option>
+                  <option value="api">API Integrity Suite (api/api.spec.ts)</option>
+                  <option value="a11y">Accessibility/A11y Suite (accessibility/a11y.spec.ts)</option>
+                  <option value="framework">AI Locator Intent Suite (e2e/framework-showcase.spec.ts)</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group toggle-group">
+              <label class="toggle-container">
+                <input type="checkbox" id="headed-toggle">
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Run in Headed Mode (Visible Browser)</span>
+              </label>
+            </div>
+            
+            <div class="btn-group">
+              <button id="btn-run" class="btn btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span>Run Selected Suite</span>
+              </button>
+              
+              <button id="btn-stop" class="btn btn-secondary" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+                </svg>
+                <span>Terminate Run</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Real-Time Output Terminal -->
+          <div class="terminal-wrapper">
+            <div class="terminal-header">
+              <div class="terminal-buttons">
+                <span class="term-dot close"></span>
+                <span class="term-dot minimize"></span>
+                <span class="term-dot expand"></span>
+              </div>
+              <div class="terminal-title">live-playwright-stream.sh</div>
+              <button id="btn-clear-console" class="clear-console-btn" title="Clear Console">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                  <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <div id="terminal-body" class="terminal-body">
+              <div class="terminal-line system-msg">> Ready to execute suites. Select a suite and click "Run Selected Suite".</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Intent Element Resolver Simulator -->
+        <div class="card intent-card">
+          <div class="card-header">
+            <svg class="card-icon text-violet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>
+            </svg>
+            <h2>AI Intent Locator Simulator</h2>
+          </div>
+          
+          <div class="intent-simulator-body">
+            <p class="section-desc">Test how the framework translates high-level natural language intents into validated selectors and records them into the Knowledge Base.</p>
+            
+            <div class="simulator-input-row">
+              <div class="form-group flex-1">
+                <label for="intent-input">Target Locator Intent</label>
+                <input type="text" id="intent-input" placeholder="e.g. navigation menu, search input, footer..." value="navigation menu">
+              </div>
+              <button id="btn-simulate-intent" class="btn btn-violet">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+                <span>Resolve Intent</span>
+              </button>
+            </div>
+
+            <!-- Simulation Animation and Outputs -->
+            <div id="sim-visualizer" class="sim-visualizer hidden">
+              <div class="scanner-bar"></div>
+              
+              <div class="sim-steps">
+                <div class="sim-step" id="step-analyze">
+                  <span class="step-check">○</span>
+                  <span class="step-text">Analyzing semantic meaning and intent aliases...</span>
+                </div>
+                <div class="sim-step" id="step-candidates">
+                  <span class="step-check">○</span>
+                  <span class="step-text">Generating resolution selector candidates...</span>
+                </div>
+                <div class="sim-step" id="step-validate">
+                  <span class="step-check">○</span>
+                  <span class="step-text">Validating against DOM heuristic scores...</span>
+                </div>
+                <div class="sim-step" id="step-kb">
+                  <span class="step-check">○</span>
+                  <span class="step-text">Recording optimized pattern match into KB...</span>
+                </div>
+              </div>
+
+              <!-- Resolution Details Output -->
+              <div id="sim-output-details" class="sim-output-details hidden">
+                <div class="res-badge-container">
+                  <span class="res-status-badge">Validated Match</span>
+                  <span class="res-score-badge">Score: 92% Confidence</span>
+                </div>
+                <div class="selector-display">
+                  <span class="selector-tag">BEST SELECTOR:</span>
+                  <code id="resolved-selector-code">header, .navbar, nav</code>
+                </div>
+                <div class="kb-notice">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" class="text-emerald">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Selector recorded in `.discovery-results/automation-locators-kb.jsonl`</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Analytics & Logs -->
+      <section class="right-column">
+        
+        <!-- Metrics Stats Row -->
+        <div class="stats-grid">
+          <!-- Stat 1: Pass Rate -->
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-emerald-glow">
+              <svg class="stat-icon text-emerald" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">100%</span>
+              <span class="stat-label">Playwright Pass Rate</span>
+            </div>
+          </div>
+
+          <!-- Stat 2: Total Test Suites -->
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-blue-glow">
+              <svg class="stat-icon text-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="stats-total-suites">4</span>
+              <span class="stat-label">Target Test Suites</span>
+            </div>
+          </div>
+
+          <!-- Stat 3: Observability Alerts -->
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-red-glow">
+              <svg class="stat-icon text-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="stats-alerts">--</span>
+              <span class="stat-label">Observability Alerts</span>
+            </div>
+          </div>
+
+          <!-- Stat 4: KB Records -->
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-violet-glow">
+              <svg class="stat-icon text-violet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2M20 2v20" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="stats-kb">16</span>
+              <span class="stat-label">AI Learned Selectors</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Log Card -->
+        <div class="card telemetry-card">
+          <div class="card-header telemetry-header-row">
+            <div class="header-title-wrapper">
+              <svg class="card-icon text-rose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2>Observability Guard Logs</h2>
+            </div>
+            
+            <div class="log-filters">
+              <button class="filter-btn active" data-filter="all">All Logs</button>
+              <button class="filter-btn" data-filter="console_error">Console</button>
+              <button class="filter-btn" data-filter="http_error">HTTP 5xx</button>
+              <button class="filter-btn" data-filter="network_failure">Network</button>
+            </div>
+          </div>
+
+          <div class="telemetry-table-wrapper">
+            <table class="telemetry-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Category</th>
+                  <th>Source URL / Path</th>
+                  <th>Message / Exception Detail</th>
+                  <th>Test Suite Context</th>
+                </tr>
+              </thead>
+              <tbody id="telemetry-tbody">
+                <!-- Filled dynamically by JavaScript -->
+                <tr class="loading-row">
+                  <td colspan="5">
+                    <div class="spinner-container">
+                      <div class="loader-spinner"></div>
+                      <span>Analyzing telemetry log files...</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

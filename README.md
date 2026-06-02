@@ -36,6 +36,22 @@ npm run test:moodys-com:api
 npm run clean
 ```
 
+## 📊 Universal Automation Observability Dashboard
+To visually showcase this automation framework in action (e.g., during live demos or technical interviews), a custom-built, zero-dependency **Observability Dashboard & Interactive Hub** is included.
+
+### Launch the Dashboard
+```bash
+# Start the built-in HTTP server & live stream worker
+npm run dashboard
+```
+Once running, open your browser and navigate to: **[http://localhost:3000](http://localhost:3000)**
+
+### Key Dashboard Features:
+1. **Execution Hub & Live Terminal**: Select any target test suite (Smoke, API, Accessibility, or AI Framework Showcase) and trigger the run directly from the browser. The dashboard spawns the Playwright process and streams the terminal logs in real-time with automatic syntax highlighting.
+2. **AI Locator Intent Simulator**: Type in any natural language selector intent (e.g. `navigation menu`, `search input`, `main content`, `footer`) to view a step-by-step visual animation of the intent parser: semantic analysis, candidate generation, DOM validation, and auto-logging to the local Knowledge Base.
+3. **Observability Guard Log Analyzer**: Displays recent HTTP 5xx errors, browser console logs, and network failures parsed dynamically from `discovery-results/automation-telemetry.jsonl`. Supports category filtering and inspection.
+4. **High-Fidelity Aesthetics**: Crafted with a custom modern dark-mode palette, glassmorphism, responsive grid architecture, and smooth SVG layouts for an outstanding visual impression.
+
 ## Site-Specific Selectors
 - **navigationMenu**: `nav, .navigation, .main-nav, .navbar`
 - **searchBox**: `[name="search"], .search-input, #search`
