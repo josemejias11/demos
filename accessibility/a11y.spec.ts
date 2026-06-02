@@ -49,6 +49,7 @@ test.describe('moodys.com Accessibility', () => {
     for (const element of buttons.slice(0, 5)) { // Test first 5 to keep test fast
       const tabIndex = await element.getAttribute('tabindex');
       if (tabIndex === '-1') continue; // Skip explicitly non-focusable elements
+      if (!await element.isVisible()) continue; // Skip invisible elements
 
       await element.focus();
       const isFocused = await element.evaluate(el => el === document.activeElement);

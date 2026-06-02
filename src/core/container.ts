@@ -1,5 +1,7 @@
 import type { LocatorIntent } from '../locators/resolver/intentTypes';
 import { type Page } from '@playwright/test';
+import fs from 'node:fs';
+import path from 'node:path';
 
 class LocatorResolver {
   async resolve(intent: LocatorIntent) {
@@ -51,6 +53,17 @@ class LocatorResolver {
 class KnowledgeService {
   recordSuccessfulSelector(target: string, selector: string, score: number, context: any) {
     console.log(`[Mock KnowledgeService] Recorded: "${target}" -> ${selector} (Score: ${score})`);
+    try {
+      const discoveryDir = path.resolve(process.cwd(), 'discovery-results');
+      if (!fs.existsSync(discoveryDir)) {
+        fs.mkdirSync(discoveryDir, { recursive: true });
+      }
+      const kbFile = path.join(discoveryDir, 'automation-locators-kb.jsonl');
+      const entry = JSON.stringify({ target, selector, score, context, timestamp: new Date().toISOString() });
+      fs.appendFileSync(kbFile, entry + '\n');
+    } catch (err) {
+      console.error('Failed to write KB entry:', err);
+    }
   }
 }
 

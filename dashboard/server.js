@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn, exec } from 'node:child_process';
+import readline from 'node:readline';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -151,13 +152,37 @@ const server = http.createServer((req, res) => {
     }
 
     try {
-      const content = fs.readFileSync(telemetryFile, 'utf-8');
-      const lines = content.split('\n').filter(line => line.trim() !== '');
-      const parsedLines = lines.map(line => JSON.parse(line));
-      res.end(JSON.stringify(parsedLines.reverse())); // Newest first
+      const rl = readline.createInterface({
+        input: fs.createReadStream(telemetryFile),
+        crlfDelay: Infinity
+      });
+      
+      const parsedLines = [];
+      rl.on('line', (line) => {
+        if (line.trim() !== '') {
+          try {
+            parsedLines.push(JSON.parse(line));
+            // Keep memory bounded to last 1000 logs
+            if (parsedLines.length > 1000) {
+              parsedLines.shift();
+            }
+          } catch (e) {
+            // Ignore malformed lines
+          }
+        }
+      });
+      
+      rl.on('close', () => {
+        res.end(JSON.stringify(parsedLines.reverse())); // Newest first
+      });
+      
+      rl.on('error', (err) => {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Failed to stream telemetry log', details: err.message }));
+      });
     } catch (err) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Failed to parse telemetry log', details: err instanceof Error ? err.message : String(err) }));
+      res.end(JSON.stringify({ error: 'Failed to init telemetry stream', details: String(err) }));
     }
     return;
   }
@@ -170,18 +195,34 @@ const server = http.createServer((req, res) => {
     });
     
     const kbFile = path.join(ROOT_DIR, 'discovery-results', 'automation-locators-kb.jsonl');
-    let count = 0;
     
-    if (fs.existsSync(kbFile)) {
-      try {
-        const content = fs.readFileSync(kbFile, 'utf-8');
-        count = content.split('\n').filter(line => line.trim() !== '').length;
-      } catch (err) {
-        console.error('Failed to read KB stats:', err);
-      }
+    if (!fs.existsSync(kbFile)) {
+      return res.end(JSON.stringify({ count: 0 }));
     }
     
-    res.end(JSON.stringify({ count }));
+    try {
+      const rl = readline.createInterface({
+        input: fs.createReadStream(kbFile),
+        crlfDelay: Infinity
+      });
+      
+      let count = 0;
+      rl.on('line', (line) => {
+        if (line.trim() !== '') count++;
+      });
+      
+      rl.on('close', () => {
+        res.end(JSON.stringify({ count }));
+      });
+      
+      rl.on('error', (err) => {
+        console.error('Failed to read KB stream:', err);
+        res.end(JSON.stringify({ count: 0 }));
+      });
+    } catch (err) {
+      console.error('Failed to init KB stream:', err);
+      res.end(JSON.stringify({ count: 0 }));
+    }
     return;
   }
 
