@@ -9,7 +9,8 @@
     "test:moodys-com:api": "playwright test api/api.spec.ts",
     "dev:moodys-com": "playwright test --config=playwright.config.ts --headed --debug",
     "automation:run:moodys-com": "tsx src/core/bootstrapDI.ts",
-    "automation:kb:view:moodys-com": "grep \"https://www.moodys.com/\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for moodys.com'"
+    "automation:kb:view:moodys-com": "grep \"https://www.moodys.com/\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for moodys.com'",
+    "clean": "rm -rf test-results discovery-results playwright-tmp playwright-report blob-report"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",

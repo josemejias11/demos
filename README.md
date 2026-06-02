@@ -31,6 +31,9 @@ npm run test:moodys-com:showcase
 
 # Run only the high-speed API tests
 npm run test:moodys-com:api
+
+# Clean all test results, reports, and temporary files
+npm run clean
 ```
 
 ## Site-Specific Selectors
