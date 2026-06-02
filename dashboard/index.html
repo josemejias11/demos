@@ -250,6 +250,7 @@
             <div class="stat-info">
               <span class="stat-value">100%</span>
               <span class="stat-label">Playwright Pass Rate</span>
+              <button id="btn-view-report" style="margin-top: 6px; background: transparent; border: 1px solid var(--emerald); color: var(--emerald); border-radius: 4px; padding: 2px 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;">View Report</button>
             </div>
           </div>
 
@@ -263,6 +264,7 @@
             <div class="stat-info">
               <span class="stat-value" id="stats-total-suites">4</span>
               <span class="stat-label">Target Test Suites</span>
+              <button id="btn-select-suite" style="margin-top: 6px; background: transparent; border: 1px solid var(--blue); color: var(--blue); border-radius: 4px; padding: 2px 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;">Select Suite</button>
             </div>
           </div>
 
@@ -276,6 +278,7 @@
             <div class="stat-info">
               <span class="stat-value" id="stats-alerts">--</span>
               <span class="stat-label">Observability Alerts</span>
+              <button id="btn-scroll-logs" style="margin-top: 6px; background: transparent; border: 1px solid var(--rose); color: var(--rose); border-radius: 4px; padding: 2px 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;">Inspect Logs</button>
             </div>
           </div>
 
@@ -287,8 +290,9 @@
               </svg>
             </div>
             <div class="stat-info">
-              <span class="stat-value" id="stats-kb">16</span>
+              <span class="stat-value" id="stats-kb">0</span>
               <span class="stat-label">AI Learned Selectors</span>
+              <button id="btn-view-kb" style="margin-top: 6px; background: transparent; border: 1px solid var(--violet); color: var(--violet); border-radius: 4px; padding: 2px 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;">View List</button>
             </div>
           </div>
         </div>
@@ -308,6 +312,8 @@
               <button class="filter-btn" data-filter="console_error">Console</button>
               <button class="filter-btn" data-filter="http_error">HTTP 5xx</button>
               <button class="filter-btn" data-filter="network_failure">Network</button>
+              <div class="divider" style="width: 1px; height: 16px; background: rgba(255,255,255,0.1); margin: 0 4px;"></div>
+              <button class="filter-btn" id="btn-clear-telemetry" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3);">Clear Logs</button>
             </div>
           </div>
 
@@ -335,10 +341,41 @@
               </tbody>
             </table>
           </div>
+          
+          <div class="pagination-controls" id="telemetry-pagination" style="display: none;">
+            <button id="page-prev" class="page-btn">Previous</button>
+            <span id="page-info">Page 1 of 1</span>
+            <button id="page-next" class="page-btn">Next</button>
+          </div>
         </div>
 
       </section>
     </main>
+  </div>
+
+  <!-- KB Modal -->
+  <div id="kb-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>AI Learned Selectors (KB)</h2>
+        <button id="close-kb-modal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+        <table class="telemetry-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Target Intent</th>
+              <th>Resolved Selector</th>
+              <th>Confidence Score</th>
+            </tr>
+          </thead>
+          <tbody id="kb-tbody">
+            <!-- Filled dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>

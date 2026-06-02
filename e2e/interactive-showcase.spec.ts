@@ -57,10 +57,11 @@ test.describe('moodys.com Interactive Showcase', () => {
           });
           await page.waitForTimeout(1500); // Wait so the highlight is clearly seen
           
-          // Click the link to open in a new tab (Middle click)
+          // Click the link to open in a new tab using OS-specific modifier
+          const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
           const [newPage] = await Promise.all([
             page.context().waitForEvent('page'),
-            linkToClick.click({ button: 'middle' })
+            linkToClick.click({ modifiers: [modifierKey] })
           ]);
           
           // Bring new tab to front and wait for it to load

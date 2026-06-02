@@ -47,10 +47,12 @@ npm run dashboard
 Once running, open your browser and navigate to: **[http://localhost:3000](http://localhost:3000)**
 
 ### Key Dashboard Features:
-1. **Execution Hub & Live Terminal**: Select any target test suite (Smoke, API, Accessibility, or AI Framework Showcase) and trigger the run directly from the browser. The dashboard spawns the Playwright process and streams the terminal logs in real-time with automatic syntax highlighting.
-2. **AI Locator Intent Simulator**: Type in any natural language selector intent (e.g. `navigation menu`, `search input`, `main content`, `footer`) to view a step-by-step visual animation of the intent parser: semantic analysis, candidate generation, DOM validation, and auto-logging to the local Knowledge Base.
-3. **Observability Guard Log Analyzer**: Displays recent HTTP 5xx errors, browser console logs, and network failures parsed dynamically from `discovery-results/automation-telemetry.jsonl`. Supports category filtering and inspection.
-4. **High-Fidelity Aesthetics**: Crafted with a custom modern dark-mode palette, glassmorphism, responsive grid architecture, and smooth SVG layouts for an outstanding visual impression.
+1. **Interactive Execution Hub & Live Terminal**: Select any target test suite (Smoke, API, Accessibility, or AI Framework Showcase) and trigger the run directly from the browser. The dashboard spawns the Playwright process and streams the terminal logs in real-time with automatic syntax highlighting.
+2. **Interactive Telemetry Metrics**: Key statistics—like Playwright Pass Rate, Target Test Suites, and Observability Alerts—function as interactive shortcuts to instantly launch local HTML reports, auto-focus suite execution menus, or smoothly scroll to telemetry log tables.
+3. **AI Locator Knowledge Base (KB) Modal**: View a dynamic table of all AI-learned selectors recorded during testing, displaying the Target Intent, Resolved Selector, Confidence Score, and exact timestamp of when the AI heuristic succeeded.
+4. **AI Intent Locator Simulator**: Type in any natural language selector intent (e.g. `navigation menu`, `search input`) to view a step-by-step visual animation of the intent parser: semantic analysis, candidate generation, DOM validation, and auto-logging to the local Knowledge Base.
+5. **Observability Guard Log Analyzer**: Displays recent HTTP 5xx errors, browser console logs, and network failures parsed dynamically from `discovery-results/automation-telemetry.jsonl`. Supports category filtering, 10-item list pagination, and a dedicated API endpoint to instantly clear historical telemetry logs.
+6. **High-Fidelity Aesthetics**: Crafted with a custom modern dark-mode palette, glassmorphism UI components, responsive grid architecture, and smooth SVG layouts for an outstanding visual impression.
 
 ## Site-Specific Selectors
 - **navigationMenu**: `nav, .navigation, .main-nav, .navbar`

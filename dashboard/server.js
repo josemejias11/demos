@@ -226,12 +226,55 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 3b. KB List API Endpoint
+  if (pathname === '/api/kb-list') {
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    });
+    
+    const kbFile = path.join(ROOT_DIR, 'discovery-results', 'automation-locators-kb.jsonl');
+    
+    if (!fs.existsSync(kbFile)) {
+      return res.end(JSON.stringify([]));
+    }
+    
+    try {
+      const rl = readline.createInterface({
+        input: fs.createReadStream(kbFile),
+        crlfDelay: Infinity
+      });
+      
+      const parsedLines = [];
+      rl.on('line', (line) => {
+        if (line.trim() !== '') {
+          try {
+            parsedLines.push(JSON.parse(line));
+          } catch (e) {}
+        }
+      });
+      
+      rl.on('close', () => {
+        res.end(JSON.stringify(parsedLines.reverse()));
+      });
+      
+      rl.on('error', (err) => {
+        console.error('Failed to read KB stream:', err);
+        res.end(JSON.stringify([]));
+      });
+    } catch (err) {
+      console.error('Failed to init KB stream:', err);
+      res.end(JSON.stringify([]));
+    }
+    return;
+  }
+
   // 4. Endpoint to show Playwright Report
   if (pathname === '/api/show-report') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ success: true }));
     // Launch report in detached process so it opens the browser independently
-    const child = spawn('npx', ['playwright', 'show-report', 'test-results/html'], { cwd: ROOT_DIR, detached: true, stdio: 'ignore' });
+    const child = spawn('npx', ['playwright', 'show-report', 'test-results/html', '--port', '0'], { cwd: ROOT_DIR, detached: true, stdio: 'ignore' });
     child.unref();
     return;
   }
@@ -246,7 +289,23 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 6. Static File Serving
+  // 6. Endpoint to clear Telemetry Logs
+  if (req.method === 'POST' && pathname === '/api/clear-telemetry') {
+    const telemetryFile = path.join(ROOT_DIR, 'discovery-results', 'automation-telemetry.jsonl');
+    try {
+      if (fs.existsSync(telemetryFile)) {
+        fs.writeFileSync(telemetryFile, '');
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Failed to clear telemetry log' }));
+    }
+    return;
+  }
+
+  // 7. Static File Serving
   let relativePath = pathname === '/' ? 'index.html' : pathname.substring(1);
   let filePath = path.join(__dirname, relativePath);
 

@@ -35,11 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const statsKb = document.getElementById('stats-kb');
   const telemetryTbody = document.getElementById('telemetry-tbody');
   const filterButtons = document.querySelectorAll('.filter-btn');
+  const pagePrev = document.getElementById('page-prev');
+  const pageNext = document.getElementById('page-next');
+  const pageInfo = document.getElementById('page-info');
+  const telemetryPagination = document.getElementById('telemetry-pagination');
 
   // Global State
   let eventSource = null;
   let allTelemetryLogs = [];
   let activeFilter = 'all';
+  let currentLogPage = 1;
+  const LOGS_PER_PAGE = 10;
 
   // -------------------------------------------------------------
   // 1. Live Test Runner Stream Controller
@@ -130,8 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             appendTerminalLine(`⚠️ Suite run encountered issues. Review logs above.`, 'error-msg');
           }
-          appendTerminalLine(`> Opening Playwright report...`, 'system-msg');
-          fetch('/api/show-report').catch(console.error);
+          appendTerminalLine(`> Test run finished. Use the "Playwright Pass Rate" button to view report.`, 'system-msg');
           stopTestRun(true);
         }
       } catch (err) {
@@ -351,6 +356,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Modal Elements
+  const btnViewKb = document.getElementById('btn-view-kb');
+  const kbModal = document.getElementById('kb-modal');
+  const closeKbModal = document.getElementById('close-kb-modal');
+  const kbTbody = document.getElementById('kb-tbody');
+
+  if (btnViewKb && kbModal && closeKbModal) {
+    btnViewKb.addEventListener('click', async () => {
+      kbModal.classList.remove('hidden');
+      kbTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">Loading...</td></tr>';
+      try {
+        const response = await fetch('/api/kb-list');
+        if (response.ok) {
+          const list = await response.json();
+          kbTbody.innerHTML = '';
+          if (list.length === 0) {
+            kbTbody.innerHTML = '<tr><td colspan="4" class="no-logs-msg">No KB selectors learned yet.</td></tr>';
+          } else {
+            list.forEach(item => {
+              const tr = document.createElement('tr');
+              
+              const tsTd = document.createElement('td');
+              tsTd.className = 'timestamp-col';
+              const date = new Date(item.timestamp);
+              tsTd.textContent = isNaN(date.getTime()) ? (item.timestamp || 'N/A') : (date.toLocaleTimeString() + ' | ' + date.toLocaleDateString());
+              tr.appendChild(tsTd);
+              
+              const intentTd = document.createElement('td');
+              intentTd.innerHTML = `<strong>${item.target || 'Unknown'}</strong>`;
+              tr.appendChild(intentTd);
+              
+              const selectorTd = document.createElement('td');
+              selectorTd.className = 'msg-text';
+              selectorTd.textContent = item.selector || 'N/A';
+              tr.appendChild(selectorTd);
+              
+              const scoreTd = document.createElement('td');
+              scoreTd.textContent = item.score ? Math.round(item.score * 100) + '%' : 'N/A';
+              tr.appendChild(scoreTd);
+              
+              kbTbody.appendChild(tr);
+            });
+          }
+        }
+      } catch (e) {
+        kbTbody.innerHTML = '<tr><td colspan="4" class="no-logs-msg">Failed to load KB list</td></tr>';
+      }
+    });
+
+    closeKbModal.addEventListener('click', () => {
+      kbModal.classList.add('hidden');
+    });
+
+    kbModal.addEventListener('click', (e) => {
+      if (e.target === kbModal) {
+        kbModal.classList.add('hidden');
+      }
+    });
+  }
+
   async function loadTelemetryLogs() {
     try {
       const response = await fetch('/api/telemetry');
@@ -388,12 +453,31 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
         </tr>
       `;
+      if (telemetryPagination) telemetryPagination.style.display = 'none';
       return;
     }
 
+    const totalPages = Math.ceil(filteredLogs.length / LOGS_PER_PAGE);
+    if (currentLogPage > totalPages) currentLogPage = totalPages;
+    if (currentLogPage < 1) currentLogPage = 1;
+
+    if (telemetryPagination) {
+      if (totalPages > 1) {
+        telemetryPagination.style.display = 'flex';
+        pageInfo.textContent = `Page ${currentLogPage} of ${totalPages}`;
+        pagePrev.disabled = currentLogPage === 1;
+        pageNext.disabled = currentLogPage === totalPages;
+      } else {
+        telemetryPagination.style.display = 'none';
+      }
+    }
+
+    const startIdx = (currentLogPage - 1) * LOGS_PER_PAGE;
+    const paginatedLogs = filteredLogs.slice(startIdx, startIdx + LOGS_PER_PAGE);
+
     telemetryTbody.innerHTML = '';
     
-    filteredLogs.forEach(log => {
+    paginatedLogs.forEach(log => {
       const tr = document.createElement('tr');
       
       // Timestamp Cell
@@ -441,13 +525,98 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Filter Buttons Handler
   filterButtons.forEach(btn => {
+    if (btn.id === 'btn-clear-telemetry') return;
     btn.addEventListener('click', () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
+      filterButtons.forEach(b => {
+        if (b.id !== 'btn-clear-telemetry') b.classList.remove('active');
+      });
       btn.classList.add('active');
       activeFilter = btn.dataset.filter;
+      currentLogPage = 1; // Reset to page 1 on filter change
       renderTelemetryTable();
     });
   });
+
+  if (pagePrev) {
+    pagePrev.addEventListener('click', () => {
+      if (currentLogPage > 1) {
+        currentLogPage--;
+        renderTelemetryTable();
+      }
+    });
+  }
+
+  if (pageNext) {
+    pageNext.addEventListener('click', () => {
+      const filteredLogs = allTelemetryLogs.filter(log => activeFilter === 'all' || log.eventType === activeFilter);
+      const totalPages = Math.ceil(filteredLogs.length / LOGS_PER_PAGE);
+      if (currentLogPage < totalPages) {
+        currentLogPage++;
+        renderTelemetryTable();
+      }
+    });
+  }
+
+  const btnClearTelemetry = document.getElementById('btn-clear-telemetry');
+  if (btnClearTelemetry) {
+    btnClearTelemetry.addEventListener('click', async () => {
+      try {
+        btnClearTelemetry.disabled = true;
+        const response = await fetch('/api/clear-telemetry', { method: 'POST' });
+        if (response.ok) {
+          allTelemetryLogs = [];
+          currentLogPage = 1;
+          renderTelemetryTable();
+          statsAlerts.textContent = 0;
+        } else {
+          console.error('Failed to clear telemetry logs via API');
+        }
+      } catch (err) {
+        console.error('Network error when clearing telemetry logs', err);
+      } finally {
+        btnClearTelemetry.disabled = false;
+      }
+    });
+  }
+
+  // Stat Card Interactive Buttons
+  const btnViewReport = document.getElementById('btn-view-report');
+  const btnSelectSuite = document.getElementById('btn-select-suite');
+  const btnScrollLogs = document.getElementById('btn-scroll-logs');
+
+  if (btnViewReport) {
+    btnViewReport.addEventListener('click', async () => {
+      btnViewReport.textContent = 'Opening...';
+      try {
+        await fetch('/api/show-report');
+        setTimeout(() => btnViewReport.textContent = 'View Report', 2000);
+      } catch (err) {
+        console.error('Failed to open report', err);
+        btnViewReport.textContent = 'View Report';
+      }
+    });
+  }
+
+  if (btnSelectSuite) {
+    btnSelectSuite.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => suiteSelect.focus(), 300);
+    });
+  }
+
+  if (btnScrollLogs) {
+    btnScrollLogs.addEventListener('click', () => {
+      const telemetryCard = document.querySelector('.telemetry-card');
+      if (telemetryCard) {
+        telemetryCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Optional: highlight briefly
+        telemetryCard.style.boxShadow = '0 0 20px rgba(225, 29, 72, 0.4)';
+        setTimeout(() => {
+          telemetryCard.style.boxShadow = '0 4px 6px var(--card-border)';
+        }, 1500);
+      }
+    });
+  }
 
   // Initial Data Loads
   loadTelemetryLogs();
