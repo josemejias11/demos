@@ -2,7 +2,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawn } from 'node:child_process';
+import { spawn, exec } from 'node:child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,7 +27,10 @@ const server = http.createServer((req, res) => {
   // 1. Live Test Running SSE Endpoint
   if (pathname === '/api/run-test') {
     const suite = parsedUrl.searchParams.get('suite') || 'all';
+    const targetEnv = parsedUrl.searchParams.get('env') || 'production';
     const isHeaded = parsedUrl.searchParams.get('headed') === 'true';
+    const browser = parsedUrl.searchParams.get('browser') || 'all';
+    const workers = parsedUrl.searchParams.get('workers') || '1';
     let testPath = '';
 
     switch (suite) {
@@ -63,8 +66,20 @@ const server = http.createServer((req, res) => {
     if (isHeaded) {
       args.push('--headed');
     }
-    // Force colors in Playwright terminal output
-    const env = { ...process.env, FORCE_COLOR: '3' };
+    if (browser !== 'all') {
+      args.push(`--project=${browser}`);
+    }
+    if (workers) {
+      args.push(`--workers=${workers}`);
+    }
+    
+    // Disable playwright's auto-open to prevent the process from hanging
+    const env = { 
+      ...process.env, 
+      FORCE_COLOR: '3', 
+      PLAYWRIGHT_HTML_OPEN: 'never',
+      TARGET_ENV: targetEnv 
+    };
 
     const child = spawn('npx', args, { cwd: ROOT_DIR, env });
 
@@ -147,7 +162,50 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 3. Static File Serving
+  // 3. KB Stats API Endpoint
+  if (pathname === '/api/kb-stats') {
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    });
+    
+    const kbFile = path.join(ROOT_DIR, 'discovery-results', 'automation-locators-kb.jsonl');
+    let count = 0;
+    
+    if (fs.existsSync(kbFile)) {
+      try {
+        const content = fs.readFileSync(kbFile, 'utf-8');
+        count = content.split('\n').filter(line => line.trim() !== '').length;
+      } catch (err) {
+        console.error('Failed to read KB stats:', err);
+      }
+    }
+    
+    res.end(JSON.stringify({ count }));
+    return;
+  }
+
+  // 4. Endpoint to show Playwright Report
+  if (pathname === '/api/show-report') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true }));
+    // Launch report in detached process so it opens the browser independently
+    const child = spawn('npx', ['playwright', 'show-report', 'test-results/html'], { cwd: ROOT_DIR, detached: true, stdio: 'ignore' });
+    child.unref();
+    return;
+  }
+
+  // 5. Endpoint to open Playwright UI Mode
+  if (pathname === '/api/open-ui-mode') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true }));
+    // Launch UI Mode in detached process
+    const child = spawn('npx', ['playwright', 'test', '--ui'], { cwd: ROOT_DIR, detached: true, stdio: 'ignore' });
+    child.unref();
+    return;
+  }
+
+  // 6. Static File Serving
   let relativePath = pathname === '/' ? 'index.html' : pathname.substring(1);
   let filePath = path.join(__dirname, relativePath);
 
@@ -184,4 +242,15 @@ server.listen(PORT, () => {
   👉 Access the interface here: http://localhost:${PORT}
   🌐 ======================================================= 🌐
   `);
+  
+  // Open the browser automatically
+  const platform = process.platform;
+  const url = `http://localhost:${PORT}`;
+  if (platform === 'darwin') {
+    exec(`open ${url}`);
+  } else if (platform === 'win32') {
+    exec(`start ${url}`);
+  } else {
+    exec(`xdg-open ${url}`);
+  }
 });

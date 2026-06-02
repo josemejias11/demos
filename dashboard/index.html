@@ -66,12 +66,56 @@
                 </select>
               </div>
             </div>
-            
+
+            <div class="form-group">
+              <label for="env-select">Target Environment</label>
+              <div class="custom-select-wrapper">
+                <select id="env-select">
+                  <option value="production" selected>Production</option>
+                  <option value="staging">Staging</option>
+                  <option value="dev">Dev</option>
+                </select>
+              </div>
+            </div>
+
             <div class="form-group toggle-group">
               <label class="toggle-container">
                 <input type="checkbox" id="headed-toggle">
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">Run in Headed Mode (Visible Browser)</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="browser-select">Select Browser</label>
+              <div class="custom-select-wrapper">
+                <select id="browser-select">
+                  <option value="all">All Browsers</option>
+                  <option value="chromium" selected>Chromium</option>
+                  <option value="firefox">Firefox</option>
+                  <option value="webkit">WebKit</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="workers-input">Number of Workers</label>
+              <input type="number" id="workers-input" min="1" max="10" value="1" placeholder="e.g. 4">
+            </div>
+
+            <div class="form-group toggle-group" style="margin-top: 10px;">
+              <label class="toggle-container">
+                <input type="checkbox" id="jira-toggle">
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Export Results to Jira (Pre-imp)</span>
+              </label>
+            </div>
+            
+            <div class="form-group toggle-group">
+              <label class="toggle-container">
+                <input type="checkbox" id="xray-toggle">
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Export Results to Xray (Pre-imp)</span>
               </label>
             </div>
             
@@ -81,6 +125,13 @@
                   <polygon points="5 3 19 12 5 21 5 3"/>
                 </svg>
                 <span>Run Selected Suite</span>
+              </button>
+              
+              <button id="btn-ui-mode" class="btn btn-secondary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/>
+                </svg>
+                <span>Open UI Mode</span>
               </button>
               
               <button id="btn-stop" class="btn btn-secondary" disabled>

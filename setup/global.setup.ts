@@ -51,6 +51,27 @@ export async function setupPageGuards(page: Page, testName: string) {
     }
   };
 
+  // Known analytics and tracking domains to block
+  const BLOCKED_DOMAINS = [
+    'marketo.net',
+    'newrelic.com',
+    'cloudflareinsights.com',
+    'smetrics.moodys.com',
+    'demdex.net',
+    'googletagmanager.com',
+    'mktoweb.com'
+  ];
+
+  // Intercept and abort third-party tracking scripts to improve speed and prevent fake analytics
+  await page.route('**/*', (route) => {
+    const url = route.request().url();
+    if (BLOCKED_DOMAINS.some(domain => url.includes(domain))) {
+      route.abort();
+    } else {
+      route.continue();
+    }
+  });
+
   // Monitor console errors
   page.on('console', (msg) => {
     if (msg.type() === 'error') {
@@ -85,6 +106,13 @@ export async function setupPageGuards(page: Page, testName: string) {
 
   // Monitor network failures
   page.on('requestfailed', (request) => {
+    const url = request.url();
+    
+    // Ignore intentionally blocked domains
+    if (BLOCKED_DOMAINS.some(domain => url.includes(domain))) {
+      return;
+    }
+
     emitTelemetry({
       timestamp: new Date().toISOString(),
       siteName: 'moodys.com',

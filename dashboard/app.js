@@ -5,9 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const suiteSelect = document.getElementById('suite-select');
   const headedToggle = document.getElementById('headed-toggle');
   const btnRun = document.getElementById('btn-run');
+  const btnUiMode = document.getElementById('btn-ui-mode');
   const btnStop = document.getElementById('btn-stop');
   const btnClearConsole = document.getElementById('btn-clear-console');
   const terminalBody = document.getElementById('terminal-body');
+  
+  // New Elements
+  const envSelect = document.getElementById('env-select');
+  const browserSelect = document.getElementById('browser-select');
+  const workersInput = document.getElementById('workers-input');
+  const jiraToggle = document.getElementById('jira-toggle');
+  const xrayToggle = document.getElementById('xray-toggle');
 
   // Elements - AI Intent Simulator
   const btnSimulateIntent = document.getElementById('btn-simulate-intent');
@@ -69,13 +77,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startTestRun() {
     const suite = suiteSelect.value;
+    const targetEnv = envSelect.value;
     const isHeaded = headedToggle.checked;
+    const browser = browserSelect.value;
+    const workers = workersInput.value;
     
     // State updates
     btnRun.disabled = true;
     btnStop.disabled = false;
     suiteSelect.disabled = true;
+    envSelect.disabled = true;
     headedToggle.disabled = true;
+    browserSelect.disabled = true;
+    workersInput.disabled = true;
+    jiraToggle.disabled = true;
+    xrayToggle.disabled = true;
     
     // Clear terminal
     terminalBody.innerHTML = '';
@@ -83,9 +99,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isHeaded) {
       appendTerminalLine(`> Mode: Headed (Visible Browser)`, 'system-msg');
     }
+    appendTerminalLine(`> Environment: ${targetEnv.toUpperCase()}`, 'system-msg');
+    if (browser !== 'all') {
+      appendTerminalLine(`> Browser: ${browser}`, 'system-msg');
+    }
+    appendTerminalLine(`> Workers: ${workers}`, 'system-msg');
+    if (jiraToggle.checked || xrayToggle.checked) {
+      appendTerminalLine(`> Integrations: ${[jiraToggle.checked ? 'Jira' : '', xrayToggle.checked ? 'Xray' : ''].filter(Boolean).join(', ')} (Pre-imp Mode)`, 'system-msg');
+    }
     
     // Open Server-Sent Events stream
-    eventSource = new EventSource(`/api/run-test?suite=${suite}&headed=${isHeaded}`);
+    eventSource = new EventSource(`/api/run-test?suite=${suite}&env=${targetEnv}&headed=${isHeaded}&browser=${browser}&workers=${workers}`);
     
     eventSource.onmessage = (event) => {
       try {
@@ -106,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             appendTerminalLine(`⚠️ Suite run encountered issues. Review logs above.`, 'error-msg');
           }
+          appendTerminalLine(`> Opening Playwright report...`, 'system-msg');
+          fetch('/api/show-report').catch(console.error);
           stopTestRun(true);
         }
       } catch (err) {
@@ -133,14 +159,38 @@ document.addEventListener('DOMContentLoaded', () => {
     btnRun.disabled = false;
     btnStop.disabled = true;
     suiteSelect.disabled = false;
+    envSelect.disabled = false;
     headedToggle.disabled = false;
+    browserSelect.disabled = false;
+    workersInput.disabled = false;
+    jiraToggle.disabled = false;
+    xrayToggle.disabled = false;
     
     // Reload telemetry logs to reflect any new entries
     loadTelemetryLogs();
+    loadKbStats();
   }
 
   btnRun.addEventListener('click', startTestRun);
   btnStop.addEventListener('click', () => stopTestRun(false));
+  
+  btnUiMode.addEventListener('click', async () => {
+    try {
+      appendTerminalLine(`> Launching Playwright UI Mode...`, 'system-msg');
+      btnUiMode.disabled = true;
+      const response = await fetch('/api/open-ui-mode', { method: 'POST' });
+      if (response.ok) {
+        appendTerminalLine(`> UI Mode window opened successfully.`, 'success-msg');
+      } else {
+        appendTerminalLine(`> Failed to launch UI Mode.`, 'error-msg');
+      }
+    } catch (err) {
+      appendTerminalLine(`> Error launching UI Mode: ${err.message}`, 'error-msg');
+    } finally {
+      setTimeout(() => btnUiMode.disabled = false, 2000);
+    }
+  });
+
   btnClearConsole.addEventListener('click', () => {
     terminalBody.innerHTML = '<div class="terminal-line system-msg">> Console cleared. Ready.</div>';
   });
@@ -284,8 +334,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // -------------------------------------------------------------
-  // 3. Telemetry Observer Logs & Analytics Fetcher
+  // 3. Telemetry Observer Logs, Analytics & KB Fetcher
   // -------------------------------------------------------------
+
+  async function loadKbStats() {
+    try {
+      const response = await fetch('/api/kb-stats');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.count !== undefined) {
+          statsKb.textContent = data.count;
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load KB stats:', err);
+    }
+  }
 
   async function loadTelemetryLogs() {
     try {
@@ -387,4 +451,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial Data Loads
   loadTelemetryLogs();
+  loadKbStats();
 });

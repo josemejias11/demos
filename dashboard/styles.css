@@ -1,28 +1,28 @@
 /* CSS Design System for Universal Automation Observability Suite */
 
 :root {
-  --bg-primary: #0a0b11;
-  --bg-secondary: rgba(18, 20, 32, 0.7);
-  --card-bg: rgba(22, 25, 44, 0.5);
-  --card-border: rgba(255, 255, 255, 0.05);
+  --bg-primary: #eef2f6;
+  --bg-secondary: rgba(255, 255, 255, 0.85);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.08);
   
-  --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
 
-  --violet: #8b5cf6;
-  --violet-glow: rgba(139, 92, 246, 0.15);
-  --indigo: #6366f1;
-  --indigo-glow: rgba(99, 102, 241, 0.15);
+  --violet: #7c3aed;
+  --violet-glow: rgba(124, 58, 237, 0.15);
+  --indigo: #4f46e5;
+  --indigo-glow: rgba(79, 70, 229, 0.15);
   
-  --emerald: #10b981;
-  --emerald-glow: rgba(16, 185, 129, 0.12);
-  --rose: #f43f5e;
-  --rose-glow: rgba(244, 63, 94, 0.12);
-  --amber: #f59e0b;
-  --amber-glow: rgba(245, 158, 11, 0.12);
-  --blue: #3b82f6;
-  --blue-glow: rgba(59, 130, 246, 0.12);
+  --emerald: #059669;
+  --emerald-glow: rgba(5, 150, 105, 0.12);
+  --rose: #e11d48;
+  --rose-glow: rgba(225, 29, 72, 0.12);
+  --amber: #d97706;
+  --amber-glow: rgba(217, 119, 6, 0.12);
+  --blue: #2563eb;
+  --blue-glow: rgba(37, 99, 235, 0.12);
 
   --font-sans: 'Outfit', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -59,7 +59,7 @@ body {
   left: -10%;
   width: 50%;
   height: 50%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(10, 11, 17, 0) 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(238, 242, 246, 0) 70%);
   z-index: -1;
   pointer-events: none;
 }
@@ -70,7 +70,7 @@ body {
   right: -10%;
   width: 50%;
   height: 50%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(10, 11, 17, 0) 70%);
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(238, 242, 246, 0) 70%);
   z-index: -1;
   pointer-events: none;
 }
@@ -131,7 +131,7 @@ body {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -186,7 +186,7 @@ body {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.03);
   border: 1px solid var(--card-border);
   border-radius: 9999px;
   font-size: 0.85rem;
@@ -282,10 +282,10 @@ label {
   position: relative;
 }
 
-select, input[type="text"] {
+select, input[type="text"], input[type="number"] {
   width: 100%;
-  background: rgba(10, 11, 17, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--radius-md);
   color: var(--text-primary);
   padding: 12px 16px;
@@ -295,7 +295,7 @@ select, input[type="text"] {
   transition: var(--transition);
 }
 
-select:focus, input[type="text"]:focus {
+select:focus, input[type="text"]:focus, input[type="number"]:focus {
   border-color: var(--indigo);
   box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
 }
@@ -321,8 +321,8 @@ select:focus, input[type="text"]:focus {
   position: relative;
   width: 44px;
   height: 24px;
-  background-color: rgba(10, 11, 17, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 24px;
   transition: var(--transition);
 }
@@ -432,8 +432,8 @@ select:focus, input[type="text"]:focus {
 
 /* Monospace Live Terminal */
 .terminal-wrapper {
-  background: #040508;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #f8fafc;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
@@ -442,12 +442,12 @@ select:focus, input[type="text"]:focus {
 }
 
 .terminal-header {
-  background: rgba(18, 20, 32, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .terminal-buttons {
@@ -493,7 +493,7 @@ select:focus, input[type="text"]:focus {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   line-height: 1.6;
-  color: #cbd5e1;
+  color: #334155;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -504,7 +504,7 @@ select:focus, input[type="text"]:focus {
   white-space: pre-wrap;
 }
 
-.terminal-line.stdout { color: #cbd5e1; }
+.terminal-line.stdout { color: #334155; }
 .terminal-line.stderr { color: #f43f5e; }
 .terminal-line.system-msg { color: #3b82f6; font-weight: 500; }
 .terminal-line.success-msg { color: #10b981; font-weight: 700; }
@@ -788,9 +788,9 @@ select:focus, input[type="text"]:focus {
 
 .telemetry-table-wrapper {
   overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--radius-md);
-  background: rgba(10, 11, 17, 0.3);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .telemetry-table {
@@ -801,22 +801,22 @@ select:focus, input[type="text"]:focus {
 }
 
 .telemetry-table th {
-  background: rgba(18, 20, 32, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   color: var(--text-secondary);
   font-weight: 600;
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .telemetry-table td {
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  color: #cbd5e1;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  color: #334155;
   vertical-align: middle;
 }
 
 .telemetry-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.015);
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .timestamp-col {
@@ -864,7 +864,8 @@ select:focus, input[type="text"]:focus {
 
 .msg-text {
   max-width: 320px;
-  color: #e2e8f0;
+  color: #0f172a;
+  font-weight: 500;
 }
 
 .context-text {
@@ -889,7 +890,7 @@ select:focus, input[type="text"]:focus {
 .loader-spinner {
   width: 28px;
   height: 28px;
-  border: 3px solid rgba(255, 255, 255, 0.05);
+  border: 3px solid rgba(0, 0, 0, 0.1);
   border-top-color: var(--indigo);
   border-radius: 50%;
   animation: spin 1s infinite linear;
