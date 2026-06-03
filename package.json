@@ -11,7 +11,9 @@
     "automation:run:moodys-com": "tsx src/core/bootstrapDI.ts",
     "automation:kb:view:moodys-com": "grep \"https://www.moodys.com/\" discovery-results/automation-locators-kb.jsonl || echo 'No entries for moodys.com'",
     "clean": "rm -rf test-results discovery-results playwright-tmp playwright-report blob-report",
-    "dashboard": "node dashboard/server.js"
+    "dashboard": "node dashboard/server.js",
+    "portal:backend": "cd observability-portal/backend && npm run start:dev",
+    "portal:frontend": "cd observability-portal/frontend && npm run dev"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
