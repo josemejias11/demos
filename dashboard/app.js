@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTelemetryLogs();
     loadKbStats();
     loadTestStats();
+    loadTestFailures();
   }
 
   btnRun.addEventListener('click', startTestRun);
@@ -399,6 +400,76 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       console.error('Failed to load test stats:', err);
+    }
+  }
+
+  async function loadTestFailures() {
+    const tbody = document.getElementById('failures-tbody');
+    if (!tbody) return;
+    
+    try {
+      const response = await fetch('/api/test-failures');
+      if (response.ok) {
+        const failures = await response.json();
+        tbody.innerHTML = '';
+        
+        if (failures.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="no-logs-msg" style="color: var(--emerald);">Great job! No failures found in the latest test run.</td></tr>';
+          return;
+        }
+        
+        failures.forEach(fail => {
+          const tr = document.createElement('tr');
+          
+          const nameTd = document.createElement('td');
+          nameTd.style.fontWeight = '600';
+          nameTd.textContent = fail.title;
+          tr.appendChild(nameTd);
+          
+          const suiteTd = document.createElement('td');
+          suiteTd.className = 'context-text';
+          suiteTd.textContent = fail.suite;
+          tr.appendChild(suiteTd);
+          
+          const errTd = document.createElement('td');
+          errTd.className = 'msg-text';
+          errTd.style.color = 'var(--rose)';
+          errTd.textContent = fail.error;
+          errTd.title = fail.error;
+          tr.appendChild(errTd);
+          
+          const actionTd = document.createElement('td');
+          if (fail.videoPath) {
+            const btn = document.createElement('button');
+            btn.innerHTML = '▶ Play Video';
+            btn.style.cssText = 'background: rgba(244, 63, 94, 0.1); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s; white-space: nowrap;';
+            btn.onmouseover = () => btn.style.background = 'rgba(244, 63, 94, 0.25)';
+            btn.onmouseout = () => btn.style.background = 'rgba(244, 63, 94, 0.1)';
+            btn.addEventListener('click', () => {
+              document.getElementById('video-error-context').textContent = `Failed Test: ${fail.title} — ${fail.error}`;
+              document.getElementById('video-modal').classList.remove('hidden');
+              const video = document.getElementById('replay-video');
+              if (video) {
+                video.src = `/api/video?path=${encodeURIComponent(fail.videoPath)}`;
+                video.load();
+                video.play().catch(() => {});
+              }
+            });
+            actionTd.appendChild(btn);
+          } else {
+            const noVideoText = document.createElement('span');
+            noVideoText.textContent = 'No Video Trace';
+            noVideoText.style.cssText = 'color: var(--text-muted); font-size: 0.75rem; font-style: italic;';
+            actionTd.appendChild(noVideoText);
+          }
+          tr.appendChild(actionTd);
+          
+          tbody.appendChild(tr);
+        });
+      }
+    } catch (err) {
+      console.error('Failed to load test failures:', err);
+      tbody.innerHTML = '<tr><td colspan="4" class="no-logs-msg" style="color: var(--rose);">Failed to load test failures.</td></tr>';
     }
   }
 
@@ -715,4 +786,5 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTelemetryLogs();
   loadKbStats();
   loadTestStats();
+  loadTestFailures();
 });

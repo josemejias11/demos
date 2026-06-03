@@ -326,6 +326,42 @@
           </div>
         </div>
 
+        <!-- NEW: Failure Replays Card -->
+        <div class="card failure-replays-card">
+          <div class="card-header telemetry-header-row">
+            <div class="header-title-wrapper">
+              <svg class="card-icon text-rose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <h2>Test Failure Diagnostics & Replays</h2>
+            </div>
+          </div>
+          <div class="telemetry-table-wrapper" style="max-height: 300px;">
+            <table class="telemetry-table">
+              <thead>
+                <tr>
+                  <th>Test Name</th>
+                  <th>Test Suite</th>
+                  <th>Failure Reason</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="failures-tbody">
+                <tr class="loading-row">
+                  <td colspan="4">
+                    <div class="spinner-container">
+                      <div class="loader-spinner"></div>
+                      <span>Analyzing test results for failures...</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- Telemetry Log Card -->
         <div class="card telemetry-card">
           <div class="card-header telemetry-header-row">

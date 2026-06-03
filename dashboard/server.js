@@ -321,6 +321,96 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 3d. Test Failures API Endpoint
+  if (pathname === '/api/test-failures') {
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    });
+    
+    const resultsFile = path.join(ROOT_DIR, 'test-results', 'results.json');
+    if (!fs.existsSync(resultsFile)) {
+      return res.end(JSON.stringify([]));
+    }
+    
+    try {
+      const data = JSON.parse(fs.readFileSync(resultsFile, 'utf-8'));
+      const failures = [];
+      
+      const findFailures = (suites, suiteName = '') => {
+        for (const suite of suites) {
+          const currentSuiteName = suiteName ? `${suiteName} > ${suite.title}` : suite.title;
+          if (suite.specs) {
+            for (const spec of suite.specs) {
+              if (spec.tests) {
+                for (const test of spec.tests) {
+                  const status = test.status || 'passed'; 
+                  if (status === 'unexpected') {
+                    let errorMsg = 'Unknown error';
+                    let videoPath = null;
+                    if (test.results && test.results[0]) {
+                      const res0 = test.results[0];
+                      if (res0.errors && res0.errors[0]) {
+                        errorMsg = res0.errors[0].message || res0.errors[0].value || errorMsg;
+                      } else if (res0.error) {
+                        errorMsg = res0.error.message || res0.error.value || errorMsg;
+                      }
+                      
+                      if (res0.attachments) {
+                        const videoAtt = res0.attachments.find(a => a.name === 'video');
+                        if (videoAtt && videoAtt.path) {
+                          videoPath = videoAtt.path;
+                        }
+                      }
+                    }
+                    failures.push({
+                      title: spec.title,
+                      suite: currentSuiteName,
+                      error: errorMsg.split('\n')[0].substring(0, 150),
+                      videoPath: videoPath
+                    });
+                  }
+                }
+              }
+            }
+          }
+          if (suite.suites) {
+            findFailures(suite.suites, currentSuiteName);
+          }
+        }
+      };
+      
+      if (data.suites) {
+        findFailures(data.suites);
+      }
+      
+      res.end(JSON.stringify(failures));
+    } catch (err) {
+      console.error('Failed to read test failures:', err);
+      res.end(JSON.stringify([]));
+    }
+    return;
+  }
+
+  // 3e. Video File Server Endpoint
+  if (pathname === '/api/video') {
+    const videoPath = parsedUrl.searchParams.get('path');
+    if (!videoPath || !videoPath.endsWith('.webm') || !fs.existsSync(videoPath)) {
+      res.writeHead(404);
+      return res.end('Video not found');
+    }
+    
+    const stat = fs.statSync(videoPath);
+    res.writeHead(200, {
+      'Content-Type': 'video/webm',
+      'Content-Length': stat.size,
+      'Access-Control-Allow-Origin': '*'
+    });
+    
+    const readStream = fs.createReadStream(videoPath);
+    return readStream.pipe(res);
+  }
+
   // 4. Endpoint to show Playwright Report
   if (pathname === '/api/show-report') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
