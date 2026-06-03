@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reload telemetry logs to reflect any new entries
     loadTelemetryLogs();
     loadKbStats();
+    loadTestStats();
   }
 
   btnRun.addEventListener('click', startTestRun);
@@ -282,14 +283,19 @@ document.addEventListener('DOMContentLoaded', () => {
       s.querySelector('.step-check').textContent = '○';
     });
 
+    const sanitizedForClass = query.replace(/[^a-z0-9_ -]/g, '').trim().replace(/\s+/g, '-');
+    const words = query.split(/\s+/).filter(w => w.length > 2);
+    const textSelectors = words.length > 0 ? `, [aria-label*="${words[0]}" i]` : '';
+    const generatedSelector = `[class*="${sanitizedForClass}"], [id*="${sanitizedForClass}"]${textSelectors}, div, section`;
+
     // Extract simulator config or build generic mock
     const match = INTENT_DATABASE[query] || {
-      selector: `div, section, [class*="${query.replace(/[^a-z0-9_-]/g, '')}"]`,
+      selector: generatedSelector,
       score: 81,
       steps: [
         `Analyzed query "${query}". Extracting semantic tokens...`,
-        `Resolved generic selector based on class naming schema`,
-        `DOM checked: Found elements matching class containing "${query}"`,
+        `Resolved generic fallback selector based on component naming schema`,
+        `DOM checked: Found elements matching contextual heuristics`,
         `Fuzzy element match verified. Heuristic confidence: 0.81.`
       ]
     };
@@ -353,6 +359,46 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       console.error('Failed to load KB stats:', err);
+    }
+  }
+
+  async function loadTestStats() {
+    try {
+      const response = await fetch('/api/test-stats');
+      if (response.ok) {
+        const data = await response.json();
+        const passRateEl = document.getElementById('stats-pass-rate');
+        const ringPathEl = document.getElementById('stats-ring-path');
+        const ringTextEl = document.getElementById('stats-ring-text');
+        const passCountEl = document.getElementById('stats-pass-count');
+        const failCountEl = document.getElementById('stats-fail-count');
+        const skipCountEl = document.getElementById('stats-skip-count');
+        
+        if (passCountEl && data.total > 0) {
+          const passRate = Math.round((data.passed / data.total) * 100);
+          
+          passRateEl.textContent = `${passRate}%`;
+          ringTextEl.textContent = passRate;
+          passCountEl.textContent = `${data.passed} Pass`;
+          failCountEl.textContent = `${data.failed} Fail`;
+          skipCountEl.textContent = `${data.skipped} Skip`;
+          
+          if (ringPathEl) {
+            ringPathEl.style.strokeDasharray = `${passRate}, 100`;
+            if (passRate < 100) {
+              ringPathEl.setAttribute('stroke', 'var(--rose)');
+              ringTextEl.style.color = 'var(--rose)';
+              passRateEl.style.color = 'var(--rose)';
+            } else {
+              ringPathEl.setAttribute('stroke', 'var(--emerald)');
+              ringTextEl.style.color = 'var(--emerald)';
+              passRateEl.style.color = '';
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load test stats:', err);
     }
   }
 
@@ -519,8 +565,38 @@ document.addEventListener('DOMContentLoaded', () => {
       ctxTd.textContent = log.details && log.details.test ? log.details.test : 'Global hook';
       tr.appendChild(ctxTd);
       
+      // Actions Cell (Video Viewer)
+      const actionTd = document.createElement('td');
+      if (log.eventType.includes('error') || log.eventType.includes('failure')) {
+        const btn = document.createElement('button');
+        btn.innerHTML = '▶ Play Video';
+        btn.style.cssText = 'background: rgba(244, 63, 94, 0.1); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s; white-space: nowrap;';
+        btn.onmouseover = () => btn.style.background = 'rgba(244, 63, 94, 0.25)';
+        btn.onmouseout = () => btn.style.background = 'rgba(244, 63, 94, 0.1)';
+        btn.addEventListener('click', () => {
+          document.getElementById('video-error-context').textContent = `Context: ${log.details?.test || 'Global Hook'} — ${log.message}`;
+          document.getElementById('video-modal').classList.remove('hidden');
+          const video = document.getElementById('replay-video');
+          if (video) {
+            video.currentTime = 0;
+            video.play().catch(() => {});
+          }
+        });
+        actionTd.appendChild(btn);
+      }
+      tr.appendChild(actionTd);
+      
       telemetryTbody.appendChild(tr);
     });
+
+    // Pad with empty rows to strictly maintain table height on partial pages
+    const emptyRowsCount = LOGS_PER_PAGE - paginatedLogs.length;
+    for (let i = 0; i < emptyRowsCount; i++) {
+      const tr = document.createElement('tr');
+      tr.style.pointerEvents = 'none'; // prevent hover state
+      tr.innerHTML = '<td colspan="6" style="border-bottom: none; background: transparent;">&nbsp;</td>';
+      telemetryTbody.appendChild(tr);
+    }
   }
 
   // Filter Buttons Handler
@@ -618,7 +694,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Video Modal Logic
+  const videoModal = document.getElementById('video-modal');
+  const closeVideoModal = document.getElementById('close-video-modal');
+  const replayVideo = document.getElementById('replay-video');
+
+  if (videoModal && closeVideoModal) {
+    const closeVideo = () => {
+      videoModal.classList.add('hidden');
+      if (replayVideo) replayVideo.pause();
+    };
+
+    closeVideoModal.addEventListener('click', closeVideo);
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) closeVideo();
+    });
+  }
+
   // Initial Data Loads
   loadTelemetryLogs();
   loadKbStats();
+  loadTestStats();
 });

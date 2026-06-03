@@ -269,6 +269,58 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 3c. Test Stats API Endpoint
+  if (pathname === '/api/test-stats') {
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    });
+    
+    const resultsFile = path.join(ROOT_DIR, 'test-results', 'results.json');
+    if (!fs.existsSync(resultsFile)) {
+      return res.end(JSON.stringify({ passed: 0, failed: 0, skipped: 0, total: 0 }));
+    }
+    
+    try {
+      const data = JSON.parse(fs.readFileSync(resultsFile, 'utf-8'));
+      let passed = 0;
+      let failed = 0;
+      let skipped = 0;
+      
+      const countTests = (suites) => {
+        for (const suite of suites) {
+          if (suite.specs) {
+            for (const spec of suite.specs) {
+              if (spec.tests) {
+                for (const test of spec.tests) {
+                  const status = test.status || 'passed'; 
+                  if (status === 'expected') passed++;
+                  else if (status === 'unexpected') failed++;
+                  else if (status === 'skipped') skipped++;
+                  else if (status === 'flaky') passed++;
+                }
+              }
+            }
+          }
+          if (suite.suites) {
+            countTests(suite.suites);
+          }
+        }
+      };
+      
+      if (data.suites) {
+        countTests(data.suites);
+      }
+      
+      const total = passed + failed + skipped;
+      res.end(JSON.stringify({ passed, failed, skipped, total }));
+    } catch (err) {
+      console.error('Failed to read test results:', err);
+      res.end(JSON.stringify({ passed: 0, failed: 0, skipped: 0, total: 0 }));
+    }
+    return;
+  }
+
   // 4. Endpoint to show Playwright Report
   if (pathname === '/api/show-report') {
     res.writeHead(200, { 'Content-Type': 'application/json' });

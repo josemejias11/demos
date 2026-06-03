@@ -798,7 +798,14 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
   border-collapse: collapse;
   font-size: 0.8rem;
   text-align: left;
+  table-layout: fixed;
 }
+
+.telemetry-card .telemetry-table th:nth-child(1) { width: 15%; }
+.telemetry-card .telemetry-table th:nth-child(2) { width: 12%; }
+.telemetry-card .telemetry-table th:nth-child(3) { width: 28%; }
+.telemetry-card .telemetry-table th:nth-child(4) { width: 30%; }
+.telemetry-card .telemetry-table th:nth-child(5) { width: 15%; }
 
 .telemetry-table th {
   background: rgba(255, 255, 255, 0.8);
@@ -813,6 +820,9 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   color: #334155;
   vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  height: 53px; /* Exact height to prevent jumping */
 }
 
 .telemetry-table tbody tr:hover {

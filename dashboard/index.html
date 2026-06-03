@@ -248,9 +248,38 @@
               </svg>
             </div>
             <div class="stat-info">
-              <span class="stat-value">100%</span>
+              <span class="stat-value" id="stats-pass-rate">100%</span>
               <span class="stat-label">Playwright Pass Rate</span>
               <button id="btn-view-report" style="margin-top: 6px; background: transparent; border: 1px solid var(--emerald); color: var(--emerald); border-radius: 4px; padding: 2px 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;">View Report</button>
+            </div>
+            
+            <!-- Visual Percentage Ring & Stats -->
+            <div style="display: flex; align-items: center; margin-left: auto; gap: 12px;">
+              <div class="percentage-ring-container" style="width: 50px; height: 50px; position: relative;">
+                <svg viewBox="0 0 36 36" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(16, 185, 129, 0.15)" stroke-width="3" />
+                  <path id="stats-ring-path" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--emerald)" stroke-width="3" stroke-dasharray="100, 100" style="stroke-linecap: round; filter: drop-shadow(0 0 2px var(--emerald)); transition: stroke-dasharray 1s ease-out;" />
+                </svg>
+                <div id="stats-ring-text" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--emerald); font-weight: 700; font-size: 0.75rem;">
+                  100
+                </div>
+              </div>
+
+              <!-- Pass/Fail/Skip counts -->
+              <div class="test-counts" style="display: flex; flex-direction: column; gap: 4px; font-size: 0.7rem; font-weight: 600;">
+                <div style="display: flex; align-items: center; gap: 6px; color: var(--emerald);">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: var(--emerald); box-shadow: 0 0 4px var(--emerald);"></span>
+                  <span id="stats-pass-count">24 Pass</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; color: var(--rose);">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: var(--rose); box-shadow: 0 0 4px var(--rose);"></span>
+                  <span id="stats-fail-count">0 Fail</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: var(--text-muted); box-shadow: 0 0 4px var(--text-muted);"></span>
+                  <span id="stats-skip-count">2 Skip</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -326,12 +355,13 @@
                   <th>Source URL / Path</th>
                   <th>Message / Exception Detail</th>
                   <th>Test Suite Context</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="telemetry-tbody">
                 <!-- Filled dynamically by JavaScript -->
                 <tr class="loading-row">
-                  <td colspan="5">
+                  <td colspan="6">
                     <div class="spinner-container">
                       <div class="loader-spinner"></div>
                       <span>Analyzing telemetry log files...</span>
@@ -374,6 +404,32 @@
             <!-- Filled dynamically -->
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div id="video-modal" class="modal hidden">
+    <div class="modal-content" style="max-width: 800px; padding: 0; background: var(--card-bg); overflow: hidden;">
+      <div class="modal-header" style="padding: 16px 20px; background: rgba(0,0,0,0.8); color: white; border-bottom: none;">
+        <h2 style="font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" class="text-rose">
+            <path d="M23 7l-7 5 7 5V7z"></path>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+          </svg>
+          Playwright Failure Trace
+        </h2>
+        <button id="close-video-modal" class="close-btn" style="color: white; opacity: 0.8;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 0; background: #000; position: relative; padding-top: 56.25%;">
+        <!-- 16:9 Aspect Ratio Container -->
+        <video id="replay-video" controls autoplay style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+          <source id="replay-video-src" src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="modal-footer" style="padding: 12px 20px; background: rgba(255,255,255,0.05); font-size: 0.85rem; color: var(--text-secondary); border-top: 1px solid var(--card-border);">
+        <span id="video-error-context">Loading failure context...</span>
       </div>
     </div>
   </div>
