@@ -1,4 +1,4 @@
-# moodys.com Automation
+# Universal Demo Automation
 
 This repository serves as a **dual-purpose portfolio piece and testing suite**. It contains both standard, highly optimized Playwright E2E tests and an advanced, custom-built AI Automation Framework.
 
@@ -21,16 +21,16 @@ Under the hood, this repository houses an experimental **Universal Automation AI
 
 ```bash
 # Run all tests (Smoke, A11Y, Showcases)
-npm run test:moodys-com
+npm run test:demo
 
 # Run all tests in Headed mode (visible browser)
-npm run test:moodys-com:headed
+npm run test:demo:headed
 
 # Run only the interactive showcase in Headed mode
-npm run test:moodys-com:showcase
+npm run test:demo:showcase
 
 # Run only the high-speed API tests
-npm run test:moodys-com:api
+npm run test:demo:api
 
 # Clean all test results, reports, and temporary files
 npm run clean

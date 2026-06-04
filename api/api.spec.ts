@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('moodys.com API Tests', () => {
-  const baseURL = 'https://www.moodys.com';
+test.describe('Demo Site API Tests', () => {
+  const baseURL = 'https://example.com';
 
   test('Homepage returns 200 OK', async ({ request }) => {
     const response = await request.get(baseURL);

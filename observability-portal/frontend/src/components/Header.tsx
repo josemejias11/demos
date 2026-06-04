@@ -20,7 +20,7 @@ export function Header() {
         </div>
         <div className="site-badge">
           <span className="badge-label">Target:</span>
-          <span className="badge-value">moodys.com</span>
+          <span className="badge-value">example.com</span>
         </div>
       </div>
     </header>

@@ -1,11 +1,11 @@
-// Site-specific configuration for moodys.com
+// Site-specific configuration for example.com
 import type { SiteConfig } from '@core/siteAdapter';
 import '@core/siteAdapter';
 
 export const siteConfig: SiteConfig = {
-  "baseURL": "https://www.moodys.com/",
-  "siteName": "moodys.com",
-  "siteType": "finance",
+  "baseURL": "https://example.com/",
+  "siteName": "example.com",
+  "siteType": "generic",
   "headless": true,
   "timeouts": {
     "navigation": 15000,

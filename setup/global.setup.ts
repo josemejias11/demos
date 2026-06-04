@@ -56,7 +56,7 @@ export async function setupPageGuards(page: Page, testName: string) {
     'marketo.net',
     'newrelic.com',
     'cloudflareinsights.com',
-    'smetrics.moodys.com',
+    'smetrics.example.com',
     'demdex.net',
     'googletagmanager.com',
     'mktoweb.com'
@@ -77,7 +77,7 @@ export async function setupPageGuards(page: Page, testName: string) {
     if (msg.type() === 'error') {
       emitTelemetry({
         timestamp: new Date().toISOString(),
-        siteName: 'moodys.com',
+        siteName: 'example.com',
         eventType: 'console_error',
         url: page.url(),
         message: msg.text(),
@@ -91,7 +91,7 @@ export async function setupPageGuards(page: Page, testName: string) {
     if (response.status() >= 500) {
       emitTelemetry({
         timestamp: new Date().toISOString(),
-        siteName: 'moodys.com',
+        siteName: 'example.com',
         eventType: 'http_error',
         url: page.url(),
         message: `HTTP ${response.status()} on ${response.url()}`,
@@ -115,7 +115,7 @@ export async function setupPageGuards(page: Page, testName: string) {
 
     emitTelemetry({
       timestamp: new Date().toISOString(),
-      siteName: 'moodys.com',
+      siteName: 'example.com',
       eventType: 'network_failure',
       url: page.url(),
       message: `Failed to load: ${request.url()}`,

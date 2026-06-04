@@ -1,16 +1,16 @@
 import { test, expect } from '@playwright/test';
-import { MoodysComPage } from '../pageObjects/MoodysComPage';
+import { TargetSitePage } from '../pageObjects/TargetSitePage';
 import { setupPageGuards } from '../setup/global.setup';
 
-test.describe('moodys.com Interactive Showcase', () => {
+test.describe('Demo Site Interactive Showcase', () => {
   test.beforeEach(async ({ page }, testInfo) => {
     await setupPageGuards(page, testInfo.title);
   });
 
   test('Visually navigate menus and click links', async ({ page }) => {
     // 1. Navigate to the homepage
-    const moodysComPage = new MoodysComPage(page);
-    await moodysComPage.navigate();
+    const targetSitePage = new TargetSitePage(page);
+    await targetSitePage.navigate();
 
     // 2. We want to find the top-level navigation items. 
     // On many modern sites, the main navigation items have role="menuitem" or are links inside the header nav.
@@ -21,9 +21,9 @@ test.describe('moodys.com Interactive Showcase', () => {
     const header = page.locator('header').first();
     await expect(header).toBeVisible();
 
-    // Use specific text matching for known Moodys.com top-level menu items.
-    // Moodys uses distinct text labels for its main dropdowns.
-    const menuLabels = ['Solutions', 'Insights', 'About Moody\'s'];
+    // Use specific text matching for known top-level menu items.
+    // Demo uses distinct text labels for its main dropdowns.
+    const menuLabels = ['Products', 'Services', 'About Us'];
     
     for (const label of menuLabels) {
       // Find the menu trigger by text (could be a div, span, button, or link)
@@ -42,10 +42,9 @@ test.describe('moodys.com Interactive Showcase', () => {
         const linksInMenu = page.locator('a[href]:visible').filter({ hasNotText: label });
         
         const linkCount = await linksInMenu.count();
-        if (linkCount > 10) {
-          // Dropdowns usually have many links. We pick one further down the list 
-          // (e.g. index 10) to ensure it's inside the expanded mega-menu and not a standard header link.
-          const linkToClick = linksInMenu.nth(10);
+        if (linkCount > 1) {
+          // Pick a link inside the expanded menu
+          const linkToClick = linksInMenu.nth(1);
           
           // --- VISUAL SHOWCASE EFFECT: Highlight ---
           // Draw a thick red border around it to show intent
@@ -81,12 +80,12 @@ test.describe('moodys.com Interactive Showcase', () => {
   // ------------------------------------------------------------------
   // Parameterized tests: Create a separate test case for each main menu
   // ------------------------------------------------------------------
-  const mainMenus = ['Solutions', 'Insights', 'About Moody\'s', 'Who We Serve'];
+  const mainMenus = ['Products', 'Services', 'About Us', 'Contact'];
   
   for (const label of mainMenus) {
     test(`Click main menu item: ${label}`, async ({ page }) => {
-      const moodysComPage = new MoodysComPage(page);
-      await moodysComPage.navigate();
+      const targetSitePage = new TargetSitePage(page);
+      await targetSitePage.navigate();
 
       const item = page.locator(`text="${label}"`).first();
       

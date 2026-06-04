@@ -1,5 +1,5 @@
 /**
- * Framework Showcase — moodys.com
+ * Framework Showcase — demo site
  *
  * Demonstrates the full framework pipeline:
  *   LocatorIntent → LocatorResolver → validateOnPage → KB recording
@@ -14,13 +14,13 @@ import type { LocatorIntent } from '@locators/resolver/intentTypes';
 import { setupPageGuards } from '../setup/global.setup';
 
 const CONTEXT = {
-  sessionId: 'moodys-showcase',
-  domain: 'moodys.com',
-  siteType: 'finance',
+  sessionId: 'demo-showcase',
+  domain: 'example.com',
+  siteType: 'generic',
   capabilities: undefined,
 } as const;
 
-test.describe('moodys.com Framework Showcase', () => {
+test.describe('Demo Site Framework Showcase', () => {
   const locatorResolver = container.get('locatorResolver');
   const knowledgeService = container.get('knowledgeService');
 
@@ -49,12 +49,12 @@ test.describe('moodys.com Framework Showcase', () => {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
         console.log(`KB recorded: "${intent.target}" → ${validated.best.selector}`);
       }
 
-      // Moodys uses header landmark for navigation — assert directly
+      // Target uses header landmark for navigation — assert directly
       await expect(page.locator('header').first()).toBeVisible();
     });
   });
@@ -76,11 +76,11 @@ test.describe('moodys.com Framework Showcase', () => {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
       }
 
-      // Moodys uses div/section-based layout — assert content area is present
+      // Target uses div/section-based layout — assert content area is present
       await expect(page.locator('main, section, [class*="content"]').first()).toBeVisible();
     });
   });
@@ -102,7 +102,7 @@ test.describe('moodys.com Framework Showcase', () => {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
       }
 
@@ -131,7 +131,7 @@ test.describe('moodys.com Framework Showcase', () => {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
       }
 

@@ -4,14 +4,14 @@ import { container } from '@core/container';
 import { runWithContext } from '@core/runTypes';
 import type { LocatorIntent } from '@locators/resolver/intentTypes';
 
-const MOODYS_CONTEXT = {
-  sessionId: 'moodys-smoke',
-  domain: 'moodys.com',
-  siteType: 'finance',
+const TARGET_CONTEXT = {
+  sessionId: 'target-smoke',
+  domain: 'example.com',
+  siteType: 'generic',
   capabilities: undefined,
 } as const;
 
-export class MoodysComPage extends BasePage {
+export class TargetSitePage extends BasePage {
   private readonly locatorResolver = container.get('locatorResolver');
   private readonly knowledgeService = container.get('knowledgeService');
 
@@ -20,13 +20,13 @@ export class MoodysComPage extends BasePage {
   }
 
   async getNavigationMenu() {
-    return runWithContext(MOODYS_CONTEXT, async () => {
+    return runWithContext(TARGET_CONTEXT, async () => {
       const intent: LocatorIntent = {
         target: 'navigation menu',
         action: 'assert',
         roleHint: 'navigation',
         synonyms: ['nav', 'header menu', 'main menu', 'site navigation'],
-        // Moodys uses div-based layout — no semantic <nav> or [role="navigation"]
+        // Target uses div-based layout — no semantic <nav> or [role="navigation"]
         fallbackSelectors: ["header", "[class*='nav']", "[class*='header']", "[class*='menu']"],
       };
       const resolution = await this.locatorResolver.resolve(intent);
@@ -36,7 +36,7 @@ export class MoodysComPage extends BasePage {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
       }
       return validated;
@@ -44,7 +44,7 @@ export class MoodysComPage extends BasePage {
   }
 
   async getMainContent() {
-    return runWithContext(MOODYS_CONTEXT, async () => {
+    return runWithContext(TARGET_CONTEXT, async () => {
       const intent: LocatorIntent = {
         target: 'main content area',
         action: 'assert',
@@ -59,7 +59,7 @@ export class MoodysComPage extends BasePage {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
       }
       return validated;
@@ -67,7 +67,7 @@ export class MoodysComPage extends BasePage {
   }
 
   async getFooter() {
-    return runWithContext(MOODYS_CONTEXT, async () => {
+    return runWithContext(TARGET_CONTEXT, async () => {
       const intent: LocatorIntent = {
         target: 'footer',
         action: 'assert',
@@ -82,7 +82,7 @@ export class MoodysComPage extends BasePage {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
       }
       return validated;
@@ -90,7 +90,7 @@ export class MoodysComPage extends BasePage {
   }
 
   async performSearch(query: string) {
-    await runWithContext(MOODYS_CONTEXT, async () => {
+    await runWithContext(TARGET_CONTEXT, async () => {
       const intent: LocatorIntent = {
         target: 'search box',
         action: 'fill',
@@ -113,7 +113,7 @@ export class MoodysComPage extends BasePage {
           intent.target,
           validated.best.selector,
           validated.best.score ?? 0.7,
-          { domain: 'moodys.com', siteType: 'finance' },
+          { domain: 'example.com', siteType: 'generic' },
         );
       }
     });

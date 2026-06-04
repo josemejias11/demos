@@ -2,13 +2,13 @@ import { test, expect } from '@playwright/test';
 import { setupPageGuards } from '../setup/global.setup';
 
 /**
- * Accessibility tests for moodys.com
+ * Accessibility tests for example.com
  * Site type: generic
  *
  * These tests verify basic WCAG compliance
  */
 
-test.describe('moodys.com Accessibility', () => {
+test.describe('Demo Site Accessibility', () => {
   test.beforeEach(async ({ page }, testInfo) => {
     await setupPageGuards(page, testInfo.title);
     await page.goto('/');
@@ -22,7 +22,7 @@ test.describe('moodys.com Accessibility', () => {
   });
 
   test('Page has a main content area', async ({ page }) => {
-    // Moodys uses div-based layout — no semantic <main>; check class-based content regions
+    // Target uses div-based layout — no semantic <main>; check class-based content regions
     const main = page.locator("main, [role='main'], [class*='content'], [class*='main']");
     await expect(main.first()).toBeVisible();
   });
@@ -58,7 +58,7 @@ test.describe('moodys.com Accessibility', () => {
   });
 
   test('Page has proper heading hierarchy', async ({ page }) => {
-    // Moodys uses h2 as the top-level heading (no h1 on homepage)
+    // Target uses h2 as the top-level heading (no h1 on homepage)
     const headingCount = await page.locator('h1, h2').count();
     expect(headingCount).toBeGreaterThanOrEqual(1);
   });

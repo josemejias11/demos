@@ -1,5 +1,5 @@
 /**
- * Test data builders for /Users/josemejias/Workbench-QA/qa-workshop-auto/tests/moodys-com
+ * Test data builders for demo site
  * Re-exports from shared builders utility
  */
 

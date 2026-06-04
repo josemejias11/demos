@@ -1,5 +1,5 @@
-// Site-specific Playwright configuration for moodys.com
-// To use this config, run: npx playwright test --config=tests/moodys-com/playwright.config.ts
+// Site-specific Playwright configuration for example.com
+// To use this config, run: npx playwright test --config=playwright.config.ts
 import { defineConfig } from '@playwright/test';
 import { siteConfig } from './site.config';
 
@@ -19,7 +19,7 @@ export default defineConfig({
     ['json', { outputFile: 'test-results/results.json' }],
   ],
   use: {
-    baseURL: 'https://www.moodys.com/',
+    baseURL: 'https://example.com/',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
