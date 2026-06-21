@@ -2,7 +2,7 @@
 
 This repository serves as a **dual-purpose portfolio piece and testing suite**. It contains both standard, highly optimized Playwright E2E tests and an advanced, custom-built AI Automation Framework.
 
-## 🏗️ Repository Architecture
+##  Repository Architecture
 
 ### 1. Standard Testing Capabilities
 These suites utilize native Playwright capabilities to provide fast, reliable, and highly visual test coverage:
@@ -36,7 +36,7 @@ npm run test:demo:api
 npm run clean
 ```
 
-## 📊 Universal Automation Observability Dashboard
+##  Universal Automation Observability Dashboard
 To visually showcase this automation framework in action (e.g., during live demos or technical interviews), a custom-built, zero-dependency **Observability Dashboard & Interactive Hub** is included.
 
 ### Launch the Dashboard
