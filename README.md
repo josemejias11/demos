@@ -43,5 +43,4 @@ npm run playwright -- --headed
 
 ## Additional Info
 - All tests are located in the `tests/` directory.
-- Page objects and fixtures are organized under `tests/pageObjects/` and `tests/fixtures/`.
 - Playwright configuration is in `playwright.config.ts`.
