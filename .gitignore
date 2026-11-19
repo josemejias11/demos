@@ -1,4 +1,0 @@
-# Ignore node_modules and test-results
-node_modules/
-test-results/
-.DS_Store
